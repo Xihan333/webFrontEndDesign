@@ -1,0 +1,1 @@
+import{Q as a,R as t}from"./index-f7ad59d0.js";function m(e,s){e.$message({message:s,type:"warnning"})}function r(e){return new Promise((s,n)=>{a.confirm(e,"提示",{confirmButtonText:"确定",cancelButtonText:"取消",type:"warning"}).then(()=>{s(!0)}).catch(()=>{t({type:"info",message:"已取消删除"}),n(!1)})})}export{r as a,m};

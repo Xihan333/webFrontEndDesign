@@ -1,0 +1,47 @@
+# App Properties
+bezkoder:
+  app:
+    jwtSecret: bezKoderSecretKey
+    jwtExpirationMs: 86400000
+server:
+  port: 9090
+spring:
+  datasource:
+    url: jdbc:sqlite:/teach/run/data.db
+    driver-class-name: org.sqlite.JDBC
+    username: admin
+    password: admin
+  jpa:
+    database-platform: org.fatmansoft.teach.sqlite.SQLDialect
+    generate-ddl: true
+    hibernate.ddl-auto: update
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  jmx:
+    enabled:false
+# Mail server properties
+  mail:
+    host: smtp.sdu.edu.cn
+    port: 25
+    username: xqli@sdu.edu.cn
+    password: 111
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+attach:
+  folder: /teach/run/
+logging:
+  config: classpath:loggback.xml
