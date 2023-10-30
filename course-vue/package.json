@@ -10,11 +10,13 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "axios": "^1.4.0",
+    "autoprefixer": "^10.4.16",
+    "axios": "^1.5.1",
     "element-plus": "^2.3.6",
     "js-base64": "^3.7.5",
     "pinia": "^2.1.6",
     "pinia-plugin-persistedstate": "^3.2.0",
+    "postcss": "^8.4.31",
     "vue": "^3.3.4",
     "vue-echarts": "^6.6.0",
     "vue-router": "^4.2.4"

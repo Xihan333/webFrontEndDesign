@@ -5,87 +5,138 @@ const routes = [
   //当路由为空时，重定向到登录页面
   {
     path: "/",
-    redirect: "/Login",
+    redirect: "/login",
   },
   //登录页面
   {
-    path: "/Login",
-    name: "Login",
+    path: "/login",
+    name: "login",
     component: () => import("~/Login.vue"),
   },
-  //主页面
   {
-    path: "/MainPage",
-    name: "MainPage",
-    component: () => import("~/views/MainPage.vue"),
+    path: ('/student'),
+    component: () => import('@/views/Layout.vue'),
+    redirect: ('/student/homepage'),
+    // 设置路由守卫进行登录判断及拦截
+    beforeEnter: () => {
+      //解决刷新退回登录页面问题
+      const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
+      if (!token) {
+        // ElMessage({
+        //   message: '请先登录!',
+        //   type: 'warning'
+        // })
+        // return ('/login')
+      }
+    },
+    children: [
+      // 主页
+      { 
+        path: ('homepage'), 
+        component: () => import('../views/student/Homepage.vue') 
+      },
+      { 
+        path: ('info-edit'), 
+        component: () => import('../views/student/InfoEdit.vue') },
+      {
+        path: ('password-edit'),
+        component: () => import('../views/common/PasswordEdit.vue'),
+      },
+      { 
+        path: ('course-select'),
+        component: () => import('../views/student/CourseSelect.vue') 
+      },
+      { 
+        path: ('course-view'), 
+        component: () => import('../views/student/CourseView.vue') },
+      { 
+        path: ('score-view'), 
+        component: () => import('../views/student/ScoreView.vue') 
+      },
+      { 
+        path: ('social-prac'), 
+        component: () => import('../views/student/SocialPrac.vue') 
+      },
+      { 
+        path: ('activity'), 
+        component: () => import('../views/student/Activity.vue') 
+      },
+      { 
+        path: ('achievement'), 
+        component: () => import('../views/student/Achievement.vue') 
+      },
+      { 
+        path: ('peer-assess'), 
+        component: () => import('../views/student/PeerAssess.vue') 
+      },
+    ]
   },
   {
-    path: "/SystemIntroduce",
-    name: "SystemIntroduce",
-    component: () => import("~/views/info/SystemIntroduce.vue"),
+    path: ('/teacher'),
+    redirect: ('/teacher/homepage'),
+    // 设置路由守卫进行登录判断及拦截
+    beforeEnter: () => {
+      //解决刷新退回登录页面问题
+      const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
+      if (!token) {
+        // ElMessage({
+        //   message: '请先登录!',
+        //   type: 'warning'
+        // })
+        // return ('/login')
+      }
+    },
+    children: [
+      // 主页
+      { 
+        path: ('homepage'), 
+        component: () => import('../views/teacher/Homepage.vue') 
+      },
+      { 
+        path: ('info-edit'), 
+        component: () => import('../views/teacher/InfoEdit.vue') 
+      },
+      {
+        path: ('password-edit'),
+        component: () => import('../views/common/PasswordEdit.vue'),
+      },
+      { 
+        path: ('course-view'), 
+        component: () => import('../views/teacher/CourseView.vue') 
+      },
+      { 
+        path: ('score-manage'),
+        component: () => import('../views/teacher/ScoreManage.vue') 
+      },
+    ]
   },
   {
-    path: "/Password",
-    name: "Password",
-    component: () => import("~/views/info/Password.vue"),
+    path: ('/admin'),
+    redirect: ('/admin/course-manage'),
+    // 设置路由守卫进行登录判断及拦截
+    beforeEnter: () => {
+      //解决刷新退回登录页面问题
+      const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
+      if (!token) {
+        // ElMessage({
+        //   message: '请先登录!',
+        //   type: 'warning'
+        // })
+        // return ('/login')
+      }
+    },
+    children: [
+      { 
+        path: ('course-manage'),
+        component: () => import('../views/admin/CourseManage.vue') 
+      },
+    ]
   },
-  {
-    path: "/StudentIntroduce",
-    name: "StudentIntroduce",
-    component: () => import("~/views/info/StudentIntroduce.vue"),
-  },
-  {
-    path: "/TeacherIntroduce",
-    name: "TeacherIntroduce",
-    component: () => import("~/views/info/TeacherIntroduce.vue"),
-  },
-  {
-    path: "/menu-manage-panel",
-    name: "MenuManage",
-    component: () => import("~/views/system/MenuManage.vue"),
-  },
-  {
-    path: "/dictionary-manage-panel",
-    name: "DictionaryManage",
-    component: () => import("~/views/system/DictionaryManage.vue"),
-  },
-
-  {
-    path: "/student-panel",
-    name: "StudentTable",
-    component: () => import("~/views/person/StudentTable.vue"),
-  },
-  {
-    path: "/StudentInfo",
-    name: "StudentInfo",
-    component: () => import("~/views/person/StudentInfo.vue"),
-  },
-  {
-    path: "/FamilyMember",
-    name: "FamilyMember",
-    component: () => import("~/views/person/FamilyMember.vue"),
-  },
-  {
-    path: "/teacher-panel",
-    name: "teacherTable",
-    component: () => import("~/views/person/TeacherTable.vue"),
-  },
-  {
-    path: "/TeacherInfo",
-    name: "TeacherInfo",
-    component: () => import("~/views/person/TeacherInfo.vue"),
-  },
-
-  {
-    path: "/course-panel",
-    name: "CourseTable",
-    component: () => import("~/views/teaching/CourseTable.vue"),
-  },
-  {
-    path: "/score-table-panel",
-    name: "ScoreTable",
-    component: () => import("~/views/teaching/ScoreTable.vue"),
-  },
+  { 
+    path: '/:unknownPath(.*)*', 
+    component: () => import('../views/common/NotFound.vue') 
+  }
+  
 ];
 //路由创建
 const router = createRouter({

@@ -685,6 +685,7 @@ button:active {
   width: 332px;
 }
 input {
+  transform: rotate(30deg);
   border: 1px solid rgba(217, 217, 217, 1);
 }
 input:focus {

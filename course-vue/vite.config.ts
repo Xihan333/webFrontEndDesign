@@ -14,6 +14,9 @@ import {
   transformerVariantGroup,
 } from "unocss";
 
+
+import autoprefixer from 'autoprefixer';
+
 const pathSrc = path.resolve(__dirname, "src");
 
 // https://vitejs.dev/config/
@@ -24,6 +27,21 @@ export default defineConfig({
     },
   },
   css: {
+    postcss: { // ⚠️关键代码
+      plugins: [
+        autoprefixer({
+          overrideBrowserslist: [
+              'Android 4.1',
+              'iOS 7.1',
+              'Chrome > 31',
+              'ff > 31',
+              'ie > 8',
+              '> 1%',
+          ], // 主流浏览器最近几个版本（但实际上我根本不知道）
+          grid: true,
+        }),
+      ]
+    },
     preprocessorOptions: {
       scss: {
         additionalData: `@use "~/styles/element/index.scss" as *;`,
