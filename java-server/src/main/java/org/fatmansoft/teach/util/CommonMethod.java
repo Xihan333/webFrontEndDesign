@@ -1,6 +1,5 @@
 package org.fatmansoft.teach.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -9,19 +8,17 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.security.services.UserDetailsImpl;
+import org.hibernate.type.descriptor.sql.TinyIntTypeDescriptor;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * CommonMethod 公共处理方法实例类
  */
 public class CommonMethod {
-    private static ObjectMapper mapper = new ObjectMapper();
     public static final MediaType exelType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     public static DataResponse getReturnData(Object obj, String msg){
         return new   DataResponse(0,obj,msg);
@@ -57,42 +54,7 @@ public class CommonMethod {
         else
             return null;
     }
-    public static String getUsername(){
-        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!(obj instanceof UserDetailsImpl))
-            return null;
-        UserDetailsImpl userDetails =
-                (UserDetailsImpl) obj;
-        if(userDetails != null)
-            return userDetails.getUsername();
-        else
-            return null;
-    }
 
-    public static String getNextNum2(String num) {
-        String str;
-        String prefix;
-        if(num.length() == 2) {
-            str = num;
-            prefix= "";
-        }
-        else {
-            str = num.substring(num.length() - 2, num.length());
-            prefix = num.substring(0,num.length() - 2);
-        }
-        int c;
-        if(str.charAt(0)=='0') {
-            c = str.charAt(1)-'0';
-        }else {
-            c = (str.charAt(0)-'0')*10 + str.charAt(1)-'0';
-        }
-        c++;
-        if(c < 10) {
-            return prefix+"0" + c;
-        }else {
-            return prefix+ c;
-        }
-    }
     public static String getNextNum3( String num) {
         String str;
         String prefix;
@@ -394,46 +356,4 @@ public class CommonMethod {
         return content;
     }
 
-    public static String getLevelFromScore(Double score) {
-        if(score == null)
-            return "";
-        if(score >=89.5)
-            return "优";
-        if(score >=79.5)
-            return "良";
-        if(score >=69.5)
-            return "中";
-        if(score >=59.5)
-            return "及格";
-        return "不及格";
-    }
-    public static ResponseEntity<StreamingResponseBody> getByteDataResponseBodyPdf(byte[] data) {
-        if (data == null || data.length == 0)
-            return ResponseEntity.internalServerError().build();
-        try {
-            StreamingResponseBody stream = outputStream -> {
-                outputStream.write(data);
-            };
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .body(stream);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-    public static Double getDouble2(Double f) {
-        if (f == null)
-            return 0d;
-        BigDecimal bg = new BigDecimal(f);
-        return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
-    public static String ObjectToJSon(Object o){
-        try {
-            //p是指定要转换的对象
-            String json = mapper.writeValueAsString(o);
-            return json;
-        }catch(Exception e){
-            return "";
-        }
-    }
 }

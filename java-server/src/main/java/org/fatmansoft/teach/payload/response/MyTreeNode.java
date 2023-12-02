@@ -1,7 +1,5 @@
 package org.fatmansoft.teach.payload.response;
 
-import org.fatmansoft.teach.util.CommonMethod;
-
 import java.util.List;
 
 /**
@@ -16,21 +14,12 @@ public class MyTreeNode {
     private Integer id;
     private String value;
     private String label;
-    private String title;
     private Integer pid;
-    private Integer isLeaf;
-    private String userTypeIds;
-    private String parentTitle;
-    private List<MyTreeNode> children;
-    public MyTreeNode(){
-
-    }
-    public MyTreeNode(Integer id, String value, String title,Integer isLeaf){
+    private List<MyTreeNode> childList;
+    public MyTreeNode(Integer id, String value, String label){
         this.id  = id;
         this.value = value;
-        this.title = title;
-        this.isLeaf = isLeaf;
-//        this.label = id+"-" + title;
+        this.label = label;
     }
     public String toString(){
         return label;
@@ -68,43 +57,11 @@ public class MyTreeNode {
         this.pid = pid;
     }
 
-    public List<MyTreeNode> getChildren() {
-        return children;
+    public List<MyTreeNode> getChildList() {
+        return childList;
     }
 
-    public void setChildren(List<MyTreeNode> children) {
-        this.children = children;
-    }
-
-    public Integer getIsLeaf() {
-        return isLeaf;
-    }
-
-    public void setIsLeaf(Integer isLeaf) {
-        this.isLeaf = isLeaf;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getUserTypeIds() {
-        return userTypeIds;
-    }
-
-    public void setUserTypeIds(String userTypeIds) {
-        this.userTypeIds = userTypeIds;
-    }
-
-    public String getParentTitle() {
-        return parentTitle;
-    }
-
-    public void setParentTitle(String parentTitle) {
-        this.parentTitle = parentTitle;
+    public void setChildList(List<MyTreeNode> childList) {
+        this.childList = childList;
     }
 }

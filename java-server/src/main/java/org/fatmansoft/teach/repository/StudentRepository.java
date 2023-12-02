@@ -1,8 +1,6 @@
 package org.fatmansoft.teach.repository;
 
 import org.fatmansoft.teach.models.Student;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,17 +16,22 @@ import java.util.Optional;
  */
 
 public interface StudentRepository extends JpaRepository<Student,Integer> {
+    @Query(value = "select max(studentId) from Student  ")
+    Integer getMaxId();
+    @Query(value = "from Student where person.personId=?1")
     Optional<Student> findByPersonPersonId(Integer personId);
     Optional<Student> findByPersonNum(String num);
-    List<Student> findByPersonName(String name);
-
+    Optional<Student> findByPersonName(String name);
+    @Query(value = "select s from User u,Student s where u.userId=?1 and u.person.personId=s.person.personId")
+    Optional<Student> findByUserId(Integer userId);
+    @Query(value = "select s.student from Score s where s.course.courseId=?1")
+    List<Student> findStudentListByCourseId(Integer courseId);
     @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ")
     List<Student> findStudentListByNumName(String numName);
-
-    @Query(value="select s from Student s, User u where u.person.personId = s.person.personId and u.userId=?1")
-    Optional<Student> findByUserId(Integer userId);
-
-    @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ",
-            countQuery = "SELECT count(studentId) from Student where ?1='' or person.num like %?1% or person.name like %?1% ")
-    Page<Student> findStudentPageByNumName(String numName,  Pageable pageable);
+    @Query(value = "from Student where clazz.clazzId=?1")
+    List<Student> findStudentListByClazzClazzId(Integer clazzId);
+    @Query(value = "select h.score.student from Homework h where h.score.course.courseId=?1 and h.name=?2")
+    List<Student> findStudentListByCourseIdAndHomeworkName(Integer courseId,String homeworkName);
+    @Query(value = "select a.score.student from Attendance a where a.score.course.courseId=?1 and a.date=?2")
+    List<Student> findStudentListByCourseIdAndDate(Integer courseId,String date);
 }

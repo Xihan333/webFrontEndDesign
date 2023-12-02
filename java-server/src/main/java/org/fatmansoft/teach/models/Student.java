@@ -1,6 +1,6 @@
 package org.fatmansoft.teach.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.fatmansoft.teach.models.system.Person;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -23,15 +23,15 @@ public class Student {
     private Integer studentId;
 
     @OneToOne
-    @JoinColumn(name="person_id")
-    @JsonIgnore
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @Size(max = 20)
     private String major;
 
-    @Size(max = 50)
-    private String className;
+    @ManyToOne
+    @JoinColumn(name = "clazz_id")
+    private Clazz clazz;
 
     public Integer getStudentId() {
         return studentId;
@@ -57,16 +57,12 @@ public class Student {
         this.major = major;
     }
 
-    public String getClassName() {
-        return className;
+    public Clazz getClazz() {
+        return clazz;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getNumName(){
-        return person.getNum()+"-" + person.getName();
+    public void setClazz(Clazz clazz) {
+        this.clazz = clazz;
     }
 
 }

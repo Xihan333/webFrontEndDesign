@@ -15,10 +15,10 @@ import javax.validation.constraints.Size;
         })
 public class MenuInfo {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String userTypeIds;
+    private Integer userTypeId;
     private Integer pid;
 
     @Size(max = 40)
@@ -36,12 +36,12 @@ public class MenuInfo {
         this.id = id;
     }
 
-    public String getUserTypeIds() {
-        return userTypeIds;
+    public Integer getUserTypeId() {
+        return userTypeId;
     }
 
-    public void setUserTypeIds(String userTypeIds) {
-        this.userTypeIds = userTypeIds;
+    public void setUserTypeId(Integer userTypeId) {
+        this.userTypeId = userTypeId;
     }
 
     public Integer getPid() {

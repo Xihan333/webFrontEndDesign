@@ -3,12 +3,11 @@ package org.fatmansoft.teach.service;
 import com.openhtmltopdf.extend.FSSupplier;
 import com.openhtmltopdf.extend.impl.FSDefaultCacheStore;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import lombok.extern.slf4j.Slf4j;
-import org.fatmansoft.teach.models.DictionaryInfo;
+import org.fatmansoft.teach.models.system.DictionaryInfo;
 import org.fatmansoft.teach.models.MenuInfo;
 import org.fatmansoft.teach.payload.response.MyTreeNode;
-import org.fatmansoft.teach.repository.DictionaryInfoRepository;
-import org.fatmansoft.teach.repository.MenuInfoRepository;
+import org.fatmansoft.teach.repository.system.DictionaryInfoRepository;
+import org.fatmansoft.teach.repository.system.MenuInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -17,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,6 @@ import java.util.List;
  * BaseService 系统菜单、数据字典等处理的功能和方法
  */
 @Service
-@Slf4j
 public class BaseService {
     @Autowired
     private DictionaryInfoRepository dictionaryInfoRepository;  //数据数据操作自动注入
@@ -42,15 +38,18 @@ public class BaseService {
      *  getDictionaryTreeNode 获取数据字典节点树根节点
      * @return MyTreeNode 数据字典树根节点
      */
-    public List<MyTreeNode> getDictionaryTreeNodeList() {
+    public MyTreeNode getDictionaryTreeNode() {
+        MyTreeNode  node = new MyTreeNode(null,null,"数据字典");
+        node.setPid(null);
         List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
+        node.setChildList(childList);
         List<DictionaryInfo> sList = dictionaryInfoRepository.findRootList();
         if(sList == null)
-            return childList;
+            return node;
         for(int i = 0; i<sList.size();i++) {
-            childList.add(getDictionaryTreeNode(null,sList.get(i),null));
+            childList.add(getDictionaryTreeNode(node.getId(),sList.get(i)));
         }
-        return childList;
+        return node;
     }
 
     /**
@@ -59,18 +58,16 @@ public class BaseService {
      * @param d   数据字典数据
      * @return  树节点
      */
-    public MyTreeNode getDictionaryTreeNode( Integer pid, DictionaryInfo d,String parentTitle) {
-        MyTreeNode  node = new MyTreeNode(d.getId(),d.getValue(),d.getLabel(),null);
-        node.setLabel(d.getValue()+"-"+d.getLabel());
-        node.setParentTitle(parentTitle);
+    public MyTreeNode getDictionaryTreeNode( Integer pid, DictionaryInfo d) {
+        MyTreeNode  node = new MyTreeNode(d.getId(),d.getValue(),d.getLabel());
         node.setPid(pid);
         List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
-        node.setChildren(childList);
+        node.setChildList(childList);
         List<DictionaryInfo> sList = dictionaryInfoRepository.findByPid(d.getId());
         if(sList == null)
             return node;
         for(int i = 0; i<sList.size();i++) {
-            childList.add(getDictionaryTreeNode(node.getId(),sList.get(i),node.getValue()));
+            childList.add(getDictionaryTreeNode(node.getId(),sList.get(i)));
         }
         return node;
     }
@@ -80,35 +77,35 @@ public class BaseService {
      * @param userTypeId 用户类型ID
      * @return MyTreeNode 根节点对象
      */
-    public List<MyTreeNode> getMenuTreeNodeList() {
+    public MyTreeNode getMenuTreeNode(Integer userTypeId) {
+        MyTreeNode  node = new MyTreeNode(null,null,"菜单");
+        node.setPid(null);
         List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
-        List<MenuInfo> sList = menuInfoRepository.findByUserTypeIds("");
-        if(sList == null)
-            return childList;
-        for(int i = 0; i<sList.size();i++) {
-            childList.add(getMenuTreeNode(null,sList.get(i),""));
-        }
-        return childList;
-    }
-    /**
-     * MyTreeNode getMenuTreeNode(Integer userTypeId) 获得角色的某个菜单的菜单树根节点
-     * @param parentTitle 用户类型ID Integer pid 父节点ID MenuInfo d 菜单信息
-     *
-     * @return MyTreeNode 当前菜单的MyTreeNode对象
-     */
-    public MyTreeNode getMenuTreeNode(Integer pid, MenuInfo d,String parentTitle) {
-        MyTreeNode  node = new MyTreeNode(d.getId(),d.getName(),d.getTitle(),null);
-        node.setLabel(d.getId()+"-"+d.getTitle());
-        node.setUserTypeIds(d.getUserTypeIds());
-        node.setParentTitle(parentTitle);
-        node.setPid(pid);
-        List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
-        node.setChildren(childList);
-        List<MenuInfo> sList = menuInfoRepository.findByUserTypeIds("",d.getId());
+        node.setChildList(childList);
+        List<MenuInfo> sList = menuInfoRepository.findByUserTypeId(userTypeId);
         if(sList == null)
             return node;
         for(int i = 0; i<sList.size();i++) {
-            childList.add(getMenuTreeNode(node.getId(),sList.get(i),node.getTitle()));
+            childList.add(getMenuTreeNode(userTypeId,node.getId(),sList.get(i)));
+        }
+        return node;
+    }
+    /**
+     * MyTreeNode getMenuTreeNode(Integer userTypeId) 获得角色的某个菜单的菜单树根节点
+     * @param userTypeId 用户类型ID Integer pid 父节点ID MenuInfo d 菜单信息
+     *
+     * @return MyTreeNode 当前菜单的MyTreeNode对象
+     */
+    public MyTreeNode getMenuTreeNode(Integer userTypeId, Integer pid, MenuInfo d) {
+        MyTreeNode  node = new MyTreeNode(d.getId(),d.getName(),d.getTitle());
+        node.setPid(pid);
+        List<MyTreeNode> childList = new ArrayList<MyTreeNode>();
+        node.setChildList(childList);
+        List<MenuInfo> sList = menuInfoRepository.findByUserTypeIdAndPid(userTypeId,d.getId());
+        if(sList == null)
+            return node;
+        for(int i = 0; i<sList.size();i++) {
+            childList.add(getMenuTreeNode(userTypeId,node.getId(),sList.get(i)));
         }
         return node;
     }
@@ -146,7 +143,5 @@ public class BaseService {
             return  ResponseEntity.internalServerError().build();
         }
     }
-
-
 
 }

@@ -37,10 +37,6 @@ public class DateTimeTool {
      * @param f
      * @return
      */
-    public static String parseDateTime(Date timeSrc) {
-        return parseDateTime(timeSrc,"yyyy-MM-dd HH:mm:ss");
-    }
-
     public static String parseDateTime(Date timeSrc, String f) {
         if (timeSrc == null)
             return null;

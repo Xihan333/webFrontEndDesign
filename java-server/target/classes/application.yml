@@ -3,11 +3,12 @@ bezkoder:
   app:
     jwtSecret: bezKoderSecretKey
     jwtExpirationMs: 86400000
+
 server:
   port: 9090
 spring:
   datasource:
-    url: jdbc:sqlite:/teach/run/data.db
+    url: jdbc:sqlite:/teach/run/java.db
     driver-class-name: org.sqlite.JDBC
     username: admin
     password: admin
@@ -15,33 +16,41 @@ spring:
     database-platform: org.fatmansoft.teach.sqlite.SQLDialect
     generate-ddl: true
     hibernate.ddl-auto: update
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=GMT%2B8
+#    username: root
+#    password: Sdu2022.
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  rabbitmq:
+    addresses: localhost
+    username: admin
+    password: admin
+    virtual-host: /
   servlet:
     multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
+      max-file-size: 50MB
+      max-request-size: 50MB
   jmx:
-    enabled:false
-# Mail server properties
-  mail:
-    host: smtp.sdu.edu.cn
-    port: 25
-    username: xqli@sdu.edu.cn
-    password: 111
-    properties:
-      mail:
-        smtp:
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-          starttls:
-            enable: true
+    enabled: false
+
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+
 attach:
   folder: /teach/run/
-logging:
-  config: classpath:loggback.xml
+
+
+#spring.datasource.url = jdbc:sqlite:D:/teach/run/java.db
+#spring.datasource.driver-class-name = org.sqlite.JDBC
+#spring.datasource.username = admin
+#spring.datasource.password = admin
+#spring.jpa.generate-ddl=true
+
+
+
+
+

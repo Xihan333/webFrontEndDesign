@@ -1,11 +1,9 @@
 package org.fatmansoft.teach.service;
 
-import org.fatmansoft.teach.models.Student;
-import org.fatmansoft.teach.models.TaskStudent;
-import org.fatmansoft.teach.models.TeamWork;
-import org.fatmansoft.teach.repository.StudentRepository;
-import org.fatmansoft.teach.repository.TaskStudentRepository;
-import org.fatmansoft.teach.repository.TeamWorkRepository;
+import org.fatmansoft.teach.models.study.Attendance;
+import org.fatmansoft.teach.repository.*;
+import org.fatmansoft.teach.repository.study.AttendanceRepository;
+import org.fatmansoft.teach.service.study.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,24 +12,15 @@ import java.util.List;
 @Service
 public class TestService {
     @Autowired
-    private StudentRepository studentRepository;
+    AttendanceRepository attendanceRepository;
     @Autowired
-    private TaskStudentRepository taskStudentRepository;
+    AttendanceService attendanceService;
     @Autowired
-    private TeamWorkRepository teamWorkRepository;
-    public void test1(){
-        List<Student> sList = studentRepository.findAll();
-        TeamWork tw;
-        int j;
-        for(Student s:sList) {
-            for(j = 1; j <= 8;j++) {
-                tw = new TeamWork();
-                tw.setStudent(s);
-                tw.setWeek(j);
-                tw.setCourseId(2);
-                teamWorkRepository.save(tw);
-            }
-        }
-        System.out.println();
+    TeacherCourseRepository teacherCourseRepository;
+
+    public void test(){
+        List<Attendance> list=attendanceRepository.findByScoreStudentStudentId(1);
+        //System.out.println(list.get(0).getDate());
+        //attendanceRepository.deleteByScoreScoreId(3);
     }
 }
