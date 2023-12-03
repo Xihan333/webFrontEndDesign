@@ -1,11 +1,17 @@
 package org.fatmansoft.teach.models.teacher;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.fatmansoft.teach.models.system.Person;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
     @Entity
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Table(	name = "teacher",
             uniqueConstraints = {
             })
@@ -24,35 +30,7 @@ import javax.validation.constraints.Size;
         @Size(max = 50)
         private String degree;
 
-        public Integer getTeacherId() {
-            return teacherId;
-        }
+        @Size(max = 100)
+        private String direction; //研究方向
 
-        public void setTeacherId(Integer teacherId) {
-            this.teacherId = teacherId;
-        }
-
-        public Person getPerson() {
-            return person;
-        }
-
-        public void setPerson(Person person) {
-            this.person = person;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getDegree() {
-            return degree;
-        }
-
-        public void setDegree(String degree) {
-            this.degree = degree;
-        }
     }

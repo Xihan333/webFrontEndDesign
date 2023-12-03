@@ -24,14 +24,10 @@ public class SocialService {
             return m;
         m.put("socialId",social.getSocialId());
         m.put("day", social.getDay());
-        m.put("isIndividual",social.getIsIndividual());
-        String isIndividual = social.getIsIndividual();
-//        m.put("isIndividualName",ComDataUtil.getInstance().getIsIndividualByValue(isIndividual));
         m.put("groupName",social.getGroupName());
         m.put("theme",social.getTheme());
         m.put("digest",social.getTheme());
-        m.put("selfAssessment",social.getSelfAssessment());
-        m.put("process",social.getProcess());
+        m.put("harvest",social.getHarvest());
         m.put("auditStatus", social.getAuditStatus());
         Integer status = social.getAuditStatus();
         m.put("statusName", ComDataUtil.getInstance().getStatusByValue(status));

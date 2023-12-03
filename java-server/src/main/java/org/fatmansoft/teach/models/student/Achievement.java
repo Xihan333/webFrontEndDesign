@@ -1,13 +1,13 @@
 package org.fatmansoft.teach.models.student;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.fatmansoft.teach.models.teacher.Teacher;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(	name = "achievement",
         uniqueConstraints = {

@@ -125,12 +125,10 @@ public class SocialController {
         Integer socialId = dataRequest.getInteger("socialId");  //获取social_id值
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         String day = CommonMethod.getString(form,"day");  //Map 获取属性的值
-        String isIndividual = CommonMethod.getString(form,"isIndividual");  //Map 获取属性的值
         String groupName = CommonMethod.getString(form,"groupName");  //Map 获取属性的值
         String theme = CommonMethod.getString(form,"theme");//Map 获取属性的值
         String digest = CommonMethod.getString(form,"digest");
-        String selfAssessment = CommonMethod.getString(form,"selfAssessment");
-        String process = CommonMethod.getString(form,"process");
+        String harvest = CommonMethod.getString(form,"harvest");
         String num = CommonMethod.getString(form,"num");
         String name = CommonMethod.getString(form,"name");
         Optional<Student> s = studentRepository.findByPersonNum(num);
@@ -154,12 +152,10 @@ public class SocialController {
             a.setSocialId(socialId);
         }
         a.setDay(day);
-        a.setIsIndividual(isIndividual);
         a.setGroupName(groupName);
         a.setTheme(theme);
         a.setDigest(digest);
-        a.setSelfAssessment(selfAssessment);
-        a.setProcess(process);
+        a.setHarvest(harvest);
         a.setAuditStatus(1);
         a.setStudent(student);
         socialRepository.saveAndFlush(a);//插入新的social记录
@@ -171,12 +167,10 @@ public class SocialController {
         Integer socialId = dataRequest.getInteger("socialId");  //获取social_id值
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         String day = CommonMethod.getString(form,"day");  //Map 获取属性的值
-        String isIndividual = CommonMethod.getString(form,"isIndividual");  //Map 获取属性的值
         String groupName = CommonMethod.getString(form,"groupName");  //Map 获取属性的值
         String theme = CommonMethod.getString(form,"theme");//Map 获取属性的值
         String digest = CommonMethod.getString(form,"digest");
-        String selfAssessment = CommonMethod.getString(form,"selfAssessment");
-        String process = CommonMethod.getString(form,"process");
+        String harvest = CommonMethod.getString(form,"harvest");
         String num = CommonMethod.getString(form,"num");
         String name = CommonMethod.getString(form,"name");
         Integer userId = CommonMethod.getUserId();
@@ -202,12 +196,10 @@ public class SocialController {
             a.setSocialId(socialId);
         }
         a.setDay(day);
-        a.setIsIndividual(isIndividual);
         a.setGroupName(groupName);
         a.setTheme(theme);
         a.setDigest(digest);
-        a.setSelfAssessment(selfAssessment);
-        a.setProcess(process);
+        a.setHarvest(harvest);
         a.setStudent(s);
         a.setAuditStatus(0);
         socialRepository.saveAndFlush(a);//插入新的Social记录

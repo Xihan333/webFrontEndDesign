@@ -1,5 +1,8 @@
 package org.fatmansoft.teach.models.student;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.fatmansoft.teach.models.system.Person;
 
 import javax.persistence.*;
@@ -14,6 +17,9 @@ import javax.validation.constraints.Size;
  *
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(	name = "student",
         uniqueConstraints = {
         })
@@ -33,36 +39,5 @@ public class Student {
     @JoinColumn(name = "clazz_id")
     private Clazz clazz;
 
-    public Integer getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
-    public Clazz getClazz() {
-        return clazz;
-    }
-
-    public void setClazz(Clazz clazz) {
-        this.clazz = clazz;
-    }
 
 }

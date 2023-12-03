@@ -1,8 +1,14 @@
 package org.fatmansoft.teach.util;
 
 public class Const {
-    //邮件验证码
-    public final static String VERIFY_EMAIL_LIMIT = "verify:email:limit:";
-    public final static String VERIFY_EMAIL_DATA = "verify:email:data:";
+    /*
+   邮箱验证码过期时间
+    */
+    public static final int MAIL_VERIFICATION_CODE_EXPIRE_TIME = 5 * 60;
+
+    /*
+    随机字符集
+     */
+    public static final String CHARACTER_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 }

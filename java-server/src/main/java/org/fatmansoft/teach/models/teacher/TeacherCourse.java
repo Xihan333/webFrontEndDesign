@@ -1,18 +1,18 @@
 package org.fatmansoft.teach.models.teacher;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.fatmansoft.teach.models.student.Course;
 
 import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(	name = "teacher_course",
         uniqueConstraints = {
         })
-@Getter
-@Setter
 public class TeacherCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

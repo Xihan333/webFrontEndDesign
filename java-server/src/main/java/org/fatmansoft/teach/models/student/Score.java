@@ -1,5 +1,9 @@
 package org.fatmansoft.teach.models.student;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 /**
  * Score 成绩表实体类  保存成绩的的基本信息信息，
@@ -10,6 +14,9 @@ import javax.persistence.*;
  * Integer ranking 排名
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(	name = "score",
         uniqueConstraints = {
         })
@@ -31,44 +38,5 @@ public class Score {
     private Integer ranking;
 
 
-    public Integer getScoreId() {
-        return scoreId;
-    }
-
-    public void setScoreId(Integer scoreId) {
-        this.scoreId = scoreId;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public Integer getMark() {
-        return mark;
-    }
-
-    public void setMark(Integer mark) {
-        this.mark = mark;
-    }
-
-    public Integer getRanking() {
-        return ranking;
-    }
-
-    public void setRanking(Integer ranking) {
-        this.ranking = ranking;
-    }
 
 }

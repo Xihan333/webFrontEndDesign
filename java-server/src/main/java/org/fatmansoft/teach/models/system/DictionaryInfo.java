@@ -1,5 +1,9 @@
 package org.fatmansoft.teach.models.system;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 /**
@@ -10,6 +14,9 @@ import javax.validation.constraints.Size;
  * String label 字典名
  */
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(	name = "dictionary",
         uniqueConstraints = {
         })
@@ -25,36 +32,4 @@ public class DictionaryInfo {
 
     @Size(max = 40)
     private String label;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
 }

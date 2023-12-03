@@ -1,7 +1,6 @@
 package org.fatmansoft.teach.models.student;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.fatmansoft.teach.models.student.Grade;
 
 import javax.persistence.*;
@@ -16,12 +15,13 @@ import javax.validation.constraints.Size;
  * Integer credit 学分
  * Course preCourse 前序课程 pre_course_id 关联前序课程的主键 course_id
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(	name = "course",
         uniqueConstraints = {
         })
-@Getter
-@Setter
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
