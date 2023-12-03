@@ -231,6 +231,7 @@ public class TeacherController {
         personRepository.save(p);  // 修改保存人员信息
         s.setTitle(CommonMethod.getString(form,"title"));
         s.setDegree(CommonMethod.getString(form,"degree"));
+        s.setDirection(CommonMethod.getString(form,"direction"));
         teacherRepository.save(s);  //修改保存教师信息
         return CommonMethod.getReturnData(s.getTeacherId());  // 将teacherId返回前端
     }

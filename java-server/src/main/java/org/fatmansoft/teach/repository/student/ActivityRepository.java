@@ -14,10 +14,10 @@ public interface ActivityRepository extends JpaRepository<Activity,Integer> {
     Integer getMaxId();
 
     @Query(value= "from Activity where student.studentId= ?1")
-    List<Activity> findSportActivityByStudentId(Integer studentId);
+    List<Activity> findActivityByStudentId(Integer studentId);
 
     Optional<Activity> findByActivityId(Integer activityId);
 
-    @Query(value = "from Activity where ?1='' or day like %?1% or Title like %?1% ")
-    List<Activity> findSportActivityListByNumName(String dayTitle);
+    @Query(value = "from Activity where ?1='' or day like %?1% or title like %?1% ")
+    List<Activity> findActivityListByNumName(String dayTitle);
 }

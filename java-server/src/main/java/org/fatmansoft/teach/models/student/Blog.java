@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -24,13 +26,15 @@ public class Blog {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    private String text;
+    @Size(max = 50)
+    private String title; //题目
 
-    private String title;
+    @Size(max = 15)
+    private String tag; //标签
 
-    private Integer praise;
+    private String createTime; //创建时间（即发布时间）
 
-    private LocalDateTime createTime;
+    private String updateTime; // 设定是作者可以在任意时间修改
 
-    private LocalDateTime updateTime;// 设定是作者可以在任意时间修改
+    private String content; //文章内容
 }

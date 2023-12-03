@@ -82,6 +82,11 @@ public class AuthController {
         return authService.register(dataRequest);
     }
 
+    /**
+     *  发送邮件验证码
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/sendEmail")
     public DataResponse sendEmail(@Valid @RequestBody DataRequest dataRequest) {
         return authService.sendEmail(dataRequest);
