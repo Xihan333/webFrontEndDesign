@@ -10,6 +10,14 @@ password: 123456
 ```
 *redis使用教程：*
 1. 安装并运行redis （可以在本地直接安装，也可以使用docker运行redis）
+
+   在docker中使用redis：
+
+   ```
+   docker pull redis:latest
+   docker run -itd --name redis -p 6379:6379 redis
+   ```
+
 2. 修改密码：
 ```shell
 CONFIG SET requirepass "your_new_password"
