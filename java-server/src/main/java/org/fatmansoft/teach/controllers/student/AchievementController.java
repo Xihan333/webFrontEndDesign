@@ -69,7 +69,6 @@ public class AchievementController {
     public DataResponse getAchievementList(@Valid @RequestBody DataRequest dataRequest) {
         String numName= dataRequest.getString("numName");
         List dataList = achievementService.getAchievementMapList(numName);
-        System.out.println(dataList);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
     @PostMapping("/getStudentAchievement")
