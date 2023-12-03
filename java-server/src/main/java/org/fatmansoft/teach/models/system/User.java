@@ -17,6 +17,7 @@ import java.util.Date;
  */
 
 @Entity
+@Data
 @Table(	name = "user",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "userName"),
@@ -44,7 +45,14 @@ public class User {
     private String password;
 
     private Integer loginCount;
-    private Date lastLoginTime;
+
+    @Size(max = 20)
+    private String lastLoginTime;
+
+    @Size(max = 20)
+    private String  createTime;
+
+    private Integer creatorId;
 
     public User() {
     }
@@ -94,11 +102,11 @@ public class User {
         this.loginCount = loginCount;
     }
 
-    public Date getLastLoginTime() {
+    public String getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(Date lastLoginTime) {
+    public void setLastLoginTime(String lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 
@@ -108,5 +116,21 @@ public class User {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
     }
 }

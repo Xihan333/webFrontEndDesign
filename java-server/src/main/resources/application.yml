@@ -40,6 +40,11 @@ spring:
     username: admin
     password: admin
     virtual-host: /
+  redis:
+    database: 0
+    host: 127.0.0.1:6379
+    password: 123456
+    timeout: 5000
   servlet:
     multipart:
       max-file-size: 50MB

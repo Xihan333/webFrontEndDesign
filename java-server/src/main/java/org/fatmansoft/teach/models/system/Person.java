@@ -1,5 +1,7 @@
 package org.fatmansoft.teach.models.system;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +23,7 @@ import java.util.Date;
  * String introduce 个人简介
  */
 @Entity
+@Data
 @Table(	name = "person",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "num"),   //人员表中的编号 唯一
@@ -60,6 +63,7 @@ public class Person {
     @Size(max = 20)
     private String address;
 
+    @Size(max = 1000)
     private String introduce;
 
 
