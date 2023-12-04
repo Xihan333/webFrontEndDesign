@@ -70,13 +70,14 @@ public class ClazzService {
         Optional<Clazz> op;
         if(clazzId != null) {
             op= clazzRepository.findByClazzId(clazzId);  //查询对应数据库中主键为id的值的实体对象
+            if(op.isPresent()) {
+                a = op.get();
+            }
         }
-        if(op == null){
+        if(a == null){
             clazzId = getNewClazzId(); //获取Clazz新的主键
             a = new Clazz();
             a.setClazzId(clazzId);
-        }else{
-            a = op.get();
         }
         Optional<Grade> og = gradeRepository.findByGradeId(gradeId);
         Grade grade;
