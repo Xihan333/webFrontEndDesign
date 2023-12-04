@@ -36,40 +36,46 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/course")
 public class CourseController {
+
     @Autowired
     private CourseRepository courseRepository;
+
     @Autowired
     private CourseService courseService;
+
     @Autowired
     private ScoreRepository scoreRepository;
+
     @Autowired
     private TeacherRepository teacherRepository;
+
     @Autowired
     private TeacherService teacherService;
+
     @Autowired
     private TeacherCourseRepository teacherCourseRepository;
+
     @Autowired
     private TeacherCourseService teacherCourseService;
+
     @Autowired
     private PersonRepository personRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private StudentRepository studentRepository;
+
     @Autowired
     private GradeRepository gradeRepository;
+
     @Autowired
     private GradeService gradeService;
 
     @PostMapping("/getCourseOptionItemListByGradeId")
-    public OptionItemList getCourseOptionItemListByGradeId(@Valid @RequestBody DataRequest dataRequest) {
-        Integer gradeId=dataRequest.getInteger("gradeId");
-        List<Course> cList = courseRepository.findCourseListByGradeGradeId(gradeId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Course c : cList) {
-            itemList.add(new OptionItem(c.getCourseId(), c.getNum(), c.getNum()+"-"+c.getName()));
-        }
-        return new OptionItemList(0, itemList);
+    public DataResponse getCourseOptionItemListByGradeId(@Valid @RequestBody DataRequest dataRequest) {
+        return courseService.getCourseOptionItemListByGradeId(dataRequest);
     }
     @PostMapping("/getCourseOptionItemListByStudentId")
     public OptionItemList getCourseOptionItemListByStudentId(@Valid @RequestBody DataRequest dataRequest) {

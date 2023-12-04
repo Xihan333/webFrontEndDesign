@@ -66,7 +66,7 @@ public class BlogController {
      * @return
      */
     @PostMapping("/blogDelete")
-    public DataResponse achievementDelete(@Valid @RequestBody DataRequest dataRequest) {
+    public DataResponse blogDelete(@Valid @RequestBody DataRequest dataRequest) {
         return blogService.blogDelete(dataRequest);
     }
 

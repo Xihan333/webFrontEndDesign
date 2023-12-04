@@ -96,4 +96,26 @@ public class ClazzService {
         clazzRepository.saveAndFlush(a);//插入新的Clazz记录
         return CommonMethod.getReturnData(a.getClazzId(),"修改或新增成功");  // 将ClazzId返回前端
     }
+
+    public DataResponse clazzDelete(DataRequest dataRequest) {
+        Integer clazzId = dataRequest.getInteger("clazzId");  //获取clazz_id值
+        Clazz a = null;
+        Optional<Clazz> op;
+        if(clazzId != null) {
+            op= clazzRepository.findByClazzId(clazzId);  //查询对应数据库中主键为id的值的实体对象
+            if(op.isPresent()) {
+                a = op.get();
+            }else{
+                return CommonMethod.getReturnMessageError("班级不存在！");
+            }
+        }
+        if(a != null) {
+            List<Student> studentList = studentRepository.findStudentListByClazzClazzId(clazzId);
+            for(Student s: studentList){
+                s.setClazz(null);
+            }
+            clazzRepository.delete(a);//删除该条成就
+        }
+        return CommonMethod.getReturnMessageOK("删除成功");  //通知前端操作正常
+    }
 }

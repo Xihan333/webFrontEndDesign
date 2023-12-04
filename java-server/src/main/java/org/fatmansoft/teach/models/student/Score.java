@@ -42,5 +42,7 @@ public class Score {
 
     private Integer finalMark; //期末考试成级
 
+    private Integer isResult; //成绩是否公布  0为公布 1为不公布
+
 
 }

@@ -2,9 +2,14 @@ package org.fatmansoft.teach.service.student;
 
 import org.fatmansoft.teach.models.student.Course;
 import org.fatmansoft.teach.models.teacher.Teacher;
+import org.fatmansoft.teach.payload.request.DataRequest;
+import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.payload.response.OptionItem;
+import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.student.CourseRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherCourseRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
+import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +20,10 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
     @Autowired
     private TeacherRepository teacherRepository;
+
     @Autowired
     private TeacherCourseRepository teacherCourseRepository;
 
@@ -49,7 +56,7 @@ public class CourseService {
         m.put("day",c.getDay());
         m.put("timeOrder",c.getTimeOrder());
         m.put("place",c.getPlace());
-        List<Teacher> tList=teacherRepository.findTeacherListByCourseCourseId(c.getCourseId());
+        List<Teacher> tList = teacherRepository.findTeacherListByCourseCourseId(c.getCourseId());
         if(!tList.isEmpty()){
             ArrayList<Integer> teacherIdList=new ArrayList<>();
             ArrayList<String> teacherNameList=new ArrayList<>();
@@ -74,5 +81,16 @@ public class CourseService {
             dataList.add(getMapFromCourse(list.get(i)));
         }
         return dataList;
+    }
+
+    public DataResponse getCourseOptionItemListByGradeId(DataRequest dataRequest) {
+        Integer gradeId=dataRequest.getInteger("gradeId");
+        List<Course> cList = courseRepository.findCourseListByGradeGradeId(gradeId);  //数据库查询操作
+        List<OptionItem> itemList = new ArrayList();
+        for (Course c : cList) {
+            itemList.add(new OptionItem(c.getCourseId(), c.getNum(), c.getNum()+"-"+c.getName()));
+        }
+        return CommonMethod.getReturnData(itemList);
+
     }
 }

@@ -49,4 +49,9 @@ public class ClazzController {
     public DataResponse clazzEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return clazzService.clazzEditSave(dataRequest);
     }
+
+    @PostMapping("/clazzDelete")
+    public DataResponse clazzDelete(@Valid @RequestBody DataRequest dataRequest) {
+        return clazzService.clazzDelete(dataRequest);
+    }
 }

@@ -106,7 +106,6 @@ public class StudentService {
         Person p;
         if(s == null)
             return m;
-        m.put("major",s.getMajor());
         if(s.getClazz()!=null) {
             if(s.getClazz().getGrade()!=null){
                 m.put("gradeName",s.getClazz().getGrade().getGradeName());
@@ -116,6 +115,7 @@ public class StudentService {
         p = s.getPerson();
         if(p == null)
             return m;
+        m.put("gpa", s.getGpa());
         m.put("studentId", s.getStudentId());
         m.put("personId", p.getPersonId());
         m.put("num",p.getNum());
@@ -396,7 +396,6 @@ public class StudentService {
             clazzRepository.saveAndFlush(c);
         }
         s.setClazz(c);
-        s.setMajor(CommonMethod.getString(form,"major"));
         studentRepository.save(s);  //修改保存学生信息
         return CommonMethod.getReturnData(s.getStudentId());  // 将studentId返回前端
     }
