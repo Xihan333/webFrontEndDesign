@@ -86,10 +86,11 @@ public class ScoreController {
     public DataResponse scoreSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer scoreId = dataRequest.getInteger("scoreId");
         Map form = dataRequest.getMap("form");
-        Integer mark = CommonMethod.getInteger(form, "mark");
-
+        Integer commonMark = CommonMethod.getInteger(form, "commonMark");
+        Integer finalMark = CommonMethod.getInteger(form,"finalMark");
         Score score = scoreRepository.findById(scoreId).get();
-        score.setMark(mark);
+        score.setCommonMark(commonMark);
+        score.setFinalMark(finalMark);
         scoreRepository.save(score);
         return CommonMethod.getReturnMessageOK();
     }

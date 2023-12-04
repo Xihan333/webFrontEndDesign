@@ -34,10 +34,13 @@ public class Score {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    private Integer mark;
-
     private Integer ranking;
 
-    //TODO：平时分+期末考试分 = 总成绩
+    //平时分+期末考试分 = 总成绩（前端计算求和）
+
+    private Integer commonMark; //平时成绩
+
+    private Integer finalMark; //期末考试成级
+
 
 }

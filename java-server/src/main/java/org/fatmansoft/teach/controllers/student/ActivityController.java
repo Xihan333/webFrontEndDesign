@@ -41,12 +41,12 @@ public class ActivityController {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private ActivityRepository ActivityRepository;
+    private ActivityRepository activityRepository;
     @Autowired
-    private ActivityService ActivityService;
+    private ActivityService activityService;
 
     public synchronized  Integer getNewActivityId(){
-        Integer id = ActivityRepository.getMaxId();
+        Integer id = activityRepository.getMaxId();
         if(id == null){
             id = 1;
         }else{
@@ -58,7 +58,7 @@ public class ActivityController {
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getActivityList(@Valid @RequestBody DataRequest dataRequest) {
         String dayTitle= dataRequest.getString("dayTitle");
-        List dataList = ActivityService.getActivityMapList(dayTitle);
+        List dataList = activityService.getActivityMapList(dayTitle);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
@@ -66,7 +66,7 @@ public class ActivityController {
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getByStudentId(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId = dataRequest.getInteger("studentId");
-        List<Activity> dataList = ActivityRepository.findActivityByStudentId(studentId);
+        List<Activity> dataList = activityRepository.findActivityByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
 
@@ -78,18 +78,7 @@ public class ActivityController {
     @PostMapping("/getStudentActivity")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentActivity(@Valid @RequestBody DataRequest dataRequest){
-        Integer userId = CommonMethod.getUserId();
-        Optional<User> uOp = userRepository.findByUserId(userId);
-        if(!uOp.isPresent())
-            return CommonMethod.getReturnMessageError("该用户不存在！");
-        User u = uOp.get();
-        Optional<Student> sOp = studentRepository.findByPersonPersonId(u.getUserId());
-        if(!sOp.isPresent())
-            return CommonMethod.getReturnMessageError("学生不存在！");
-        Student s = sOp.get();
-        Integer studentId = s.getStudentId();
-        List dataList = ActivityService.getActivityMapListByStudentId(studentId);
-        return CommonMethod.getReturnData(dataList);
+        return activityService.getStudentActivity(dataRequest);
     }
 
     @PostMapping("/ActivityDelete")
@@ -98,13 +87,13 @@ public class ActivityController {
         Activity a= null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= ActivityRepository.findById(activityId);   //查询获得实体对象
+            op= activityRepository.findById(activityId);   //查询获得实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
         }
         if(a != null) {
-            ActivityRepository.delete(a);//删除该条体育活动
+            activityRepository.delete(a);//删除该条体育活动
         }
         return CommonMethod.getReturnMessageOK();  //通知前端操作正常
     }
@@ -121,12 +110,12 @@ public class ActivityController {
         Activity a= null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= ActivityRepository.findById(activityId);   //查询获得实体对象
+            op= activityRepository.findById(activityId);   //查询获得实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
         }
-        return CommonMethod.getReturnData(ActivityService.getMapFromActivity(a)); //这里回传包含体育活动信息的Map对象
+        return CommonMethod.getReturnData(activityService.getMapFromActivity(a)); //这里回传包含体育活动信息的Map对象
     }
 
     /**
@@ -160,7 +149,7 @@ public class ActivityController {
         Activity a = null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= ActivityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
+            op= activityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
@@ -175,7 +164,7 @@ public class ActivityController {
         a.setLocation(location);
         a.setIntroduction(introduction);
         a.setStudent(student);
-        ActivityRepository.saveAndFlush(a);//插入新的activity记录
+        activityRepository.saveAndFlush(a);//插入新的activity记录
         return CommonMethod.getReturnData(a.getActivityId());  // 将activityId返回前端
     }
 
@@ -202,7 +191,7 @@ public class ActivityController {
         Activity a = null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= ActivityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
+            op= activityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
@@ -217,7 +206,7 @@ public class ActivityController {
         a.setLocation(location);
         a.setIntroduction(introduction);
         a.setStudent(s);
-        ActivityRepository.saveAndFlush(a);//插入新的activity记录
+        activityRepository.saveAndFlush(a);//插入新的activity记录
         return CommonMethod.getReturnData(a.getActivityId());
     }
 }

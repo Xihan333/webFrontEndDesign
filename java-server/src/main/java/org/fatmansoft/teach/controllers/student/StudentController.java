@@ -41,44 +41,57 @@ import java.util.*;
 @RequestMapping("/api/student")
 
 public class StudentController {
+
     //Java 对象的注入 我们定义的这下Java的操作对象都不能自己管理是由有Spring框架来管理的， StudentController 中要使用StudentRepository接口的实现类对象，
     // 需要下列方式注入，否则无法使用， studentRepository 相当于StudentRepository接口实现对象的一个引用，由框架完成对这个引用的赋值，
     // StudentController中的方法可以直接使用
+
     @Autowired
     private PersonRepository personRepository;  //人员数据操作自动注入
+
     @Autowired
     private StudentRepository studentRepository;  //学生数据操作自动注入
+
     @Autowired
     private UserRepository userRepository;  //学生数据操作自动注入
+
     @Autowired
     private UserTypeRepository userTypeRepository; //用户类型数据操作自动注入
+
     @Autowired
     private PasswordEncoder encoder;  //密码服务自动注入
+
     @Autowired
     private AchievementService achievementService;
+
     @Autowired
     private StudentIntroduceService studentIntroduceService;
+
     @Autowired
     private AchievementRepository achievementRepository;
+
     @Autowired
     private ScoreRepository scoreRepository;  //成绩数据操作自动注入
+
     @Autowired
     private BaseService baseService;   //基本数据处理数据操作自动注入
+
     @Autowired
     private StudentService studentService;
+
     @Autowired
     private GradeRepository gradeRepository;
+
     @Autowired
     private GradeService gradeService;
+
     @Autowired
     private ClazzRepository clazzRepository;
+
     @Autowired
     private ClazzService clazzService;
 
-    /**
-     *  获取 person 表的新的Id StringBoot 对SqLite 主键自增支持不好  插入记录是需要设置主键ID，编写方法获取新的 person_id
-     * @return
-     */
+
     public synchronized Integer getNewPersonId(){  //synchronized 同步方法
         Integer  id = personRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -88,10 +101,6 @@ public class StudentController {
         return id;
     };
 
-    /**
-     *  获取 user 表的新的Id StringBoot 对SqLite 主键自增支持不好  插入记录是需要设置主键ID，编写方法获取新的 user_id
-     * @return
-     */
     public synchronized Integer getNewUserId(){
         Integer  id = userRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -100,6 +109,7 @@ public class StudentController {
             id = id+1;
         return id;
     };
+
     /**
      *  获取 student 表的新的Id StringBoot 对SqLite 主键自增支持不好  插入记录是需要设置主键ID，编写方法获取新的 student_id
      * @return
@@ -113,36 +123,23 @@ public class StudentController {
         return id;
     };
 
+    //根据学号及姓名查询学生 numName
     @PostMapping("/getStudentOptionItemList")
-    public OptionItemList getStudentOptionItemList(@Valid @RequestBody DataRequest dataRequest) {
-        List<Student> sList = studentRepository.findStudentListByNumName("");  //数据库查询操作
-        OptionItem item;
-        List<OptionItem> itemList = new ArrayList();
-        for (Student s : sList) {
-            itemList.add(new OptionItem(s.getStudentId(), s.getPerson().getNum(), s.getPerson().getNum()+"-"+s.getPerson().getName()));
-        }
-        return new OptionItemList(0, itemList);
+    public DataResponse getStudentOptionItemList(@Valid @RequestBody DataRequest dataRequest) {
+        return studentService.getStudentOptionItemList(dataRequest);
     }
 
+
+    //根据clazzId获取班级学生 （可在互评中使用）
     @PostMapping("/getStudentOptionItemListByClazzId")
-    public OptionItemList getCourseOptionItemListByClazzId(@Valid @RequestBody DataRequest dataRequest) {
-        Integer clazzId=dataRequest.getInteger("clazzId");
-        List<Student> sList = studentRepository.findStudentListByClazzClazzId(clazzId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Student s : sList) {
-            itemList.add(new OptionItem(s.getStudentId(), s.getPerson().getNum(), s.getPerson().getNum()+"-"+s.getPerson().getName()));
-        }
-        return new OptionItemList(0, itemList);
+    public DataResponse getCourseOptionItemListByClazzId(@Valid @RequestBody DataRequest dataRequest) {
+        return studentService.getCourseOptionItemListByClazzId(dataRequest);
     }
+
+    //根据courseId获取选课学生
     @PostMapping("/getStudentOptionItemListByCourseId")
-    public OptionItemList getCourseOptionItemListByCourseId(@Valid @RequestBody DataRequest dataRequest) {
-        Integer courseId=dataRequest.getInteger("courseId");
-        List<Student> sList = studentRepository.findStudentListByCourseId(courseId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Student s : sList) {
-            itemList.add(new OptionItem(s.getStudentId(), s.getPerson().getNum(), s.getPerson().getNum()+"-"+s.getPerson().getName()));
-        }
-        return new OptionItemList(0, itemList);
+    public DataResponse getCourseOptionItemListByCourseId(@Valid @RequestBody DataRequest dataRequest) {
+        return studentService.getStudentOptionItemListByCourseId(dataRequest);
     }
 
 
@@ -222,109 +219,15 @@ public class StudentController {
     @PostMapping("/studentEditSave")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse studentEditSave(@Valid @RequestBody DataRequest dataRequest) {
-        Integer studentId = dataRequest.getInteger("studentId");
-        Map form = dataRequest.getMap("form"); //参数获取Map对象
-        String num = CommonMethod.getString(form,"num");  //Map 获取属性的值
-        String card = CommonMethod.getString(form,"card");
-        if(!(card.equals("")||FormatJudge.IdCard(card))){
-            return CommonMethod.getReturnMessageError("身份证号不合法，请重新输入！");
-        }
-        String birthday = CommonMethod.getString(form,"birthday");
-        if((!birthday.equals(""))&&(!card.equals(""))&&(!FormatJudge.birthday(birthday,card))){
-            return CommonMethod.getReturnMessageError("您选择的生日与身份证号不符，请重新选择！");
-        }
-        Student s= null;
-        Person p;
-        User u;
-        Optional<Student> op;
-        Integer personId;
-        if(studentId != null) {
-            op= studentRepository.findById(studentId);  //查询对应数据库中主键为id的值的实体对象
-            if(op.isPresent()) {
-                s = op.get();
-            }
-        }
-        Optional<Person> nOp = personRepository.findByNum(num); //查询是否存在num的人员
-        if(nOp.isPresent()) {
-            if(s == null || !s.getPerson().getNum().equals(num)) {
-                return CommonMethod.getReturnMessageError("新学号已经存在，不能添加或修改！");
-            }
-        }
-        if(s == null) {
-            personId = getNewPersonId(); //获取Person新的主键，这个是线程同步问题;
-            p = new Person();
-            p.setPersonId(personId);
-            p.setNum(num);
-            p.setType("1");
-            personRepository.saveAndFlush(p);  //插入新的Person记录
-            String password = encoder.encode("123456");
-            u= new User();
-            u.setUserId(getNewUserId());
-            u.setPerson(p);
-            u.setUserName(num);
-            u.setPassword(password);
-            u.setUserType(userTypeRepository.findByName(EUserType.ROLE_STUDENT));
-            userRepository.saveAndFlush(u); //插入新的User记录
-            s = new Student();   // 创建实体对象
-            s.setStudentId(getNewStudentId());
-            s.setPerson(p);
-            studentRepository.saveAndFlush(s);  //插入新的Student记录
-        }else {
-            p = s.getPerson();
-            personId = p.getPersonId();
-        }
-        if(!num.equals(p.getNum())) {   //如果人员编号变化，修改人员编号和登录账号
-            Optional<User>uOp = userRepository.findByPersonPersonId(personId);
-            if(uOp.isPresent()) {
-                u = uOp.get();
-                u.setUserName(num);
-                userRepository.saveAndFlush(u);
-            }
-            p.setNum(num);  //设置属性
-        }
-        p.setName(CommonMethod.getString(form,"name"));
-        p.setDept(CommonMethod.getString(form,"dept"));
-        p.setCard(card);
-        p.setGender(CommonMethod.getString(form,"gender"));
-        p.setBirthday(birthday);
-        p.setEmail(CommonMethod.getString(form,"email"));
-        p.setPhone(CommonMethod.getString(form,"phone"));
-        p.setAddress(CommonMethod.getString(form,"address"));
-        personRepository.save(p);  // 修改保存人员信息
-
-        String gradeName=CommonMethod.getString(form,"gradeName");
-        String className=CommonMethod.getString(form,"className");
-        Optional<Clazz> opC=clazzRepository.findByGradeNameAndClassName(gradeName,className);
-        Clazz c;
-        if(opC.isPresent()){
-            c=opC.get();
-        }
-        else {
-            Optional<Grade> opG=gradeRepository.findByGradeName(gradeName);
-            Grade g;
-            if(opG.isPresent()){
-                g=opG.get();
-            }
-            else {
-                Integer gradeId=gradeService.getNewGradeId();
-                g=new Grade();
-                g.setGradeId(gradeId);
-                g.setGradeName(gradeName);
-                gradeRepository.saveAndFlush(g);
-            }
-            Integer classId=clazzService.getNewClazzId();
-            c=new Clazz();
-            c.setClazzId(classId);
-            c.setGrade(g);
-            c.setClazzName(className);
-            clazzRepository.saveAndFlush(c);
-        }
-        s.setClazz(c);
-        s.setMajor(CommonMethod.getString(form,"major"));
-        studentRepository.save(s);  //修改保存学生信息
-        return CommonMethod.getReturnData(s.getStudentId());  // 将studentId返回前端
+        return studentService.studentEditSave(dataRequest);
     }
 
+
+    @PostMapping("/studentEdit")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    public DataResponse studentEdit(@Valid @RequestBody DataRequest dataRequest) {
+        return studentService.studentEdit(dataRequest);
+    }
 
 
     /**
@@ -336,24 +239,7 @@ public class StudentController {
     @PostMapping("/getStudentIntroduceData")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentIntroduceData(@Valid @RequestBody DataRequest dataRequest) {
-        Integer userId = CommonMethod.getUserId();
-        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
-        if(!uOp.isPresent())
-            return CommonMethod.getReturnMessageError("用户不存在！");
-        User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
-        if(!sOp.isPresent())
-            return CommonMethod.getReturnMessageError("学生不存在！");
-        Student s= sOp.get();
-        Map info = studentService.getMapFromStudent(s);  // 查询学生信息Map对象
-        info.put("introduce", studentIntroduceService.getIntroduceDataMap(u.getUserId()));
-        List<Score> sList = scoreRepository.findByStudentStudentId(s.getStudentId()); //获得学生成绩对象集合
-        Map data = new HashMap();
-        data.put("info",info);
-        data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
-        data.put("scoreList",studentService.getStudentScoreList(sList));
-        data.put("markList",studentService.getStudentMarkList(sList));
-        return CommonMethod.getReturnData(data);//将前端所需数据保留Map对象里，返还前端
+        return studentService.getStudentIntroduceData(dataRequest);
     }
 
     /**

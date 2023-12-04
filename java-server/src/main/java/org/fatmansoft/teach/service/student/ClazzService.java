@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.service.student;
 
 import org.fatmansoft.teach.models.student.Clazz;
+import org.fatmansoft.teach.models.student.Student;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
@@ -15,8 +16,10 @@ import java.util.List;
 
 @Service
 public class ClazzService {
+
     @Autowired
     private ClazzRepository clazzRepository;
+
     public synchronized Integer getNewClazzId(){  //synchronized 同步方法
         Integer  id = clazzRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -35,6 +38,5 @@ public class ClazzService {
         }
         return CommonMethod.getReturnData(itemList);
     }
-
 
 }

@@ -32,7 +32,8 @@ public class ScoreService {
         m.put("courseNum",s.getCourse().getNum());
         m.put("courseName",s.getCourse().getName());
         m.put("credit",s.getCourse().getCredit());
-        m.put("mark",s.getMark());
+        m.put("commonMark",s.getCommonMark());
+        m.put("finalMark",s.getFinalMark());
         return m;
     }
 

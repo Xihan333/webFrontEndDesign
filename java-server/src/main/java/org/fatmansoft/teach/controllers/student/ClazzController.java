@@ -6,6 +6,7 @@ import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
 import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.student.ClazzRepository;
+import org.fatmansoft.teach.repository.student.StudentRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
 import org.fatmansoft.teach.service.student.ClazzService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class ClazzController {
 
     @Autowired
     private ClazzService clazzService;
+    @Autowired
+    private StudentRepository studentRepository;
 
     /**
      * 根据gradeId查找该年级所有班级
