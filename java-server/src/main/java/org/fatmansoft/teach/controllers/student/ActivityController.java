@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/sportActivity")
+@RequestMapping("/api/activity")
 public class ActivityController {
 
     @Autowired
@@ -41,12 +41,12 @@ public class ActivityController {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private ActivityRepository sportActivityRepository;
+    private ActivityRepository ActivityRepository;
     @Autowired
-    private ActivityService sportActivityService;
+    private ActivityService ActivityService;
 
     public synchronized  Integer getNewActivityId(){
-        Integer id = sportActivityRepository.getMaxId();
+        Integer id = ActivityRepository.getMaxId();
         if(id == null){
             id = 1;
         }else{
@@ -54,24 +54,24 @@ public class ActivityController {
         }
         return id;
     }
-    @PostMapping("/getSportActivityList")
+    @PostMapping("/getActivityList")
     @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse getSportActivityList(@Valid @RequestBody DataRequest dataRequest) {
+    public DataResponse getActivityList(@Valid @RequestBody DataRequest dataRequest) {
         String dayTitle= dataRequest.getString("dayTitle");
-        List dataList = sportActivityService.getSportActivityMapList(dayTitle);
+        List dataList = ActivityService.getActivityMapList(dayTitle);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
     @PostMapping("/getByStudentId")
     public DataResponse getByStudentId(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId = dataRequest.getInteger("studentId");
-        List<Activity> dataList = sportActivityRepository.findSportActivityByStudentId(studentId);
+        List<Activity> dataList = ActivityRepository.findActivityByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
 
-    @PostMapping("/getStudentSportActivity")
+    @PostMapping("/getStudentActivity")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public DataResponse getStudentSportActivity(@Valid @RequestBody DataRequest dataRequest){
+    public DataResponse getStudentActivity(@Valid @RequestBody DataRequest dataRequest){
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);
         if(!uOp.isPresent())
@@ -82,57 +82,57 @@ public class ActivityController {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s = sOp.get();
         Integer studentId = s.getStudentId();
-        List dataList = sportActivityService.getSportActivityMapListByStudentId(studentId);
+        List dataList = ActivityService.getActivityMapListByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
 
-    @PostMapping("/sportActivityDelete")
-    public DataResponse sportActivityDelete(@Valid @RequestBody DataRequest dataRequest) {
+    @PostMapping("/ActivityDelete")
+    public DataResponse ActivityDelete(@Valid @RequestBody DataRequest dataRequest) {
         Integer activityId = dataRequest.getInteger("activityId");  //获取activity_id值
         Activity a= null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= sportActivityRepository.findById(activityId);   //查询获得实体对象
+            op= ActivityRepository.findById(activityId);   //查询获得实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
         }
         if(a != null) {
-            sportActivityRepository.delete(a);//删除该条体育活动
+            ActivityRepository.delete(a);//删除该条体育活动
         }
         return CommonMethod.getReturnMessageOK();  //通知前端操作正常
     }
 
     /**
-     * getSportActivityInfo 前端点击体育活动列表时前端获取旅程详细信息请求服务
+     * getActivityInfo 前端点击体育活动列表时前端获取旅程详细信息请求服务
      * @param dataRequest 从前端获取 activityId 查询体育活动信息的主键 activity_id
      * @return  根据activityId从数据库中查出数据，存在Map对象里，并返回前端
      */
-    @PostMapping("/getSportActivityInfo")
+    @PostMapping("/getActivityInfo")
     @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse getSportActivityInfo(@Valid @RequestBody DataRequest dataRequest) {
+    public DataResponse getActivityInfo(@Valid @RequestBody DataRequest dataRequest) {
         Integer activityId = dataRequest.getInteger("activityId");  //获取activity_id值
         Activity a= null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= sportActivityRepository.findById(activityId);   //查询获得实体对象
+            op= ActivityRepository.findById(activityId);   //查询获得实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
         }
-        return CommonMethod.getReturnData(sportActivityService.getMapFromSportActivity(a)); //这里回传包含体育活动信息的Map对象
+        return CommonMethod.getReturnData(ActivityService.getMapFromActivity(a)); //这里回传包含体育活动信息的Map对象
     }
 
     /**
-     * SportActivityEditSave 前端旅程信息提交服务
+     * ActivityEditSave 前端旅程信息提交服务
      * 前端把所有数据打包成一个Json对象作为参数传回后端，后端直接可以获得对应的Map对象form, 再从form里取出所有属性，复制到
      * 实体对象里，保存到数据库里即可，如果是添加一条记录， id 为空 计算新的id， 复制相关属性，保存，如果是编辑原来的信息，
      * activityId不为空。则查询出实体对象，复制相关属性，保存后修改数据库信息，永久修改
      * @return  新建修改旅程的主键 activity_id 返回前端
      */
-    @PostMapping("/sportActivityEditSave")
+    @PostMapping("/ActivityEditSave")
     @PreAuthorize(" hasRole('ADMIN')")
-    public DataResponse sportActivityEditSave(@Valid @RequestBody DataRequest dataRequest) {
+    public DataResponse ActivityEditSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer activityId = dataRequest.getInteger("activityId");  //获取activity_id值
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         String day = CommonMethod.getString(form,"day");  //Map 获取属性的值
@@ -154,7 +154,7 @@ public class ActivityController {
         Activity a = null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= sportActivityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
+            op= ActivityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
@@ -169,13 +169,13 @@ public class ActivityController {
         a.setLocation(location);
         a.setIntroduction(introduction);
         a.setStudent(student);
-        sportActivityRepository.saveAndFlush(a);//插入新的activity记录
+        ActivityRepository.saveAndFlush(a);//插入新的activity记录
         return CommonMethod.getReturnData(a.getActivityId());  // 将activityId返回前端
     }
 
-    @PostMapping("/sportActivityStudentEditSave")
+    @PostMapping("/ActivityStudentEditSave")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public DataResponse sportActivityStudentEditSave(@Valid @RequestBody DataRequest dataRequest){
+    public DataResponse ActivityStudentEditSave(@Valid @RequestBody DataRequest dataRequest){
         Integer activityId = dataRequest.getInteger("activityId");  //获取activity_id值
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         String day = CommonMethod.getString(form,"day");  //Map 获取属性的值
@@ -196,7 +196,7 @@ public class ActivityController {
         Activity a = null;
         Optional<Activity> op;
         if(activityId != null) {
-            op= sportActivityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
+            op= ActivityRepository.findById(activityId);  //查询对应数据库中主键为id的值的实体对象
             if(op.isPresent()) {
                 a = op.get();
             }
@@ -211,7 +211,7 @@ public class ActivityController {
         a.setLocation(location);
         a.setIntroduction(introduction);
         a.setStudent(s);
-        sportActivityRepository.saveAndFlush(a);//插入新的activity记录
+        ActivityRepository.saveAndFlush(a);//插入新的activity记录
         return CommonMethod.getReturnData(a.getActivityId());
     }
 }

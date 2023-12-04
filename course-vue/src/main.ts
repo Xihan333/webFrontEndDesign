@@ -16,6 +16,8 @@ import "uno.css";
 // If you want to use ElMessage, import it.
 import "element-plus/theme-chalk/src/message.scss";
 import router from "./router";
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 
 
 
@@ -25,3 +27,6 @@ app.use(pinia);
 app.use(ElementPlus);
 app.use(router);
 app.mount("#app");
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}

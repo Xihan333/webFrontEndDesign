@@ -1,5 +1,5 @@
-<template>
-  <Navi />
+<template>  
+  <router-view/>
 </template>
 
 <style>
@@ -11,5 +11,4 @@ body,
 </style>
 
 <script lang="ts" setup>
-import Navi from "./components/Navi.vue";
 </script>

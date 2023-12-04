@@ -15,13 +15,13 @@ import java.util.Map;
 @Service
 public class ActivityService {
     @Autowired
-    private ActivityRepository sportActivityRepository;
+    private ActivityRepository ActivityRepository;
 
     /**
-     * getMapFromSportActivity 将体育活动属性数据转换复制MAp集合里
+     * getMapFromActivity 将体育活动属性数据转换复制MAp集合里
      */
 
-    public Map getMapFromSportActivity(Activity activity) {
+    public Map getMapFromActivity(Activity activity) {
         Map m = new HashMap();
         Student s;
         if (activity == null)
@@ -54,27 +54,27 @@ public class ActivityService {
     }
 
     /**
-     * getSportActivityMapList 根据输入参数查询得体育活动数据的 Map List集合 参数为空 查出说有学生， 参数不为空，查出人员编号或人员名称 包含输入字符串的学生
+     * getActivityMapList 根据输入参数查询得体育活动数据的 Map List集合 参数为空 查出说有学生， 参数不为空，查出人员编号或人员名称 包含输入字符串的学生
      */
 
-    public List getSportActivityMapList(String dayTitle) {
+    public List getActivityMapList(String dayTitle) {
         List dataList = new ArrayList();
-        List<Activity> sList = sportActivityRepository.findSportActivityListByNumName(dayTitle);  //数据库查询操作
+        List<Activity> sList = ActivityRepository.findActivityListByNumName(dayTitle);  //数据库查询操作
         if (sList == null || sList.size() == 0)
             return dataList;
         for (int i = 0; i < sList.size(); i++) {
-            dataList.add(getMapFromSportActivity(sList.get(i)));
+            dataList.add(getMapFromActivity(sList.get(i)));
         }
         return dataList;
     }
 
-    public List getSportActivityMapListByStudentId(Integer studentId){
+    public List getActivityMapListByStudentId(Integer studentId){
         List dataList = new ArrayList();
-        List<Activity> sList = sportActivityRepository.findSportActivityByStudentId(studentId);
+        List<Activity> sList = ActivityRepository.findActivityByStudentId(studentId);
         if(sList == null || sList.size() == 0)
             return dataList;
         for (int i = 0; i < sList.size(); i++){
-            dataList.add(getMapFromSportActivity(sList.get(i)));
+            dataList.add(getMapFromActivity(sList.get(i)));
         }
         return dataList;
     }

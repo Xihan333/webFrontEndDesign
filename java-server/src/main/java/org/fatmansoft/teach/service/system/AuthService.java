@@ -130,7 +130,9 @@ public class AuthService {
                     + "    <div class='container'>"
                     + "        <h1>欢迎来到学生管理系统</h1>"
                     + "        <p class='code'>验证码<b>" + mailVerificationCode + "</b> </p>"
-                    + "        <p>祝您使用愉快！</p>"
+                    + "        <p>您的操作需要您提供接收到的验证码，验证码在5分钟内有效。</p>"
+                    + "        <p>如果您没有进行过获取验证码的操作，请忽略这封邮件。</p>"
+                    + "        <p>祝您生活愉快！</p>"
                     + "    </div>"
                     + "</body>"
                     + "</html>";
@@ -233,7 +235,7 @@ public class AuthService {
             t.setPerson(p);
             teacherRepository.saveAndFlush(t);  //插入新的Teacher记录
         }
-        return CommonMethod.getReturnData(LoginControlUtil.getInstance().getValidateCodeDataMap());
+        return CommonMethod.getReturnMessageOK();
     }
 
     public DataResponse resetPassword(DataRequest dataRequest){

@@ -53,7 +53,7 @@ public class User {
     private String lastLoginTime;
 
     @Size(max = 20)
-    private String  createTime;
+    private String createTime;
 
     private Integer creatorId;
 

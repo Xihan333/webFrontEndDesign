@@ -11,11 +11,11 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("~/Login.vue"),
+    component: () => import("~/views/Login.vue"),
   },
   {
     path: ('/student'),
-    component: () => import('@/views/Layout.vue'),
+    component: () => import('../views/Layout.vue'),
     redirect: ('/student/homepage'),
     // 设置路由守卫进行登录判断及拦截
     beforeEnter: () => {
@@ -73,6 +73,7 @@ const routes = [
   },
   {
     path: ('/teacher'),
+    component: () => import('../views/Layout.vue'),
     redirect: ('/teacher/homepage'),
     // 设置路由守卫进行登录判断及拦截
     beforeEnter: () => {
@@ -112,6 +113,7 @@ const routes = [
   },
   {
     path: ('/admin'),
+    component: () => import('../views/Layout.vue'),
     redirect: ('/admin/course-manage'),
     // 设置路由守卫进行登录判断及拦截
     beforeEnter: () => {
