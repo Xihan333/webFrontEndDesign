@@ -10,6 +10,7 @@ import org.fatmansoft.teach.repository.student.StudentRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
 import org.fatmansoft.teach.service.student.ClazzService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ public class ClazzController {
 
     @Autowired
     private ClazzService clazzService;
+
     @Autowired
     private StudentRepository studentRepository;
 
@@ -40,5 +42,11 @@ public class ClazzController {
     @PostMapping("/getClazzOptionItemListByGradeId")
     public DataResponse getClazzOptionItemListByGradeId(@Valid @RequestBody DataRequest dataRequest) {
         return clazzService.getClazzOptionItemListByGradeId(dataRequest);
+    }
+
+    @PostMapping("/clazzEditSave")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DataResponse clazzEditSave(@Valid @RequestBody DataRequest dataRequest) {
+        return clazzService.clazzEditSave(dataRequest);
     }
 }

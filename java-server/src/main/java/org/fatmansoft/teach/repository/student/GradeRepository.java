@@ -12,4 +12,7 @@ public interface GradeRepository extends JpaRepository<Grade,Integer> {
         @Query(value = "select max(gradeId) from Grade")
         Integer getMaxId();
         Optional<Grade> findByGradeName(String gradeName);
+
+        @Query(value = "from Grade where gradeId=?1")
+        Optional<Grade> findByGradeId(Integer gradeId);
 }

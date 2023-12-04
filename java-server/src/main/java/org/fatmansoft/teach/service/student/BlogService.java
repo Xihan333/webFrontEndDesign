@@ -35,9 +35,6 @@ public class BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
-    @Autowired
-    private BlogService blogService;
-
     public synchronized Integer getNewBlogId(){
         Integer id = blogRepository.getMaxId();
         if(id == null){
@@ -49,7 +46,7 @@ public class BlogService {
     }
 
     public DataResponse getBlogList(DataRequest dataRequest) {
-        List dataList = blogService.getBlogMapList();
+        List dataList = getBlogMapList();
         return CommonMethod.getReturnData(dataList);
     }
 
@@ -141,7 +138,7 @@ public class BlogService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
         Integer studentId = s.getStudentId();
-        List dataList = blogService.getBlogMapListByStudentId(studentId);
+        List dataList = getBlogMapListByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
 
@@ -187,7 +184,7 @@ public class BlogService {
 
     public DataResponse getOneBlogList(DataRequest dataRequest) {
         Integer studentId = dataRequest.getInteger("studentId");
-        List dataList = blogService.getBlogMapListByStudentId(studentId);
+        List dataList = getBlogMapListByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
 }

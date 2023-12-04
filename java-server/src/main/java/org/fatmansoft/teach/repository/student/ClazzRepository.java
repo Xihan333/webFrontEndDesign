@@ -21,4 +21,7 @@ public interface ClazzRepository extends JpaRepository<Clazz,Integer> {
 
     @Query(value = "from Clazz where grade.gradeName=?1 and clazzName=?2 and campus.name=?3")
     Optional<Clazz> findByGradeNameAndClassNameAndCampusName(String gradeName, String className, String campusName);
+
+    @Query(value = "from Clazz where clazzId=?1")
+    Optional<Clazz> findByClazzId(Integer clazzId);
 }
