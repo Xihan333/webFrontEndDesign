@@ -15,7 +15,6 @@ import java.util.Map;
 public class ComDataUtil {
     private Map<String, List<OptionItem>> dictListMap = new HashMap<String, List<OptionItem>>();
     private Map<String, Map<String, String>> dictMapMap = new HashMap<String, Map<String, String>>();
-    private Map<String,String> systemMap = new HashMap();
     private Map<Integer, String> htmlMap = new HashMap();
     private int htmlCount= 0;
 
@@ -40,10 +39,6 @@ public class ComDataUtil {
     public void setDictMapMap(Map<String, Map<String, String>> dictMapMap) {
         this.dictMapMap = dictMapMap;
     }
-    public void setSystemMap(Map<String, String> systemMap) {
-        this.systemMap = systemMap;
-    }
-
     public List<OptionItem> getDictionaryOptionItemList(String code) {
         return dictListMap.get(code);
     }
@@ -60,6 +55,18 @@ public class ComDataUtil {
             return label;
     }
 
+    // 2为未通过 1为已通过审核 0为待审核
+    public String getStatusByValue(Integer status){
+        if(status==0){
+            return "待审核";
+        }else if(status==1){
+            return "已通过";
+        }else{
+            return "未通过";
+        }
+    }
+
+
     public synchronized int  addHtmlString(String html) {
         htmlCount++;
         htmlMap.put(htmlCount,html);
@@ -69,42 +76,4 @@ public class ComDataUtil {
         return htmlMap.get(htmlCount);
     }
 
-    public boolean teamCanApply(){
-        String str = systemMap.get("teamCanApply");
-        if(str !=null && str.equals("true")) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-    public String getTeamNumPrefix(){
-        return systemMap.get("teamNumPrefix");
-    }
-    public boolean teamLock(){
-        String str = systemMap.get("teamLock");
-        if(str !=null && str.equals("true")) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-    public boolean teamView(){
-        String str = systemMap.get("teamView");
-        if(str !=null && str.equals("true")) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-    public Integer currentTaskId(){
-        String str = systemMap.get("currentTaskId");
-        if(str !=null && str.length() > 0) {
-            return Integer.parseInt(str);
-        }else {
-            return null;
-        }
-    }
-    public String currentPath(){
-        return systemMap.get("currentPath");
-    }
 }

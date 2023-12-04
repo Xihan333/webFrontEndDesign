@@ -9,14 +9,11 @@ package org.fatmansoft.teach.payload.response;
 public class OptionItem {
     private Integer id;
     private String value;
-    private String title;
-    public OptionItem(){
-
-    }
-    public OptionItem(Integer id, String value, String title){
+    private String label;
+    public OptionItem(Integer id, String value, String label){
         this.id = id;
         this.value = value;
-        this.title = title;
+        this.label = label;
     }
     public Integer getId() {
         return id;
@@ -34,15 +31,15 @@ public class OptionItem {
         this.value = value;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
     public String toString(){
-        return title;
+        return label;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

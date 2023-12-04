@@ -1,0 +1,174 @@
+uims:
+  menu:
+    - name: student
+      title: 学生管理
+    - name: score
+      title: 成绩管理
+    - name: familyMember
+      title: 家庭成员管理
+  page:
+    - name: student
+      type: table
+      title: 学生管理
+      showAdd: 1
+      item:
+        - type: text
+          prop: studentNum
+          label: 学号
+        - type: link
+          prop: studentName
+          label: 姓名
+        - type: text
+          prop: sex
+          label: 性别
+        - type: text
+          prop: age
+          label: 年龄
+        - type: text
+          prop: birthday
+          label: 出生日期
+        - type: opers
+          label: 操作
+          opers:
+            - name: edit
+            - name: delete
+            - name: course
+              label: 我的课程
+            - name: scoreAdd
+              label: 添加成绩
+      query:
+        - type: input
+          prop: numName
+          label: 请输入学号或姓名
+    - name: studentEdit
+      type: form
+      title: 学生信息
+      item:
+        - type: input
+          prop: studentNum
+          label: 学号
+        - type: input
+          prop: studentName
+          label: 姓名
+        - type: select
+          prop: sex
+          label: 性别
+          option:
+            - value: 1
+              label: 男
+            - value: 2
+              label: 女
+        - type: input
+          prop: age
+          label: 年龄
+        - type: date
+          prop: birthday
+          label: 出生日期
+    - name: score
+      type: table
+      title: 成绩管理
+      showAdd: 1
+      item:
+        - type: text
+          prop: studentNum
+          label: 学号
+        - type: text
+          prop: studentName
+          label: 姓名
+        - type: text
+          prop: courseNum
+          label: 课程号
+        - type: text
+          prop: courseName
+          label: 课程名
+        - type: text
+          prop: score
+          label: 成绩
+        - type: opers
+          label: 操作
+          opers:
+            - name: edit
+            - name: delete
+    - name: scoreEdit
+      type: form
+      title: 学生信息
+      item:
+        - type: select
+          prop: studentId
+          label: 学生
+        - type: select
+          prop: courseId
+          label: 课程
+        - type: input
+          prop: score
+          label: 成绩
+    - name: familyMember
+      type: table
+      title: 家庭成员管理
+      showAdd: 1
+      item:
+        - type: text
+          prop: studentNum
+          label: 学号
+        - type: text
+          prop: studentName
+          label: 姓名
+        - type: text
+          prop: name
+          label: 成员名称
+        - type: text
+          prop: sex
+          label: 性别
+        - type: text
+          prop: rel
+          label: 关系
+        - type: opers
+          label: 操作
+          opers:
+            - name: edit
+            - name: delete
+    - name: familyMemberEdit
+      type: form
+      title: 家庭成员信息
+      item:
+        - type: select
+          prop: studentId
+          label: 学生
+        - type: input
+          prop: name
+          label: 姓名
+        - type: select
+          prop: sex
+          label: 性别
+          option:
+            - value: 1
+              label: 男
+            - value: 2
+              label: 女
+        - type: select
+          prop: rel
+          option:
+            - value: 父亲
+              label: 父亲
+            - value: 母亲
+              label: 母亲
+          label: 关系
+    - name: myCourse
+      type: table
+      title: 我的课程
+      showAdd: 1
+      item:
+        - type: text
+          prop: courseNum
+          label: 课程号
+        - type: text
+          prop: courseName
+          label: 课程名
+        - type: text
+          prop: score
+          label: 成绩
+        - type: opers
+          label: 操作
+          opers:
+            - name: edit
+            - name: delete

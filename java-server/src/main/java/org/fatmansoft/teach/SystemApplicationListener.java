@@ -1,8 +1,8 @@
 package org.fatmansoft.teach;
 
-import lombok.extern.slf4j.Slf4j;
-import org.fatmansoft.teach.service.SystemService;
-import org.fatmansoft.teach.service.TestService;
+import org.fatmansoft.teach.service.system.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -14,12 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Order(0)
-@Slf4j
 public class SystemApplicationListener implements ApplicationListener<ApplicationReadyEvent> {
+    private static final Logger logger = LoggerFactory.getLogger(SpringBootSecurityJwtApplication.class);
     @Autowired
     private SystemService systemService;  //系统服务对象自动注入
-    @Autowired
-    private TestService testService;
+
 
     /**
      * 系统实践处理方法 系统启动后自动加载数据字典
@@ -27,10 +26,9 @@ public class SystemApplicationListener implements ApplicationListener<Applicatio
      */
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.info("SystemInitStart");
+        logger.info("SystemInitStart");
         systemService.initDictionary();
-        systemService.initSystem();
-        log.info("systemInitEnd");
+        logger.info("systemInitEnd");
     }
 
 }

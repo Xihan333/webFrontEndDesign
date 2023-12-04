@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import org.fatmansoft.teach.models.User;
+import org.fatmansoft.teach.models.system.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,19 +18,17 @@ public class UserDetailsImpl implements UserDetails {
     private Integer id;
 
     private String username;
-    private String perName;
 
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Integer id, String username, String password,String perName,
+    public UserDetailsImpl(Integer id, String username, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.perName = perName;
         this.authorities = authorities;
     }
 
@@ -42,7 +40,6 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUserId(),
                 user.getUserName(),
                 user.getPassword(),
-                user.getPerson().getName(),
                 authorities);
     }
 
@@ -54,9 +51,7 @@ public class UserDetailsImpl implements UserDetails {
     public Integer getId() {
         return id;
     }
-    public String getPerName(){
-        return perName;
-    }
+
     @Override
     public String getPassword() {
         return password;

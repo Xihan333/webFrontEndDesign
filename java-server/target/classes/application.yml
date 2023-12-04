@@ -3,11 +3,12 @@ bezkoder:
   app:
     jwtSecret: bezKoderSecretKey
     jwtExpirationMs: 86400000
+
 server:
   port: 9090
 spring:
   datasource:
-    url: jdbc:sqlite:/teach/run/data.db
+    url: jdbc:sqlite:/teach/run/java.db
     driver-class-name: org.sqlite.JDBC
     username: admin
     password: admin
@@ -15,33 +16,60 @@ spring:
     database-platform: org.fatmansoft.teach.sqlite.SQLDialect
     generate-ddl: true
     hibernate.ddl-auto: update
-  servlet:
-    multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
-  jmx:
-    enabled:false
-# Mail server properties
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=GMT%2B8
+#    username: root
+#    password: xxx
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
-    host: smtp.sdu.edu.cn
-    port: 25
-    username: xqli@sdu.edu.cn
-    password: 111
+    #平台地址，这里用的是qq邮箱
+    host: smtp.qq.com
+    username: 504537585@qq.com
+    default-encoding: UTF-8 # 编码格式
+    password: dqbymxinfwlfbigj # 邮箱授权码
+    protocol: smtp
     properties:
       mail:
         smtp:
           auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
           starttls:
             enable: true
+            required: true
+  rabbitmq:
+    addresses: localhost
+    username: admin
+    password: admin
+    virtual-host: /
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  jmx:
+    enabled: false
+
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+
 attach:
   folder: /teach/run/
-logging:
-  config: classpath:loggback.xml
+
+
+#spring.datasource.url = jdbc:sqlite:D:/teach/run/java.db
+#spring.datasource.driver-class-name = org.sqlite.JDBC
+#spring.datasource.username = admin
+#spring.datasource.password = admin
+#spring.jpa.generate-ddl=true
+
+
+
+
+

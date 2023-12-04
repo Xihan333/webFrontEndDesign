@@ -1,7 +1,5 @@
 package org.fatmansoft.teach.payload.request;
 
-import org.fatmansoft.teach.util.DateTimeTool;
-
 import java.util.*;
 
 /**
@@ -117,32 +115,11 @@ public class DataRequest {
             return null;
         }
     }
-    public Date getDate( String key) {
-        Object obj = data.get(key);
-        if(obj == null)
-            return null;
-        if(obj instanceof Date)
-            return (Date)obj;
-        String str = obj.toString();
-        return DateTimeTool.formatDateTime(str,"yyyy-MM-dd");
+    public Date getDate(String key) {
+        return null;
     }
     public Date getTime(String key) {
-        Object obj = data.get(key);
-        if(obj == null)
-            return null;
-        if(obj instanceof Date)
-            return (Date)obj;
-        String str = obj.toString();
-        return DateTimeTool.formatDateTime(str,"yyyy-MM-dd HH:mm:ss");
-    }
-    public Integer getCurrentPage(){
-        Integer cPage = this.getInteger("currentPage");
-        if(cPage != null && cPage >0 )
-            cPage = cPage -1;
-        else
-            cPage = 0;
-        return cPage;
-
+        return null;
     }
 
 }

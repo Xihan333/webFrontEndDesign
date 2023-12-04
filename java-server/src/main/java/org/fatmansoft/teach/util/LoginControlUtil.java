@@ -45,12 +45,12 @@ public class LoginControlUtil {
         // 设置字体。
         g.setFont(font);
 
-        // 画边框。
-//        g.setColor(Color.BLACK);
-//        g.drawRect(0, 0, width - 1, height - 1);
+         //画边框。
+        g.setColor(Color.BLACK);
+        g.drawRect(0, 0, width - 1, height - 1);
 
         // 随机产生160条干扰线，使图象中的认证码不易被其它程序探测到。
-/*        g.setColor(Color.WHITE);
+        g.setColor(Color.WHITE);
         for (int i = 0; i < 100; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
@@ -58,7 +58,7 @@ public class LoginControlUtil {
             int yl = random.nextInt(12);
             g.drawLine(x, y, x + xl, y + yl);
         }
-*/
+
         // randomCode用于保存随机产生的验证码，以便用户登录后进行验证。
         StringBuffer randomCode = new StringBuffer();
         int red = 0, green = 0, blue = 0;
@@ -67,14 +67,14 @@ public class LoginControlUtil {
         for (int i = 0; i < codeCount; i++) {
             // 得到随机产生的验证码数字。
             String strRand = String.valueOf(codeSequence[random.nextInt(10)]);
-            // 产生随机的颜色分量来构造颜色值，这样输出的每位数字的颜色值都将不同。
-//            red = random.nextInt(255);
-//            green = random.nextInt(255);
-//            blue = random.nextInt(255);
+//             产生随机的颜色分量来构造颜色值，这样输出的每位数字的颜色值都将不同。
+            red = random.nextInt(255);
+            green = random.nextInt(255);
+            blue = random.nextInt(255);
 
             // 用随机产生的颜色将验证码绘制到图像中。
-//            g.setColor(new Color(red, green, blue));
-            g.setColor(new Color(147, 14,20));
+            g.setColor(new Color(red, green, blue));
+//            g.setColor(new Color(147, 14,20));
             g.drawString(strRand, (i + 1) * x - 6, codeY);
 
             // 将产生的四个随机数组合在一起。
