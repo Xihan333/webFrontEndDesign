@@ -77,7 +77,7 @@
 <script setup>
 import router from "~/router";
 import { useCommonStore } from "~/stores/app";
-import Menu from '../views/Menu.vue'
+import Menu from '../components/Menu.vue'
 import { ref } from "vue";
 import { storeToRefs } from "pinia";// 保证其响应性
 
