@@ -29,7 +29,7 @@ export default defineConfig({
   css: {
     postcss: { // ⚠️关键代码
       plugins: [
-        autoprefixer({
+        autoprefixer({ // 用如其名
           overrideBrowserslist: [
               'Android 4.1',
               'iOS 7.1',

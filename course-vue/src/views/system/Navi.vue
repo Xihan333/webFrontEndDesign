@@ -1,13 +1,14 @@
 <template>
   <div style="height: 100%">
     <!-- 当登录成功后显示此DIV -->
-    <div
-      style="height: 100%"
-      v-if="
+    <!-- v-if="
         userInfo.username &&
         userInfo.username.length > 0 &&
         systemConfig.showLeftMeun
-      "
+      " -->
+    <div
+      style="height: 100%"
+      
     >
       <el-container style="height: 100%">
         <!-- 主页面的头部区域 -->
@@ -149,9 +150,9 @@
       </el-container>
     </div>
     <!--  当登录前显示此DIV router-view 控制显示VUE页面，VUE会根据路由路径不同.vue文件的内容， 初始路由路径为/，显示Login.vue内容 -->
-    <div style="height: 100%" v-else>
+    <!-- <div style="height: 100%" v-else>
       <router-view />
-    </div>
+    </div> -->
   </div>
 </template>
 
