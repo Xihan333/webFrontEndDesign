@@ -1,7 +1,5 @@
 package org.fatmansoft.teach.controllers.student;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 import org.fatmansoft.teach.models.student.Clazz;
 import org.fatmansoft.teach.models.student.Grade;
@@ -30,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.validation.Valid;
-import java.io.*;
 import java.util.*;
 /**
  *  StudentController 主要是为学生管理数据管理提供的Web请求服务

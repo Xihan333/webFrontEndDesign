@@ -31,26 +31,50 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+    /**
+     * 获取全部的博客
+     * @param dataRequest
+     * @return
+     */
     @GetMapping("/getBlogList")
     public DataResponse getBlogList(@Valid @RequestBody DataRequest dataRequest) {
         return blogService.getBlogList(dataRequest);
     }
 
+    /**
+     * 新增或编辑博客
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/blogEditSave")
     public DataResponse BlogEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return blogService.blogEditSave(dataRequest);
     }
 
+    /**
+     * 获取当前用户的博客
+     * @return
+     */
     @GetMapping("/getMyBlogList")
     public DataResponse getMyBlogList() {
         return blogService.getMyBlogList();
     }
 
+    /**
+     * 删除博客
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/blogDelete")
     public DataResponse achievementDelete(@Valid @RequestBody DataRequest dataRequest) {
         return blogService.blogDelete(dataRequest);
     }
 
+    /**
+     * 获得某个人的博客
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/getOneBlogList")
     public DataResponse getOneBlogList(@Valid @RequestBody DataRequest dataRequest){
         return blogService.getOneBlogList(dataRequest);

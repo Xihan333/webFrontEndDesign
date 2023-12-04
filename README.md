@@ -3,7 +3,7 @@
 ## 学生管理系统 ——WEB课程设计
 
 ### 邮箱注册及找回密码
-验证码存储在本地运行的redis中，若要使用该功能，需在本地运行redis，请设置端口号及密码如下：
+验证码存储在本地运行的redis中（设置5min有效期，5min后验证码会失效），若要使用该功能，需在本地运行redis，请设置端口号及密码如下：
 ```
 port: 6379
 password: 123456
@@ -33,3 +33,6 @@ CONFIG SET requirepass "your_new_password"
 
 
 
+### vscode中git推荐extension
+
+![image-20231204162517273](https://cdn.jsdelivr.net/gh/rainnn-w/Pictures@main/blog/202312041625486.png)

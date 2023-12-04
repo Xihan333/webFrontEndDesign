@@ -97,9 +97,24 @@ public class AuthController {
         return CommonMethod.getReturnData(LoginControlUtil.getInstance().getValidateCodeDataMap());
     }
 
+    /**
+     * 找回密码
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/resetPassWord")
     public DataResponse resetPassWord(@Valid @RequestBody DataRequest dataRequest) {
         return authService.resetPassword(dataRequest);
+    }
+
+    /**
+     * 修改密码
+     * @param dataRequest
+     * @return
+     */
+    @PostMapping("/changePassword")
+    public DataResponse changePassword(@Valid @RequestBody DataRequest dataRequest) {
+        return authService.changePassword(dataRequest);
     }
 
     @PostMapping("/testValidateInfo")

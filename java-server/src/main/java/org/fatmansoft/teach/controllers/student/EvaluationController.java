@@ -51,6 +51,11 @@ public class EvaluationController {
         return evaluationService.evaluationDelete(dataRequest);
     }
 
+    /**
+     * 获取studentId对应学生收到的所有评论
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/getOneEvaluationList")
     public DataResponse getOneEvaluationList(@Valid @RequestBody DataRequest dataRequest){
         return evaluationService.getOneEvaluationList(dataRequest);

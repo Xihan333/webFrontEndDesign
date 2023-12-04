@@ -155,7 +155,7 @@ public class AuthService {
         return CommonMethod.getReturnMessageOK();
     }
 
-    public DataResponse login(DataRequest dataRequest){
+    public DataResponse login(DataRequest dataRequest) {
         String username = dataRequest.getString("username");
         String password = dataRequest.getString("password");
         Authentication authentication = authenticationManager.authenticate(
@@ -167,14 +167,14 @@ public class AuthService {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        Optional<User> op= userRepository.findByUserName(username);
-        if(op.isPresent()) {
+        Optional<User> op = userRepository.findByUserName(username);
+        if (op.isPresent()) {
             User user = op.get();
             user.setLastLoginTime(DateTimeTool.parseDateTime(new Date()));
             Integer count = user.getLoginCount();
-            if(count == null){
+            if (count == null) {
                 count = 1;
-            }else{
+            } else {
                 count += 1;
             }
             user.setLoginCount(count);
@@ -183,7 +183,7 @@ public class AuthService {
         return CommonMethod.getReturnData(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
     }
 
-    public DataResponse register(DataRequest dataRequest){
+    public DataResponse register(DataRequest dataRequest) {
         String username = dataRequest.getString("username");
         String password = dataRequest.getString("password");
         String name = dataRequest.getString("name");
@@ -192,7 +192,7 @@ public class AuthService {
         String mailVerificationCode = dataRequest.getString("mailVerificationCode");
         UserType ut = null;
         Optional<User> uOp = userRepository.findByUserName(username);
-        if(uOp.isPresent()) {
+        if (uOp.isPresent()) {
             return CommonMethod.getReturnMessageError("用户已经存在，不能注册！");
         }
         if (!email.contains("@")) return CommonMethod.getReturnMessageError("邮箱格式错误！");
@@ -206,13 +206,13 @@ public class AuthService {
         p.setNum(username);
         p.setName(name);
         p.setEmail(email);
-        if("ADMIN".equals(role)) {
+        if ("ADMIN".equals(role)) {
             p.setType("0");
             ut = userTypeRepository.findByName(EUserType.ROLE_ADMIN);
-        }else if("STUDENT".equals(role)) {
+        } else if ("STUDENT".equals(role)) {
             p.setType("1");
             ut = userTypeRepository.findByName(EUserType.ROLE_STUDENT);
-        }else if("TEACHER".equals(role)) {
+        } else if ("TEACHER".equals(role)) {
             p.setType("2");
             ut = userTypeRepository.findByName(EUserType.ROLE_TEACHER);
         }
@@ -226,11 +226,11 @@ public class AuthService {
         u.setCreatorId(p.getPersonId());
         u.setLoginCount(0);
         userRepository.saveAndFlush(u);
-        if("STUDENT".equals(role)) {
+        if ("STUDENT".equals(role)) {
             Student s = new Student();   // 创建实体对象
             s.setPerson(p);
             studentRepository.saveAndFlush(s);  //插入新的Student记录
-        }else if("TEACHER".equals(role)) {
+        } else if ("TEACHER".equals(role)) {
             Teacher t = new Teacher();   // 创建实体对象
             t.setPerson(p);
             teacherRepository.saveAndFlush(t);  //插入新的Teacher记录
@@ -238,7 +238,7 @@ public class AuthService {
         return CommonMethod.getReturnMessageOK();
     }
 
-    public DataResponse resetPassword(DataRequest dataRequest){
+    public DataResponse resetPassword(DataRequest dataRequest) {
         String username = dataRequest.getString("username");
         String email = dataRequest.getString("email");
         String newPassword = dataRequest.getString("newPassword");
@@ -249,7 +249,7 @@ public class AuthService {
         User u = op.get();
         Person p = u.getPerson();
         email = p.getEmail();
-        if(!email.equals(p.getEmail())) {
+        if (!email.equals(p.getEmail())) {
             return CommonMethod.getReturnMessageError("邮箱不匹配不能重置！");
         }
         // 校验邮件验证码
@@ -261,5 +261,28 @@ public class AuthService {
         u.setPassword(encoder.encode(newPassword));
         userRepository.save(u);
         return CommonMethod.getReturnMessageOK();  //通知前端操作正常
+    }
+
+    public DataResponse changePassword(DataRequest dataRequest) {
+        String oldPassword = dataRequest.getString("oldPassword");
+        String newPassword = dataRequest.getString("newPassword");
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if (!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        String username = u.getUserName();
+        // 验证旧密码是否匹配
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, oldPassword));
+
+        if (authentication.isAuthenticated()) {
+            // 旧密码验证通过，可以修改密码
+            u.setPassword(encoder.encode(newPassword));
+            userRepository.save(u);
+            return CommonMethod.getReturnMessageOK("Password changed successfully!");
+        } else {
+            return CommonMethod.getReturnMessageError("Old password is incorrect.");
+        }
     }
 }

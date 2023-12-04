@@ -22,4 +22,8 @@ public class Clazz {
     @ManyToOne
     @JoinColumn(name = "grade_id")
     private Grade grade;
+
+    @OneToOne
+    @JoinColumn(name="capmus_id")
+    private Campus campus; //学院
 }

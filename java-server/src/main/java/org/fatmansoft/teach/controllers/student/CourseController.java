@@ -339,7 +339,8 @@ public class CourseController {
         course.setName(CommonMethod.getString(map,"courseName"));
         course.setHour(CommonMethod.getInteger(map,"hour"));
         course.setCredit(CommonMethod.getInteger(map,"credit"));
-        course.setTime(CommonMethod.getString(map,"time"));
+        course.setDay(CommonMethod.getInteger(map,"day"));
+        course.setTimeOrder(CommonMethod.getInteger(map,"timeOrder"));
         course.setPlace(CommonMethod.getString(map,"place"));
         courseRepository.save(course);
 
@@ -370,4 +371,10 @@ public class CourseController {
         }
         return CommonMethod.getReturnMessageOK();  //通知前端操作正常
     }
+
+    //TODO：选课时可以根据type 必修 任选等分类
+
+    //TODO：根据教师 课序号 时间
+
+    //TODO：管理增删某一门课程的学生
 }

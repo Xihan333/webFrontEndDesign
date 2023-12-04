@@ -40,4 +40,5 @@ public class Achievement {
 
     private Integer status=0;
     // 2为未通过 1为已通过审核 0为待审核
+
 }

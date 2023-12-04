@@ -8,7 +8,7 @@ server:
   port: 9090
 spring:
   datasource:
-    url: jdbc:sqlite:/teach/web/webFrontEndDesign/java.db
+    url: jdbc:sqlite:/teach/run/java.db
     driver-class-name: org.sqlite.JDBC
     username: admin
     password: admin
@@ -60,14 +60,9 @@ spring:
       force: true
 
 attach:
-  folder: \teach\web\webFrontEndDesign\
+  folder: \teach\run\
 
 
-#spring.datasource.url = jdbc:sqlite:D:\teach\web\webFrontEndDesign\java.db
-#spring.datasource.driver-class-name = org.sqlite.JDBC
-#spring.datasource.username = admin
-#spring.datasource.password = admin
-#spring.jpa.generate-ddl=true
 
 
 

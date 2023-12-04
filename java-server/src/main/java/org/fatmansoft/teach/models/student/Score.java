@@ -35,8 +35,9 @@ public class Score {
     private Course course;
 
     private Integer mark;
+
     private Integer ranking;
 
-
+    //TODO：平时分+期末考试分 = 总成绩
 
 }

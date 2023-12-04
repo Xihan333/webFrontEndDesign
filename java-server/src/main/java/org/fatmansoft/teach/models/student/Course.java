@@ -1,7 +1,6 @@
 package org.fatmansoft.teach.models.student;
 
 import lombok.*;
-import org.fatmansoft.teach.models.student.Grade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -32,17 +31,35 @@ public class Course {
 
     @NotBlank
     @Size(max = 20)
-    private String num;
+    private String num; //课序号
 
-    private Integer hour;
+    private Integer hour; //总课时
 
-    private Integer credit;//学分
+    private Integer credit; //学分
 
-    private String time;
+    //上课时间
+    private Integer day; //星期x   1 2 3 4 5 6 7
 
-    private String place;
+    private Integer timeOrder; //第x节 1 2 3 4 5
+
+    private String place; //上课地点
+
+    private Integer type; //必修 限选 任选  0 1 2 type
+
+    @OneToOne
+    @JoinColumn(name="capmus_id")
+    private Campus campus; //学院
 
     @ManyToOne
     @JoinColumn(name = "grade_id")
-    private Grade grade;
+    private Grade grade; //开课年级
+
+    private Integer selectedCount; //选课人数
+
+    private Integer courseCapacity; //课容量
+
+    private String introduction; //课程介绍
+
+
+
 }

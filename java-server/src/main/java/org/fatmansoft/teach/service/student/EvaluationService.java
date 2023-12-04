@@ -171,7 +171,7 @@ public class EvaluationService {
             }
         }
         if(a != null) {
-            evaluationRepository.delete(a);//删除该条成就
+            evaluationRepository.delete(a);//删除该条
         }
         return CommonMethod.getReturnMessageOK("删除成功");  //通知前端操作正常
     }

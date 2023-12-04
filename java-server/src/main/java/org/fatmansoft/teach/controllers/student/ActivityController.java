@@ -63,12 +63,18 @@ public class ActivityController {
     }
 
     @PostMapping("/getByStudentId")
+    @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getByStudentId(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId = dataRequest.getInteger("studentId");
         List<Activity> dataList = ActivityRepository.findActivityByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
 
+    /**
+     * 获取当前用户（学生）的活动
+     * @param dataRequest
+     * @return
+     */
     @PostMapping("/getStudentActivity")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentActivity(@Valid @RequestBody DataRequest dataRequest){

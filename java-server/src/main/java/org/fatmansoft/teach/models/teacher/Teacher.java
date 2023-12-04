@@ -3,6 +3,7 @@ package org.fatmansoft.teach.models.teacher;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.fatmansoft.teach.models.student.Campus;
 import org.fatmansoft.teach.models.system.Person;
 
 import javax.persistence.*;
@@ -32,5 +33,9 @@ import javax.validation.constraints.Size;
 
         @Size(max = 100)
         private String direction; //研究方向
+
+        @OneToOne
+        @JoinColumn(name="capmus_id")
+        private Campus campus; //学院
 
     }

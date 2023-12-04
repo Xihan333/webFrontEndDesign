@@ -46,7 +46,8 @@ public class CourseService {
         }
         m.put("hour",c.getHour());
         m.put("credit",c.getCredit());
-        m.put("time",c.getTime());
+        m.put("day",c.getDay());
+        m.put("timeOrder",c.getTimeOrder());
         m.put("place",c.getPlace());
         List<Teacher> tList=teacherRepository.findTeacherListByCourseCourseId(c.getCourseId());
         if(!tList.isEmpty()){

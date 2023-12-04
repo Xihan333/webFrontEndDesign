@@ -52,6 +52,7 @@ public class Person {
 
     @Size(max = 20)
     private String card;
+
     @Size(max = 2)
     private String gender;//性别
 
