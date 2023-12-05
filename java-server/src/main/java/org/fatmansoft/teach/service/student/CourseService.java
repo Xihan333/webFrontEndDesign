@@ -7,7 +7,6 @@ import org.fatmansoft.teach.models.teacher.TeacherCourse;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
-import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.student.*;
 import org.fatmansoft.teach.repository.system.PersonRepository;
 import org.fatmansoft.teach.repository.system.UserRepository;
@@ -16,6 +15,7 @@ import org.fatmansoft.teach.repository.teacher.TeacherRepository;
 import org.fatmansoft.teach.service.teacher.TeacherCourseService;
 import org.fatmansoft.teach.service.teacher.TeacherService;
 import org.fatmansoft.teach.util.CommonMethod;
+import org.fatmansoft.teach.util.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -227,6 +227,9 @@ public class CourseService {
     }
 
     public DataResponse selectCourse(DataRequest dataRequest) {
+        if(Const.COURSE_SELECT_AVAILABLE == 1){
+            return CommonMethod.getReturnMessageError("选课未开启！");
+        }
         Integer courseId = dataRequest.getInteger("courseId");
         Optional<Course> opC= courseRepository.findByCourseId(courseId);
         Course course = null;
@@ -269,6 +272,43 @@ public class CourseService {
         scoreRepository.save(score);
 
         return CommonMethod.getReturnMessageOK("选课成功");
+    }
+
+    public DataResponse cancelCourse(DataRequest dataRequest) {
+        if(Const.COURSE_SELECT_AVAILABLE == 1){
+            return CommonMethod.getReturnMessageError("选课未开启！");
+        }
+        Integer courseId = dataRequest.getInteger("courseId");
+        Optional<Course> opC= courseRepository.findByCourseId(courseId);
+        Course course = null;
+        if(opC.isPresent()){
+            course = opC.get();
+        }else{
+            return CommonMethod.getReturnMessageError("课程不存在！");
+        }
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student student= sOp.get();
+        Integer studentId = student.getStudentId();
+
+        Integer selectedCount = course.getSelectedCount();
+        Integer courseCapacity = course.getCourseCapacity();
+
+        course.setSelectedCount(--selectedCount);
+        courseRepository.save(course);
+
+        Optional<Score> optionalScore = scoreRepository.findByStudentStudentIdAndCourseCourseId(studentId,courseId);
+        if(optionalScore.isPresent()){
+            Score score = optionalScore.get();
+            scoreRepository.delete(score);
+        }
+        return CommonMethod.getReturnMessageOK("退课成功");
     }
 
     public DataResponse addOrEditCourse(DataRequest dataRequest) {

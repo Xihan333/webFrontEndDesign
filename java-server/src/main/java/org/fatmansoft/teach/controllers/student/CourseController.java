@@ -1,11 +1,8 @@
 package org.fatmansoft.teach.controllers.student;
 
-import org.fatmansoft.teach.models.student.Campus;
-import org.fatmansoft.teach.models.student.Grade;
 import org.fatmansoft.teach.models.student.Student;
 import org.fatmansoft.teach.models.student.Course;
 import org.fatmansoft.teach.models.teacher.Teacher;
-import org.fatmansoft.teach.models.teacher.TeacherCourse;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
@@ -20,6 +17,7 @@ import org.fatmansoft.teach.service.student.CourseService;
 import org.fatmansoft.teach.service.teacher.TeacherCourseService;
 import org.fatmansoft.teach.service.teacher.TeacherService;
 import org.fatmansoft.teach.util.CommonMethod;
+import org.fatmansoft.teach.util.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -233,4 +231,19 @@ public class CourseController {
     }
 
     //TODO：管理增删某一门课程的学生
+
+    //退课
+    @PostMapping("/cancelCourse")
+    public DataResponse cancelCourse(@Valid @RequestBody DataRequest dataRequest){
+        return courseService.cancelCourse(dataRequest);
+    }
+
+    //开启选课（管理员）
+    @PostMapping("/changeCourseSelectAvailable")
+    @PreAuthorize(" hasRole('ADMIN')")
+    public DataResponse changeCourseSelectAvailable(@Valid @RequestBody DataRequest dataRequest){
+        Const.COURSE_SELECT_AVAILABLE = dataRequest.getInteger("available");
+        return CommonMethod.getReturnData(Const.COURSE_SELECT_AVAILABLE);
+    }
+
 }

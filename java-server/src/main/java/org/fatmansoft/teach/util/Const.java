@@ -11,4 +11,6 @@ public class Const {
      */
     public static final String CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+    public static int COURSE_SELECT_AVAILABLE;
+
 }
