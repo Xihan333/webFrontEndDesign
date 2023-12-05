@@ -34,6 +34,7 @@ public class ScoreService {
         m.put("credit",s.getCourse().getCredit());
         m.put("commonMark",s.getCommonMark());
         m.put("finalMark",s.getFinalMark());
+        m.put("isResult",s.getIsResult());
         return m;
     }
 

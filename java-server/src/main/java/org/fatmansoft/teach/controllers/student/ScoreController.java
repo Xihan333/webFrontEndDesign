@@ -32,6 +32,7 @@ public class ScoreController {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    //获取某个学生的成绩 根据 gradeId clazzId userId  studentId courseId
     @PostMapping("/getScoreList")
     public DataResponse getScoreList(@Valid @RequestBody DataRequest dataRequest) {
         Integer gradeId = dataRequest.getInteger("gradeId");
@@ -58,10 +59,11 @@ public class ScoreController {
         Integer courseId = dataRequest.getInteger("courseId");
         if(courseId == null)
             courseId = 0;
-        List<Score> sList = scoreRepository.findByStudentAndCourseAndGradeAndClazz(studentId, courseId,gradeId,clazzId);  //数据库查询操作
+        List<Score> sList = scoreRepository.findByStudentAndCourseAndGradeAndClazz(studentId, courseId, gradeId, clazzId);  //数据库查询操作
         List dataList = scoreService.getScoreMapList(sList);
         return CommonMethod.getReturnData(dataList);
     }
+
 
     @PostMapping("/getScoreListByTeacherId")
     public DataResponse getScoreListByTeacherId(@Valid @RequestBody DataRequest dataRequest) {
@@ -91,8 +93,8 @@ public class ScoreController {
         Score score = scoreRepository.findById(scoreId).get();
         score.setCommonMark(commonMark);
         score.setFinalMark(finalMark);
+        score.setIsResult(1);
         scoreRepository.save(score);
         return CommonMethod.getReturnMessageOK();
     }
-
 }

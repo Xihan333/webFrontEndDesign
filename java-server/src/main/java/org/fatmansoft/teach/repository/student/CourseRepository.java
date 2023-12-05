@@ -35,4 +35,21 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
     @Query(value = "from Course where grade.gradeId=?1")
     List<Course> findCourseListByGradeGradeId(Integer gradeId);
 
+    @Query(value = "from Course where type=?1")
+    List<Course> findCourseListByTypeId(Integer courseType);
+
+    @Query(value = "select tc.course from TeacherCourse tc where tc.teacher.person.name=?1")
+    List<Course> findCourseListByteacherName(Integer teacherName);
+
+    @Query(value = "from Course where day=?1 and timeOrder=?2")
+    List<Course> findCourseListByDayAndTimeOrder(Integer day, Integer timeOrder);
+
+    @Query(value = "from Course where day=?1")
+    List<Course> findCourseListByDay(Integer day);
+
+    @Query(value = "from Course where timeOrder=?1")
+    List<Course> findCourseListByTimeOrder(Integer timeOrder);
+
+    @Query(value = "select s.course from Score s where s.student.studentId=?3 and s.course.day = ?1 and s.course.timeOrder = ?2")
+    Optional<Course> findCourseListByStudentIdAndDayAndTimeOrder(Integer day, Integer timeOrder, Integer studentId);
 }

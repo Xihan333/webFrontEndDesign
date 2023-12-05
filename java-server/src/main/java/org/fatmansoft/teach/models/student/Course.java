@@ -54,7 +54,7 @@ public class Course {
     @JoinColumn(name = "grade_id")
     private Grade grade; //开课年级
 
-    private Integer selectedCount; //选课人数
+    private Integer selectedCount = 0; //选课人数
 
     private Integer courseCapacity; //课容量
 

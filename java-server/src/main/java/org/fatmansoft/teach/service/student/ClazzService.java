@@ -41,6 +41,9 @@ public class ClazzService {
     @Autowired
     private CampusRepository campusRepository;
 
+    @Autowired
+    private StudentService studentService;
+
     public synchronized Integer getNewClazzId(){  //synchronized 同步方法
         Integer  id = clazzRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -117,5 +120,16 @@ public class ClazzService {
             clazzRepository.delete(a);//删除该条成就
         }
         return CommonMethod.getReturnMessageOK("删除成功");  //通知前端操作正常
+    }
+
+    public DataResponse getNoClazzStudents() {
+        List dataList = new ArrayList();
+        List<Student> sList = studentRepository.findStudentNoClazz();  //数据库查询操作
+        if(sList == null || sList.size() == 0)
+            return CommonMethod.getReturnData(dataList);
+        for(int i = 0; i < sList.size();i++) {
+            dataList.add(studentService.getMapFromStudent(sList.get(i)));
+        }
+        return CommonMethod.getReturnData(dataList);
     }
 }

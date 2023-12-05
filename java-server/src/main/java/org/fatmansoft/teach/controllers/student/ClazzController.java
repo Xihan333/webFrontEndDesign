@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,5 +54,10 @@ public class ClazzController {
     @PostMapping("/clazzDelete")
     public DataResponse clazzDelete(@Valid @RequestBody DataRequest dataRequest) {
         return clazzService.clazzDelete(dataRequest);
+    }
+
+    @GetMapping("/getNoClazzStudents")
+    public DataResponse getNoClazzStudents(){
+        return clazzService.getNoClazzStudents();
     }
 }

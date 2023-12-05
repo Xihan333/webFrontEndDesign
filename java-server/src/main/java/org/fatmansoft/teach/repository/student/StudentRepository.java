@@ -18,19 +18,29 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query(value = "select max(studentId) from Student  ")
     Integer getMaxId();
+
     @Query(value = "from Student where studentId=?1")
     Optional<Student> findByStudentId(Integer studentId);
 
     @Query(value = "from Student where person.personId=?1")
     Optional<Student> findByPersonPersonId(Integer personId);
+
     Optional<Student> findByPersonNum(String num);
+
     Optional<Student> findByPersonName(String name);
+
     @Query(value = "select s from User u,Student s where u.userId=?1 and u.person.personId=s.person.personId")
     Optional<Student> findByUserId(Integer userId);
+
     @Query(value = "select s.student from Score s where s.course.courseId=?1")
     List<Student> findStudentListByCourseId(Integer courseId);
+
     @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ")
     List<Student> findStudentListByNumName(String numName);
+
     @Query(value = "from Student where clazz.clazzId=?1")
     List<Student> findStudentListByClazzClazzId(Integer clazzId);
+
+    @Query(value = "from Student where clazz.clazzId=0")
+    List<Student> findStudentNoClazz();
 }
