@@ -129,6 +129,7 @@ public class SocialController {
         String theme = CommonMethod.getString(form,"theme");//Map 获取属性的值
         String digest = CommonMethod.getString(form,"digest");
         String harvest = CommonMethod.getString(form,"harvest");
+        String location = CommonMethod.getString(form,"location");
         String num = CommonMethod.getString(form,"num");
         String name = CommonMethod.getString(form,"name");
         Optional<Student> s = studentRepository.findByPersonNum(num);
@@ -156,6 +157,7 @@ public class SocialController {
         a.setTheme(theme);
         a.setDigest(digest);
         a.setHarvest(harvest);
+        a.setLocation(location);
         a.setAuditStatus(1);
         a.setStudent(student);
         socialRepository.saveAndFlush(a);//插入新的social记录
@@ -171,6 +173,7 @@ public class SocialController {
         String theme = CommonMethod.getString(form,"theme");//Map 获取属性的值
         String digest = CommonMethod.getString(form,"digest");
         String harvest = CommonMethod.getString(form,"harvest");
+        String location = CommonMethod.getString(form,"location");
         String num = CommonMethod.getString(form,"num");
         String name = CommonMethod.getString(form,"name");
         Integer userId = CommonMethod.getUserId();
@@ -200,6 +203,7 @@ public class SocialController {
         a.setTheme(theme);
         a.setDigest(digest);
         a.setHarvest(harvest);
+        a.setLocation(location);
         a.setStudent(s);
         a.setAuditStatus(0);
         socialRepository.saveAndFlush(a);//插入新的Social记录
