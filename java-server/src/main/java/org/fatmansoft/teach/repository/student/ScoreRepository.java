@@ -20,20 +20,18 @@ public interface ScoreRepository extends JpaRepository<Score,Integer> {
     @Query(value = "select max(scoreId) from Score")
     Integer getMaxId();
 
-    Optional<Score> findByStudentStudentIdAndCourseCourseId(Integer studentId,Integer courseId);
     List<Score> findByStudentStudentId(Integer studentId);
-    List<Score> findByCourseCourseId(Integer courseId);
 
-    @Query(value = "select s from TeacherCourse tc,Score s where tc.teacher.teacherId=?1 and tc.course.courseId=s.course.courseId")
+
+    @Query(value = "select s from TeacherCourse tc,Score s where tc.teacher.teacherId=?1 and tc.course.courseId=s.teacherCourse.course.courseId")
     List<Score> findScoreListByTeacherId(Integer teacherId);
-    @Query(value="from Score where (?1=0 or student.studentId=?1) and (?2=0 or course.courseId=?2) and (?3=0 or student.clazz.grade.gradeId=?3) and (?4=0 or student.clazz.clazzId=?4)")
+
+    @Query(value="from Score where (?1=0 or student.studentId=?1) and (?2=0 or teacherCourse.course.courseId=?2) and (?3=0 or student.clazz.grade.gradeId=?3) and (?4=0 or student.clazz.clazzId=?4)")
     List<Score> findByStudentAndCourseAndGradeAndClazz(Integer studentId, Integer courseId,Integer gradeId,Integer clazzId);
 
-    @Transactional
-    @Modifying
-    void deleteByCourseCourseId(Integer courseId);
+    @Query(value = "from Score where teacherCourse.course.courseId=?1")
+    List<Score> findScoreListByCourseId(Integer courseId);
 
-    @Transactional
-    @Modifying
-    void deleteByStudentStudentId(Integer studentId);
+    @Query(value = "from Score where student.studentId=?1 and teacherCourse.course.courseId=?2 and teacherCourse.teacher.teacherId=?3")
+    Optional<Score> findByStudentIdAndCourseIdAndTeacherId(Integer studentId, Integer courseId, Integer teacherId);
 }

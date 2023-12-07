@@ -25,15 +25,8 @@ public class ScientificPayoffsService {
             return m;
         m.put("scientificPayoffsId",scientificPayoffs.getScientificPayoffsId());
         m.put("day",scientificPayoffs.getDay());
-        m.put("identity",scientificPayoffs.getIdentity());
-        m.put("firstAuthor",scientificPayoffs.getFirstAuthor());
-        m.put("otherAuthor",scientificPayoffs.getOtherAuthor());
-        m.put("correspondAuthor",scientificPayoffs.getCorrespondAuthor());
-        m.put("auditStatus", scientificPayoffs.getAuditStatus());
-        m.put("periodical",scientificPayoffs.getPeriodical());
+        m.put("authors",scientificPayoffs.getAuthors());
         m.put("paperName",scientificPayoffs.getPaperName());
-        Integer status = scientificPayoffs.getAuditStatus();
-        m.put("statusName", ComDataUtil.getInstance().getStatusByValue(status));
         t = scientificPayoffs.getTeacher();
         if (t ==null)
             return m;
@@ -41,16 +34,6 @@ public class ScientificPayoffsService {
             m.put("personId", t.getPerson().getPersonId());
             m.put("num", t.getPerson().getNum());
             m.put("name", t.getPerson().getName());
-            m.put("dept", t.getPerson().getDept());
-            m.put("card", t.getPerson().getCard());
-            String gender = t.getPerson().getGender();
-            m.put("gender", t.getPerson().getGender());
-            m.put("genderName", ComDataUtil.getInstance().getDictionaryLabelByValue("XBM", gender)); //性别类型的值转换成数据类型名
-            m.put("birthday", t.getPerson().getBirthday());  //时间格式转换字符串
-            m.put("email", t.getPerson().getEmail());
-            m.put("phone", t.getPerson().getPhone());
-            m.put("address", t.getPerson().getAddress());
-            m.put("introduce", t.getPerson().getIntroduce());
         }
         return m;
     }
@@ -69,61 +52,6 @@ public class ScientificPayoffsService {
         return dataList;
     }
 
-    /**
-     * 查询所有科研成果 按编号排序
-     */
-    public List getAllScientificPayoffsMapList() {
-        List dataList = new ArrayList();
-        List<ScientificPayoffs> sList = scientificPayoffsRepository.findAllScientificPayoffsList();  //数据库查询操作
-        if (sList == null || sList.size() == 0)
-            return dataList;
-        for (int i = 0; i < sList.size(); i++) {
-            dataList.add(getMapFromScientificPayoffs(sList.get(i)));
-        }
-        return dataList;
-    }
-
-    /**
-     * 查询审核中状态科研成果 按编号排序
-     */
-    public List getWaitingScientificPayoffsMapList() {
-        List dataList = new ArrayList();
-        List<ScientificPayoffs> sList = scientificPayoffsRepository.findWaitingScientificPayoffsList();  //数据库查询操作
-        if (sList == null || sList.size() == 0)
-            return dataList;
-        for (int i = 0; i < sList.size(); i++) {
-            dataList.add(getMapFromScientificPayoffs(sList.get(i)));
-        }
-        return dataList;
-    }
-
-    /**
-     * 查询已通过状态科研成果 按编号排序
-     */
-    public List getPassedScientificPayoffsMapList() {
-        List dataList = new ArrayList();
-        List<ScientificPayoffs> sList = scientificPayoffsRepository.findPassedScientificPayoffsList();  //数据库查询操作
-        if (sList == null || sList.size() == 0)
-            return dataList;
-        for (int i = 0; i < sList.size(); i++) {
-            dataList.add(getMapFromScientificPayoffs(sList.get(i)));
-        }
-        return dataList;
-    }
-
-    /**
-     * 查询未通过状态科研成果 按编号排序
-     */
-    public List getFailedScientificPayoffsMapList() {
-        List dataList = new ArrayList();
-        List<ScientificPayoffs> sList = scientificPayoffsRepository.findFailedScientificPayoffsList();  //数据库查询操作
-        if (sList == null || sList.size() == 0)
-            return dataList;
-        for (int i = 0; i < sList.size(); i++) {
-            dataList.add(getMapFromScientificPayoffs(sList.get(i)));
-        }
-        return dataList;
-    }
     public List getScientificPayoffsMapListByTeacherId(Integer teacherId) {
         List dataList = new ArrayList();
         List<ScientificPayoffs> sList = scientificPayoffsRepository.findScientificPayoffsByTeacherId(teacherId);  //数据库查询操作
