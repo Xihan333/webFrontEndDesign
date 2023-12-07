@@ -26,7 +26,7 @@ public class SocialService {
         m.put("day", social.getDay());
         m.put("groupName",social.getGroupName());
         m.put("theme",social.getTheme());
-        m.put("digest",social.getTheme());
+        m.put("digest",social.getDigest());
         m.put("harvest",social.getHarvest());
         m.put("location",social.getLocation());
         m.put("auditStatus", social.getAuditStatus());
