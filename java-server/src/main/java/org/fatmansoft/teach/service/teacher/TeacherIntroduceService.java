@@ -25,9 +25,7 @@ public class TeacherIntroduceService {
     @Autowired
     private ScientificPayoffsRepository scientificPayoffsRepository;
 
-    /**
-     * 学生简历信息
-     */
+
     public Map getIntroduceDataMap(Integer personId){
         Optional<Teacher> op = teacherRepository.findByPersonPersonId(personId);
         Person p = op.get().getPerson();
@@ -72,7 +70,7 @@ public class TeacherIntroduceService {
         result += "<p><b>住址</b>： "+s.get("address") + "</p>";
         return result;
     }
-    //返回学生的荣誉信息
+
     public String getTeacherAchievement(Integer teacherId){
         List<Achievement> pList = achievementRepository.findPassedAchievementByTeacherId(teacherId);
         if(pList==null||pList.size()==0)
@@ -95,15 +93,15 @@ public class TeacherIntroduceService {
         List<ScientificPayoffs> pList = scientificPayoffsRepository.findScientificPayoffsByTeacherId(teacherId);
         if(pList==null||pList.size()==0)
             return "<ul>无科研成果</ul>" ;
-        String result="", paperName="", identity="", periodical="";
+        String result="", paperName="", day="", authors="";
         result +="<ul>";
         for(int i=0;i<pList.size();i++){
             paperName = pList.get(i).getPaperName();
-            identity = pList.get(i).getIdentity();
-            periodical = pList.get(i).getPeriodical();
+            day = pList.get(i).getDay();
+            authors = pList.get(i).getAuthors();
             result += "<p>" + (i+1) + ". <b>论文标题</b>：" + paperName  +"</p>";
-            result += "<p><b>担任角色</b>： " + identity +"</p>";
-            result += "<p><b>发表期刊</b>： " + periodical +"</p>";
+            result += "<p><b>发表时间</b>： " + day +"</p>";
+            result += "<p><b>作者</b>： " + authors +"</p>";
         }
         result +="</ul>";
         return result;

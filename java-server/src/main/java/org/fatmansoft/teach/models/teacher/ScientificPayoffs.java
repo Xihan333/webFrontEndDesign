@@ -23,21 +23,9 @@ public class ScientificPayoffs {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    private Integer auditStatus = 0; //审核状态（审核中、已通过、未通过）
-
-    private String paperName;
+    private String paperName; //论文
 
     private String day; // 发布时间
 
-    private String identity; // 身份
-
-    private String firstAuthor; // 第一作者
-
-    private String otherAuthor; // 其他作者
-
-    private String correspondAuthor; // 通讯作者
-
-    private String periodical; // 期刊
-
-
+    private String authors; //作者
 }
