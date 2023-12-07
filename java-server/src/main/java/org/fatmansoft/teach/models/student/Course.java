@@ -37,12 +37,12 @@ public class Course {
 
     private Integer credit; //学分
 
-    //上课时间
-    private Integer day; //星期x   1 2 3 4 5 6 7
-
-    private Integer timeOrder; //第x节 1 2 3 4 5
-
-    private String place; //上课地点
+//    //上课时间
+//    private Integer day; //星期x   1 2 3 4 5 6 7
+//
+//    private Integer timeOrder; //第x节 1 2 3 4 5
+//
+//    private String place; //上课地点
 
     private Integer type; //必修 限选 任选  0 1 2 type
 
@@ -54,9 +54,9 @@ public class Course {
     @JoinColumn(name = "grade_id")
     private Grade grade; //开课年级
 
-    private Integer selectedCount = 0; //选课人数
-
-    private Integer courseCapacity; //课容量
+//    private Integer selectedCount = 0; //选课人数
+//
+//    private Integer courseCapacity; //课容量
 
     private String introduction; //课程介绍
 

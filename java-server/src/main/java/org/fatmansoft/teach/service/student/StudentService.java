@@ -4,6 +4,7 @@ import org.fatmansoft.teach.models.student.*;
 import org.fatmansoft.teach.models.system.EUserType;
 import org.fatmansoft.teach.models.system.Person;
 import org.fatmansoft.teach.models.system.User;
+import org.fatmansoft.teach.models.teacher.TeacherCourse;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
@@ -157,15 +158,15 @@ public class StudentService {
         if(sList == null || sList.size() == 0)
             return list;
         Map m;
-        Course c;
+        TeacherCourse tc;
         for(Score s:sList){
             m = new HashMap();
-            c = s.getCourse();
+            tc = s.getTeacherCourse();
             m.put("studentNum",s.getStudent().getPerson().getNum());
             m.put("scoreId",s.getScoreId());
-            m.put("courseNum", c.getNum());
-            m.put("courseName", c.getName());
-            m.put("credit", c.getCredit());
+            m.put("courseNum", tc.getCourse().getNum());
+            m.put("courseName", tc.getCourse().getName());
+            m.put("credit", tc.getCourse().getCredit());
             m.put("commonMark",s.getCommonMark());
             m.put("finalMark",s.getFinalMark());
             m.put("ranking", s.getRanking());
@@ -186,9 +187,7 @@ public class StudentService {
         if(sList == null || sList.size() == 0)
             return list;
         Map m;
-        Course c;
         for(Score s:sList){
-            c = s.getCourse();
             Integer mark = s.getCommonMark() + s.getFinalMark();
             if(mark >= 90)
                 count[0]++;
