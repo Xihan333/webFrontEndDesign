@@ -50,10 +50,10 @@
     width:220px;
 }
 .main {
-    ::v-deep .el-tabs__header{
+    :deep .el-tabs__header{
         margin: 0 0 10px;
     }
-    ::v-deep .base_form{
+    :deep .base_form{
         margin-left: 0px;
     }
 } 
