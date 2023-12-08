@@ -18,9 +18,6 @@ public interface AchievementRepository extends JpaRepository<Achievement,Integer
 
     Optional<Achievement> findByAchievementId(Integer achievementId);
 
-    @Query(value = "from Achievement where ?1='' or  teacher.person.num like %?1% or teacher.person.name like %?1% ")
-    List<Achievement> findAchievementListByTeacherNumName(String numName);
-
     @Query(value = "from Achievement where ?1='' or  student.person.num like %?1% or student.person.name like %?1% ")
     List<Achievement> findAchievementListByStudentNumName(String numName);
 
@@ -32,10 +29,6 @@ public interface AchievementRepository extends JpaRepository<Achievement,Integer
 
     @Query(value= "from Achievement where status=2")
     List<Achievement> findFailedAchievementList();
-    @Query(value= "from Achievement where teacher.teacherId= ?1")
-    List<Achievement> findAchievementByTeacherId(Integer teacherId);
-    @Query(value = "from Achievement where status=1 and ?1='' or  teacher.person.num like %?1% or teacher.person.name like %?1% ")
-    List<Achievement> findPassedAchievementListByTeacherNumName(String numName);
 
     @Query(value = "from Achievement where status=1 and ?1='' or  student.person.num like %?1% or student.person.name like %?1% ")
     List<Achievement> findPassedAchievementListByStudentNumName(String numName);
@@ -43,6 +36,4 @@ public interface AchievementRepository extends JpaRepository<Achievement,Integer
     @Query(value= "from Achievement where student.studentId= ?1 and status=1")
     List<Achievement> findPassedAchievementByStudentId(Integer studentId);
 
-    @Query(value= "from Achievement where teacher.teacherId= ?1 and status=1")
-    List<Achievement> findPassedAchievementByTeacherId(Integer teacherId);
 }
