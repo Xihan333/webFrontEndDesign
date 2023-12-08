@@ -26,7 +26,7 @@
       <!-- 团队名称 -->
       <el-table-column prop="groupName" label="团队名称" width="150" />   
       <!-- 时间 -->
-      <el-table-column sortable prop="day" label="时间" width="100" />   
+      <el-table-column sortable prop="day" label="时间" width="120" />   
       <!-- 地点 -->
       <el-table-column prop="location" label="实践地点" width="150" />   
       <el-table-column prop="digest" label="摘要" width="180"/>
@@ -83,7 +83,7 @@ import request from '../../request/axios_config.ts'
 
 const tableData = ref([])
 onMounted(() => {
-  // 发起请求获取当前工作站的报名数据
+  // 发起请求获取当前表格数据
   updateTableData()
 })
 const updateTableData = async () => {

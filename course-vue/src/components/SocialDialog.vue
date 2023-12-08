@@ -33,6 +33,8 @@
               :disabled-date="disabledDate"
               placeholder="请选择时间"
               :size="size"
+              format="YYYY/MM/DD"
+              value-format="YYYY/MM/DD"
             />
           </el-form-item>
           <el-form-item label="实践地点">
@@ -84,7 +86,7 @@
     digest:'',
     harvest:''
   })
-  
+
   const props = defineProps({
     show: {
       type: Boolean,
