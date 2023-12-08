@@ -161,7 +161,7 @@ public class SocialController {
         a.setDigest(digest);
         a.setHarvest(harvest);
         a.setLocation(location);
-        a.setAuditStatus(1);
+        a.setAuditStatus(0);
         a.setStudent(student);
         socialRepository.saveAndFlush(a);//插入新的social记录
         return CommonMethod.getReturnData(a.getSocialId());  // 将socialId返回前端

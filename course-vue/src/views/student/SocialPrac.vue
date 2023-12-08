@@ -50,7 +50,7 @@
           <el-button size="default" @click="handleEdit(scope.row)">
             查看
           </el-button>
-          <el-button size="default" @click="handleDel(scope.row.id, scope.$index + (currentPage - 1) * pageSize)">
+          <el-button size="default" @click="handleDel(scope.row)">
             删除
           </el-button>
         </template>
@@ -76,6 +76,7 @@
 
 <script setup>
 import { ref,computed,onMounted } from 'vue'
+//引入弹窗页面
 import SocialDialog from '../../components/SocialDialog.vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.ts'
@@ -142,24 +143,29 @@ const handleEdit = (rowData) => {
   dialogMode.value = 'view'
   show.value = true
 }
-async function handleDel(socialId,index)  {
-  console.log('点击删除，索引为：'+ index + ',目标为' + socialId)
-  // const res = await 不知道的接口
-  // if(res.data.code==200){
-  tableData.value.splice(index, 1) // pinia中也会同步删除, 因为是ref
+async function handleDel(rowData)  {
+  const res = await request.post('/api/social/socialDelete',{
+    data:{
+      socialId: rowData.socialId
+    } 
+  })
+  console.log(res.code)
+  console.log(res)
+  updateTableData()
+  if(res.data.code==200){
      ElMessage({
        message: '删除成功！',
        type: 'success',
        offset: 150
      })
-  // }
-  // else{
-  //   ElMessage({
-  //     message: '删除失败，请重试！',
-  //     type: 'error',
-  //     offset: 150
-  //   })
-  // }
+  }
+  else{
+    ElMessage({
+      message: '删除失败，请重试！',
+      type: 'error',
+      offset: 150
+    })
+  }
 }
 
 
