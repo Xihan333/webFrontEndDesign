@@ -8,14 +8,14 @@
     >
         <template v-for="item in itemList" :key="item.name">
             <el-menu-item v-if="item.role==role||item.role==3" :index="item.path">
-                <i class="el-icon-edit"></i>
+                <el-icon><UserFilled /></el-icon>
                 <span>{{item.name}}</span>
             </el-menu-item>
         </template>
         <template v-for="menu in menuList" :key="menu.name">
             <el-sub-menu v-if="menu.role==role||menu.role==3" :index="menu.index">
             <template #title>  
-                <i class="el-icon-edit"></i>
+                <el-icon><Menu /></el-icon>
                 <span>{{ menu.name }}</span>  
             </template>
             <el-menu-item 
@@ -36,10 +36,10 @@
     border-radius: 5px;
     height: 100%;
 }
-.el-menu-item :focus{
-    background-color: #6FB6C1;
-    color: white;
-}
+// .el-menu-item :focus{
+//     background-color: #6FB6C1;
+//     color: white;
+// }
 .el-menu-item:hover{
     background-color: #6FB6C1;
     color: white;

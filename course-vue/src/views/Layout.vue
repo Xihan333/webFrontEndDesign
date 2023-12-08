@@ -1,40 +1,41 @@
 <template>
-    <div class="layout">
-        <el-container>
-            <el-header class="header">
+    <el-container>
+        <el-header class="header">
 
-            </el-header>
-            <el-container class="middle">
-                <el-aside class="side">
+        </el-header>
+        <el-container class="middle">
+            <el-aside class="side">
+                <div class="sideMenu">
                     <Menu/>
-                </el-aside>
-                <el-main class="main">
-                    <el-tabs
-                        class="tab"
-                        type="card"
-                        v-model="tabValue"
-                        @tab-remove="removeTab"
-                        @tab-click="clickTab"
-                    >
-                    <el-tab-pane class="tabPane"
-                                 v-for="item in tabPaneList" 						      
-                                 :closable="item.close" 
-                                 :key="item.name" 
-                                 :label="item.title" 
-                                 :name="item.name"
-                    >
-                        <el-scrollbar>
-                            <router-view/>  
-                        </el-scrollbar>
-                    </el-tab-pane>
-                    </el-tabs>
-                </el-main>
-            </el-container>
-            <el-footer @click="kk" class="footer">
-                FOOT
-            </el-footer>
+                </div>
+                <div class="copyright">
+                    <p>Copyright©</p>
+                    <p>2023-1220 捍卫小狗</p> 
+                </div>
+            </el-aside>
+            <el-main class="main">
+                <el-tabs
+                    class="tab"
+                    type="card"
+                    v-model="tabValue"
+                    @tab-remove="removeTab"
+                    @tab-click="clickTab"
+                >
+                <el-tab-pane class="tabPane"
+                                v-for="item in tabPaneList" 						      
+                                :closable="item.close" 
+                                :key="item.name" 
+                                :label="item.title" 
+                                :name="item.name"
+                >
+                    <el-scrollbar>
+                        <router-view/>  
+                    </el-scrollbar>
+                </el-tab-pane>
+                </el-tabs>
+            </el-main>
         </el-container>
-    </div>
+    </el-container>
 </template>
 <style lang="scss" scoped>
 .header{
@@ -45,33 +46,59 @@
     background-color: white;
     box-shadow: 0px 2px 6px rgb(213, 213, 213);
 }
-.side{
-    margin: 6px 0px 5px 6px;
-    width:220px;
-}
-.main {
-    :deep .el-tabs__header{
-        margin: 0 0 10px;
-    }
-    :deep .base_form{
-        margin-left: 0px;
-    }
-} 
-.tapPane{
-
-}
 .middle{
     position: absolute;
-    top: 60px;
-    bottom: 50px;
+    top: 68px;
+    bottom: 10px;
     width: 100%;
+    border-radius: 5px;
+    .side{
+        margin: 0px 20px 0px 6px;
+        width:220px;
+        height: 100%;
+        .sideMenu{
+            position: absolute;
+            top: 0px;
+            bottom: 75px;
+            width: 220px;
+        }
+        .copyright{
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0px;
+            width: 220px;
+            margin-top: 10px;
+            height: 65px;
+            background: linear-gradient(#afe5e8,#6FB6C1,#3999a8);
+            p{
+                margin: 2px;
+                width: 100%;
+                color: white;
+                font-size: 13px;
+            }
+        }
+    }
+    .main {
+        :deep .el-tabs__header{
+            margin: 0 0 10px;
+        }
+        :deep .base_form{
+            margin-left: 0px;
+        }
+        margin-right: 10px;
+    } 
 }
 .footer{
     position: absolute;
     bottom: 0px;
     width: 100%;
-    height: 50px;
-    background-color: rgb(255, 255, 255);
+    height: 20px;
+    background-color: #668e95;
+    font-size: 15px;
+    text-align: center;
+    color: white;
 }
 </style>
 <script setup>
