@@ -168,9 +168,6 @@ async function handleDel(rowData)  {
   }
 }
 
-
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -199,7 +196,8 @@ el-table{
     color: white;
   }
 }
-
-
+.pagination{
+  margin-top: 10px;
+}
 
 </style>
