@@ -25,9 +25,7 @@ public class TeacherIntroduceService {
     @Autowired
     private ScientificPayoffsRepository scientificPayoffsRepository;
 
-    /**
-     * 学生简历信息
-     */
+
     public Map getIntroduceDataMap(Integer personId){
         Optional<Teacher> op = teacherRepository.findByPersonPersonId(personId);
         Person p = op.get().getPerson();
@@ -47,10 +45,6 @@ public class TeacherIntroduceService {
         o.put("title","基本信息");
         o.put("content",getTeacherBasicInfo(op.get()));
         attachList.add(o);
-        Map m = new HashMap();
-        m.put("title","所获荣誉");
-        m.put("content",getTeacherAchievement(op.get().getTeacherId()));
-        attachList.add(m);
         Map s = new HashMap();
         s.put("title","科研成果");
         s.put("content",getTeacherScientific(op.get().getTeacherId()));
@@ -72,38 +66,21 @@ public class TeacherIntroduceService {
         result += "<p><b>住址</b>： "+s.get("address") + "</p>";
         return result;
     }
-    //返回学生的荣誉信息
-    public String getTeacherAchievement(Integer teacherId){
-        List<Achievement> pList = achievementRepository.findPassedAchievementByTeacherId(teacherId);
-        if(pList==null||pList.size()==0)
-            return "<ul>无所获荣誉</ul>" ;
-        String result="", prizeLevel="", prizeName="", content="";
-        result +="<ul>";
-        for(int i=0;i<pList.size();i++){
-            prizeLevel = pList.get(i).getLevel();
-            prizeName = pList.get(i).getName();
-            content = pList.get(i).getContent();
-            result += "<p>" + (i+1) + ". <b>级别</b>：" + prizeLevel +"</p>";
-            result += "<p><b>荣誉名称</b>： " + prizeName +"</p>";
-            result += "<p><b>荣誉详情</b>： " + content +"</p>";
-        }
-        result +="</ul>";
-        return result;
-    }
+
 
     public String getTeacherScientific(Integer teacherId){
         List<ScientificPayoffs> pList = scientificPayoffsRepository.findScientificPayoffsByTeacherId(teacherId);
         if(pList==null||pList.size()==0)
             return "<ul>无科研成果</ul>" ;
-        String result="", paperName="", identity="", periodical="";
+        String result="", paperName="", day="", authors="";
         result +="<ul>";
         for(int i=0;i<pList.size();i++){
             paperName = pList.get(i).getPaperName();
-            identity = pList.get(i).getIdentity();
-            periodical = pList.get(i).getPeriodical();
+            day = pList.get(i).getDay();
+            authors = pList.get(i).getAuthors();
             result += "<p>" + (i+1) + ". <b>论文标题</b>：" + paperName  +"</p>";
-            result += "<p><b>担任角色</b>： " + identity +"</p>";
-            result += "<p><b>发表期刊</b>： " + periodical +"</p>";
+            result += "<p><b>发表时间</b>： " + day +"</p>";
+            result += "<p><b>作者</b>： " + authors +"</p>";
         }
         result +="</ul>";
         return result;

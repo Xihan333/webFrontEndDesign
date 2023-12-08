@@ -23,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,135 +69,59 @@ public class CourseController {
 
     @Autowired
     private GradeService gradeService;
+
     @Autowired
     private CampusRepository campusRepository;
 
-    @PostMapping("/getCourseOptionItemListByGradeId")
-    public DataResponse getCourseOptionItemListByGradeId(@Valid @RequestBody DataRequest dataRequest) {
-        return courseService.getCourseOptionItemListByGradeId(dataRequest);
+    //根据年级GradeId获取课程列表
+    @PostMapping("/getCoursesByGradeId")
+    public DataResponse getCoursesByGradeId(@Valid @RequestBody DataRequest dataRequest) {
+        return courseService.getCoursesByGradeId(dataRequest);
     }
 
-    @PostMapping("/getCourseOptionItemListByStudentId")
-    public DataResponse getCourseOptionItemListByStudentId(@Valid @RequestBody DataRequest dataRequest) {
-        return courseService.getCourseOptionItemListByStudentId(dataRequest);
+    //获取我的课表（学生端）
+    @GetMapping("/getMyCourses")
+    public DataResponse getMyCourses() {
+        return teacherCourseService.getMyCourses();
     }
 
-    @PostMapping("/getCourseOptionItemListByTeacherId")
-    public OptionItemList getCourseOptionItemListByTeacherId(@Valid @RequestBody DataRequest dataRequest) {
-        Integer teacherId=0;
-        Integer userId=dataRequest.getInteger("userId");
-        if(userId!=null){
-            Teacher teacher=null;
-            Optional<Teacher> opT=teacherRepository.findByUserId(userId);
-            if(opT.isPresent()){
-                teacher=opT.get();
-            }
-            if(teacher!=null){
-                teacherId=teacher.getTeacherId();
-            }
-        }
-        else {
-            teacherId=dataRequest.getInteger("teacherId");
-        }
-        List<Course> cList = courseRepository.findCourseListByTeacherId(teacherId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Course c : cList) {
-            itemList.add(new OptionItem(c.getCourseId(), c.getNum(), c.getNum()+"-"+c.getName()));
-        }
-        return new OptionItemList(0, itemList);
+    //获取我教的课程（教师端）
+    @GetMapping("/getMyTeacherCourses")
+    public DataResponse getMyTeacherCourses() {
+        return teacherCourseService.getMyTeacherCourses();
     }
 
-    @PostMapping("/getByStudentIdAndNumName")
-    /*学生根据课程名/课序号查询课程
-      所需参数 userId numName
-     */
-    public DataResponse getByStudentIdAndNumName(@Valid @RequestBody DataRequest dataRequest) {
-        Integer userId=dataRequest.getInteger("userId");
-        String numName= dataRequest.getString("numName");
-        Integer studentId=0;
-        Student student=null;
-        Optional<Student> opS=studentRepository.findByUserId(userId);
-        if(opS.isPresent()){
-            student=opS.get();
-        }
-        if(student!=null){
-            studentId=student.getStudentId();
-        }
-        List<Course> cList = courseRepository.findCourseListByStudentIdAndNumName(studentId,numName);
-        List dataList = courseService.getCourseMapList(cList);
-        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
-    }
-
-    @PostMapping("/getByTeacherIdAndNumName")
-    /*教师根据课程名/课序号查询课程
-      所需参数 userId numName
-     */
-    public DataResponse getByTeacherIdAndNumName(@Valid @RequestBody DataRequest dataRequest) {
-        Integer userId=dataRequest.getInteger("userId");
-        String numName= dataRequest.getString("numName");
-        Integer teacherId=0;
-        Teacher teacher=null;
-        Optional<Teacher> opT=teacherRepository.findByUserId(userId);
-        if(opT.isPresent()){
-            teacher=opT.get();
-        }
-        if(teacher!=null){
-            teacherId=teacher.getTeacherId();
-        }
-        List<Course> cList = courseRepository.findCourseListByTeacherIdAndNumName(teacherId,numName);  //数据库查询操作
-        List dataList = courseService.getCourseMapList(cList);
-        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
+    //根据教师teacherId获取教授的课程
+    @PostMapping("/getCoursesByTeacherId")
+    public DataResponse getCoursesByTeacherId(@Valid @RequestBody DataRequest dataRequest) {
+        return teacherCourseService.getCoursesByTeacherId(dataRequest);
     }
 
 
-    @PostMapping("/getCoursesByCourseNumName")
-    /*管理员根据课程名/课序号查询课程
-      所需参数 numName
-     */
-    public DataResponse getCoursesByCourseNumName(@Valid @RequestBody DataRequest dataRequest) {
-        String numName= dataRequest.getString("numName");
-        List<Course> cList = courseRepository.findCourseListByNumName(numName);  //数据库查询操作
-        List dataList = courseService.getCourseMapList(cList);
-        return CommonMethod.getReturnData(dataList);  //根据框架规范，应返回Map 的list
+    //根据课程名/课序号查询课程
+    @PostMapping("/getByCourseNumName")
+    public DataResponse getByCourseNumName(@Valid @RequestBody DataRequest dataRequest) {
+        return teacherCourseService.getByCourseNumName(dataRequest);
     }
 
-    @PostMapping("/getByCourseId")
-    /*根据课程id查询课程
-      所需参数 courseId
-    */
-    public DataResponse getByCourseId(@Valid @RequestBody DataRequest dataRequest) {
-        Integer courseId= dataRequest.getInteger("courseId");
-        Optional<Course> opCourse = courseRepository.findByCourseId(courseId);
-        Course course=opCourse.get();
-        Map data=courseService.getMapFromCourse(course);
-        return CommonMethod.getReturnData(data);  //按照测试框架规范会送Map的list
-    }
 
-    @PostMapping("/getByStudentId")
-    /*根据学生查询课程 studentId
-      所需参数 studentId
-    */
-    //此处可能有bug
-    public DataResponse getByStudentId(@Valid @RequestBody DataRequest dataRequest) {
-        Integer studentId= dataRequest.getInteger("studentId");
-        List<Course> dataList = courseRepository.findCourseListByStudentId(studentId);
-        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
-    }
-
-    @PostMapping("/addOrEditCourse")
+    //添加课程
+    @PostMapping("/addCourse")
     @PreAuthorize("hasRole('ADMIN')")
-    /*管理员修改添加课程
-      所需参数 courseId teacherCourseId form(courseNum,courseName,gradeName,hour,credit,time,place,teacherNum,teacherName)
-    */
-    public DataResponse addOrEditCourse(@Valid @RequestBody DataRequest dataRequest) {
-        return courseService.addOrEditCourse(dataRequest);
+    public DataResponse addCourse(@Valid @RequestBody DataRequest dataRequest) {
+        return  teacherCourseService.addCourse(dataRequest);
     }
 
+    //编辑课程
+    @PostMapping("/editCourse")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DataResponse editCourse(@Valid @RequestBody DataRequest dataRequest) {
+        return  teacherCourseService.editCourse(dataRequest);
+    }
+
+    //删除课程 courseId
     @PostMapping("/deleteCourse")
     @PreAuthorize("hasRole('ADMIN')")
-    /*管理员删除课程
-      所需参数 courseId
-     */
     public DataResponse deleteCourse(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.deleteCourse(dataRequest);
     }
@@ -209,25 +134,25 @@ public class CourseController {
      */
     @PostMapping("getCoursesByType")
     public DataResponse getCoursesByType(@Valid @RequestBody DataRequest dataRequest){
-        return courseService.getCoursesByType(dataRequest);
+        return teacherCourseService.getCoursesByType(dataRequest);
     }
 
     //根据教师名字查询课程
     @PostMapping("/getCoursesByTeacherName")
     public DataResponse getCoursesByTeacherName(@Valid @RequestBody DataRequest dataRequest) {
-        return courseService.getCoursesByTeacherName(dataRequest);
+        return teacherCourseService.getCoursesByTeacherName(dataRequest);
     }
 
 
     //根据课程开设时间查询课程  day timeOrder
     @PostMapping("/getCoursesByDayTimeOrder")
     public DataResponse getCoursesByDayTimeOrder(@Valid @RequestBody DataRequest dataRequest) {
-        return courseService.getCoursesByDayTimeOrder(dataRequest);
+        return teacherCourseService.getCoursesByDayTimeOrder(dataRequest);
     }
 
     @PostMapping("/selectCourse")
     public DataResponse selectCourse(@Valid @RequestBody DataRequest dataRequest){
-        return courseService.selectCourse(dataRequest);
+        return teacherCourseService.selectCourse(dataRequest);
     }
 
     //TODO：管理增删某一门课程的学生
@@ -235,7 +160,7 @@ public class CourseController {
     //退课
     @PostMapping("/cancelCourse")
     public DataResponse cancelCourse(@Valid @RequestBody DataRequest dataRequest){
-        return courseService.cancelCourse(dataRequest);
+        return teacherCourseService.cancelCourse(dataRequest);
     }
 
     //开启选课（管理员）

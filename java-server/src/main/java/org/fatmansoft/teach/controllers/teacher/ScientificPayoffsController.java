@@ -112,60 +112,6 @@ public class ScientificPayoffsController {
         return CommonMethod.getReturnData(scientificPayoffsService.getMapFromScientificPayoffs(a)); //这里回传包含竞赛信息的Map对象
     }
 
-    /**
-     * ScientificPayoffsEditSave 前端竞赛信息提交服务
-     * 前端把所有数据打包成一个Json对象作为参数传回后端，后端直接可以获得对应的Map对象form, 再从form里取出所有属性，复制到
-     * 实体对象里，保存到数据库里即可，如果是添加一条记录， id 为空 计算新的id， 复制相关属性，保存，如果是编辑原来的信息，
-     * scientificPayoffsId不为空。则查询出实体对象，复制相关属性，保存后修改数据库信息，永久修改
-     * @return  新建修改旅程的主键 scientificPayoffs_id 返回前端
-     */
-
-    @PostMapping("/scientificPayoffsEditSave")
-    public DataResponse studentEditSave(@Valid @RequestBody DataRequest dataRequest) {
-        Integer scientificPayoffsId = dataRequest.getInteger("scientificPayoffsId");  //获取scientificPayoffs_id值
-        Map form = dataRequest.getMap("form"); //参数获取Map对象
-        String day = CommonMethod.getString(form,"day");
-        String identity = CommonMethod.getString(form,"identity");
-        String firstAuthor = CommonMethod.getString(form,"firstAuthor");  //Map 获取属性的值
-        String otherAuthor = CommonMethod.getString(form,"otherAuthor");  //Map 获取属性的值
-        String correspondAuthor = CommonMethod.getString(form,"correspondAuthor");  //Map 获取属性的值
-        String periodical = CommonMethod.getString(form,"periodical");  //Map 获取属性的值
-        String paperName = CommonMethod.getString(form,"paperName");  //Map 获取属性的值
-        String num = CommonMethod.getString(form,"num");
-        String name = CommonMethod.getString(form,"name");
-        Optional<Teacher> t = teacherRepository.findByPersonNum(num);
-        Teacher teacher = null;
-        if(t.isPresent()){
-            teacher = t.get();
-        }else{
-            return CommonMethod.getReturnMessageError("该教师不存在，请输入正确姓名或学号");
-        }
-        ScientificPayoffs a = null;
-        Optional<ScientificPayoffs> op;
-        if(scientificPayoffsId != null) {
-            op= scientificPayoffsRepository.findById(scientificPayoffsId);  //查询对应数据库中主键为id的值的实体对象
-            if(op.isPresent()) {
-                a = op.get();
-            }
-        }
-        if(a == null){
-            scientificPayoffsId = getNewScientificPayoffsId(); //获取ScientificPayoffs新的主键
-            a = new ScientificPayoffs();
-            a.setScientificPayoffsId(scientificPayoffsId);
-        }
-        a.setDay(day);
-        a.setIdentity(identity);
-        a.setFirstAuthor(firstAuthor);
-        a.setOtherAuthor(otherAuthor);
-        a.setCorrespondAuthor(correspondAuthor);
-        a.setPeriodical(periodical);
-        a.setPaperName(paperName);
-        a.setAuditStatus(1);
-        a.setTeacher(teacher);
-        scientificPayoffsRepository.saveAndFlush(a);//插入新的scientificPayoffs记录
-        return CommonMethod.getReturnData(a.getScientificPayoffsId());  // 将scientificPayoffsId返回前端
-    }
-
 
     @PostMapping("/scientificPayoffsTeacherEditSave")
     @PreAuthorize("hasRole('ROLE_TEACHER')")
@@ -173,14 +119,9 @@ public class ScientificPayoffsController {
         Integer scientificPayoffsId = dataRequest.getInteger("scientificPayoffsId");  //获取scientificPayoffs_id值
         Map form = dataRequest.getMap("form"); //参数获取Map对象
         String day = CommonMethod.getString(form,"day");
-        String identity = CommonMethod.getString(form,"identity");
-        String firstAuthor = CommonMethod.getString(form,"firstAuthor");  //Map 获取属性的值
-        String otherAuthor = CommonMethod.getString(form,"otherAuthor");  //Map 获取属性的值
-        String correspondAuthor = CommonMethod.getString(form,"correspondAuthor");  //Map 获取属性的值
-        String periodical = CommonMethod.getString(form,"periodical");  //Map 获取属性的值
+        String authors = CommonMethod.getString(form,"authors");
         String paperName = CommonMethod.getString(form,"paperName");  //Map 获取属性的值
-        String num = CommonMethod.getString(form,"num");
-        String name = CommonMethod.getString(form,"name");
+
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
         if(!uOp.isPresent())
@@ -204,71 +145,10 @@ public class ScientificPayoffsController {
             a.setScientificPayoffsId(scientificPayoffsId);
         }
         a.setDay(day);
-        a.setIdentity(identity);
-        a.setFirstAuthor(firstAuthor);
-        a.setOtherAuthor(otherAuthor);
-        a.setCorrespondAuthor(correspondAuthor);
-        a.setPeriodical(periodical);
+        a.setAuthors(authors);
         a.setPaperName(paperName);
         a.setTeacher(s);
-        a.setAuditStatus(0);
         scientificPayoffsRepository.saveAndFlush(a);//插入新的ScientificPayoffs记录
         return CommonMethod.getReturnData(a.getScientificPayoffsId());  // 将scientificPayoffsId返回前端
-    }
-
-    @PostMapping("/show/scientificPayoffsWaiting")
-    public DataResponse scientificPayoffsWaiting(@Valid @RequestBody DataRequest dataRequest) {
-        List dataList = scientificPayoffsService.getWaitingScientificPayoffsMapList();
-        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
-    }
-
-    @PostMapping("/show/scientificPayoffsPassed")
-    public DataResponse scientificPayoffsPassed(@Valid @RequestBody DataRequest dataRequest) {
-        List dataList = scientificPayoffsService.getPassedScientificPayoffsMapList();
-        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
-    }
-
-    @PostMapping("/show/scientificPayoffsFailed")
-    public DataResponse scientificPayoffsFailed(@Valid @RequestBody DataRequest dataRequest) {
-        List dataList = scientificPayoffsService.getFailedScientificPayoffsMapList();
-        return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
-    }
-
-    @PostMapping("/examine/scientificPayoffsPass")
-    @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse scientificPayoffsPass(@Valid @RequestBody DataRequest dataRequest) {
-        Integer scientificPayoffsId = dataRequest.getInteger("scientificPayoffsId");  //获取scientificPayoffs_id值
-        ScientificPayoffs a= null;
-        Optional<ScientificPayoffs> op;
-        if(scientificPayoffsId != null) {
-            op= scientificPayoffsRepository.findById(scientificPayoffsId);   //查询获得实体对象
-            if(op.isPresent()) {
-                a = op.get();
-            }
-            if(a!=null){
-                a.setAuditStatus(1);
-                scientificPayoffsRepository.save(a);
-            }
-        }
-        return CommonMethod.getReturnMessageOK();  //通知前端操作正常
-    }
-
-    @PostMapping("/examine/scientificPayoffsFail")
-    @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse scientificPayoffsFail(@Valid @RequestBody DataRequest dataRequest) {
-        Integer scientificPayoffsId = dataRequest.getInteger("scientificPayoffsId");  //获取scientificPayoffs_id值
-        ScientificPayoffs a= null;
-        Optional<ScientificPayoffs> op;
-        if(scientificPayoffsId != null) {
-            op= scientificPayoffsRepository.findById(scientificPayoffsId);   //查询获得实体对象
-            if(op.isPresent()) {
-                a = op.get();
-            }
-            if(a!=null){
-                a.setAuditStatus(2);
-                scientificPayoffsRepository.save(a);
-            }
-        }
-        return CommonMethod.getReturnMessageOK();  //通知前端操作正常
     }
 }

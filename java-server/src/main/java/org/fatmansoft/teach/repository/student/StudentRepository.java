@@ -32,7 +32,7 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query(value = "select s from User u,Student s where u.userId=?1 and u.person.personId=s.person.personId")
     Optional<Student> findByUserId(Integer userId);
 
-    @Query(value = "select s.student from Score s where s.course.courseId=?1")
+    @Query(value = "select s.student from Score s where s.teacherCourse.course.courseId=?1")
     List<Student> findStudentListByCourseId(Integer courseId);
 
     @Query(value = "from Student where ?1='' or person.num like %?1% or person.name like %?1% ")

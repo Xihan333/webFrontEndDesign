@@ -29,4 +29,37 @@ public interface TeacherCourseRepository extends JpaRepository<TeacherCourse,Int
     @Modifying
     @Query(value = "delete from TeacherCourse where course.courseId=?1 and teacher.teacherId=?2")
     void deleteByCourseCourseIdAndTeacherTeacherId(Integer courseId,Integer teacherId);
+
+    @Query(value = "from TeacherCourse where course.grade.gradeId=?1")
+    List<TeacherCourse> findTeacherCourseListByGradeGradeId(Integer gradeId);
+
+    @Query(value = "select s.teacherCourse from Score s where s.student.studentId=?1")
+    List<TeacherCourse> findTeacherCourseListByStudentId(Integer studentId);
+
+    @Query(value = "from TeacherCourse where teacher.teacherId=?1")
+    List<TeacherCourse> findCourseListByTeacherId(Integer teacherId);
+
+    @Query(value = "from TeacherCourse where ?1='' or course.num like %?1% or course.name like %?1%")
+    List<TeacherCourse> findCourseListByCourseNumName(String numName);
+
+    @Query(value = "from TeacherCourse where course.courseId=?1")
+    List<TeacherCourse> findTeacherCourseListByCourseId(Integer courseId);
+
+    @Query(value = "from TeacherCourse where course.type=?1")
+    List<TeacherCourse> findCourseListByTypeId(Integer courseType);
+
+    @Query(value = "from TeacherCourse where teacher.person.name=?1")
+    List<TeacherCourse> findCourseListByteacherName(Integer teacherName);
+
+    @Query(value = "from TeacherCourse where day=?1 and timeOrder=?2")
+    List<TeacherCourse> findCourseListByDayAndTimeOrder(Integer day, Integer timeOrder);
+
+    @Query(value = "from TeacherCourse where day=?1")
+    List<TeacherCourse> findCourseListByDay(Integer day);
+
+    @Query(value = "from TeacherCourse where timeOrder=?1")
+    List<TeacherCourse> findCourseListByTimeOrder(Integer timeOrder);
+
+    @Query(value = "select s.teacherCourse from Score s where s.student.studentId=?3 and s.teacherCourse.day=?1 and s.teacherCourse.timeOrder=?2 ")
+    Optional<TeacherCourse> findCourseListByStudentIdAndDayAndTimeOrder(Integer day, Integer timeOrder, Integer studentId);
 }

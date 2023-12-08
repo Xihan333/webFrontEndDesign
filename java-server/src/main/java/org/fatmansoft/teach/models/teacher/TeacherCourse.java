@@ -25,5 +25,15 @@ public class TeacherCourse {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-    //初步打算让course维护关系
+
+    private Integer selectedCount = 0; //选课人数
+
+    private Integer courseCapacity; //课容量
+
+    //上课时间
+    private Integer day; //星期x   1 2 3 4 5 6 7
+
+    private Integer timeOrder; //第x节 1 2 3 4 5
+
+    private String place; //上课地点
 }

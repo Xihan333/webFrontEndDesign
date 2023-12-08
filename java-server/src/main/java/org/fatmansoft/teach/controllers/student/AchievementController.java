@@ -78,19 +78,6 @@ public class AchievementController {
         return achievementService.getAchievementInfo(dataRequest);
     }
 
-    /**
-     * achievementEditSave 前端成就信息提交服务
-     * 前端把所有数据打包成一个Json对象作为参数传回后端，后端直接可以获得对应的Map对象form, 再从form里取出所有属性，复制到
-     * 实体对象里，保存到数据库里即可，如果是添加一条记录， id 为空 计算新的id， 复制相关属性，保存，如果是编辑原来的信息，
-     * achievementId不为空。则查询出实体对象，复制相关属性，保存后修改数据库信息，永久修改
-     * @return  新建修改成就的主键 achievement_id 返回前端
-     */
-    @PostMapping("/achievementEditSave")
-    @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse achievementEditSave(@Valid @RequestBody DataRequest dataRequest) {
-        return achievementService.achievementEditSave(dataRequest);
-    }
-
     @PostMapping("/achievementStudentEditSave")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse achievementStudentEditSave(@Valid @RequestBody DataRequest dataRequest) {

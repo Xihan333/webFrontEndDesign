@@ -3,6 +3,7 @@ package org.fatmansoft.teach.models.student;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.fatmansoft.teach.models.teacher.TeacherCourse;
 
 import javax.persistence.*;
 /**
@@ -31,8 +32,8 @@ public class Score {
     //初步打算让student维护关系
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "teacher_course_id")
+    private TeacherCourse teacherCourse;
 
     private Integer ranking;
 

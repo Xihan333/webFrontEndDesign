@@ -29,9 +29,9 @@ public class ScoreService {
         m.put("studentName",s.getStudent().getPerson().getName());
         m.put("clazzName",s.getStudent().getClazz().getClazzName());
         m.put("gradeName",s.getStudent().getClazz().getGrade().getGradeName());
-        m.put("courseNum",s.getCourse().getNum());
-        m.put("courseName",s.getCourse().getName());
-        m.put("credit",s.getCourse().getCredit());
+        m.put("courseNum",s.getTeacherCourse().getCourse().getNum());
+        m.put("courseName",s.getTeacherCourse().getCourse().getName());
+        m.put("credit",s.getTeacherCourse().getCourse().getCredit());
         m.put("commonMark",s.getCommonMark());
         m.put("finalMark",s.getFinalMark());
         m.put("isResult",s.getIsResult());

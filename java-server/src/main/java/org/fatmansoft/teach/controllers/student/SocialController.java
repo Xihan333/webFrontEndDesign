@@ -51,16 +51,18 @@ public class SocialController {
         return id;
     }
 
+    //根据学生学号姓名查询
     @PostMapping("/getSocialList")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public DataResponse geSocialList(@Valid @RequestBody DataRequest dataRequest) {
+    public DataResponse getSocialList(@Valid @RequestBody DataRequest dataRequest) {
         String numName= dataRequest.getString("numName");
         List dataList = socialService.getSocialMapList(numName);
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
+
     @PostMapping("/getStudentSocial")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public DataResponse getStudentSocial(@Valid @RequestBody DataRequest dataRequest) {
+    public DataResponse getStudentSocial() {
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
         if(!uOp.isPresent())
@@ -130,52 +132,6 @@ public class SocialController {
         String digest = CommonMethod.getString(form,"digest");
         String harvest = CommonMethod.getString(form,"harvest");
         String location = CommonMethod.getString(form,"location");
-        String num = CommonMethod.getString(form,"num");
-        String name = CommonMethod.getString(form,"name");
-        Optional<Student> s = studentRepository.findByPersonNum(num);
-        Student student = null;
-        if(s.isPresent()){
-            student = s.get();
-        }else{
-            return CommonMethod.getReturnMessageError("该学生不存在，请输入正确姓名或学号");
-        }
-        Social a = null;
-        Optional<Social> op;
-        if(socialId != null) {
-            op= socialRepository.findById(socialId);  //查询对应数据库中主键为id的值的实体对象
-            if(op.isPresent()) {
-                a = op.get();
-            }
-        }
-        if(a == null){
-            socialId = getNewSocialId(); //获取Social新的主键
-            a = new Social();
-            a.setSocialId(socialId);
-        }
-        a.setDay(day);
-        a.setGroupName(groupName);
-        a.setTheme(theme);
-        a.setDigest(digest);
-        a.setHarvest(harvest);
-        a.setLocation(location);
-        a.setAuditStatus(1);
-        a.setStudent(student);
-        socialRepository.saveAndFlush(a);//插入新的social记录
-        return CommonMethod.getReturnData(a.getSocialId());  // 将socialId返回前端
-    }
-    @PostMapping("/socialStudentEditSave")
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public DataResponse socialStudentEditSave(@Valid @RequestBody DataRequest dataRequest) {
-        Integer socialId = dataRequest.getInteger("socialId");  //获取social_id值
-        Map form = dataRequest.getMap("form"); //参数获取Map对象
-        String day = CommonMethod.getString(form,"day");  //Map 获取属性的值
-        String groupName = CommonMethod.getString(form,"groupName");  //Map 获取属性的值
-        String theme = CommonMethod.getString(form,"theme");//Map 获取属性的值
-        String digest = CommonMethod.getString(form,"digest");
-        String harvest = CommonMethod.getString(form,"harvest");
-        String location = CommonMethod.getString(form,"location");
-        String num = CommonMethod.getString(form,"num");
-        String name = CommonMethod.getString(form,"name");
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
         if(!uOp.isPresent())
@@ -184,7 +140,8 @@ public class SocialController {
         Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
-        Student s= sOp.get();
+        Student student= sOp.get();
+        Integer studentId = student.getStudentId();
         Social a = null;
         Optional<Social> op;
         if(socialId != null) {
@@ -204,26 +161,26 @@ public class SocialController {
         a.setDigest(digest);
         a.setHarvest(harvest);
         a.setLocation(location);
-        a.setStudent(s);
         a.setAuditStatus(0);
-        socialRepository.saveAndFlush(a);//插入新的Social记录
+        a.setStudent(student);
+        socialRepository.saveAndFlush(a);//插入新的social记录
         return CommonMethod.getReturnData(a.getSocialId());  // 将socialId返回前端
     }
 
-    @PostMapping("/show/socialWaiting")
-    public DataResponse socialWaiting(@Valid @RequestBody DataRequest dataRequest) {
+    @GetMapping("/show/socialWaiting")
+    public DataResponse socialWaiting() {
         List dataList = socialService.getWaitingSocialMapList();
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
-    @PostMapping("/show/socialPassed")
-    public DataResponse socialPassed(@Valid @RequestBody DataRequest dataRequest) {
+    @GetMapping("/show/socialPassed")
+    public DataResponse socialPassed() {
         List dataList = socialService.getPassedSocialMapList();
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
-    @PostMapping("/show/socialFailed")
-    public DataResponse socialFailed(@Valid @RequestBody DataRequest dataRequest) {
+    @GetMapping("/show/socialFailed")
+    public DataResponse socialFailed() {
         List dataList = socialService.getFailedSocialMapList();
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
