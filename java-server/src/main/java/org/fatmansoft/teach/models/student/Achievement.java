@@ -21,10 +21,6 @@ public class Achievement {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
-
     private String name;
     //奖项名称
 
