@@ -55,7 +55,6 @@ public class AchievementService {
     public Map getMapFromAchievement(Achievement achievement) {
         Map m = new HashMap();
         Student s;
-        Teacher t;
         if (achievement == null)
             return m;
         m.put("achievementId",achievement.getAchievementId());
@@ -68,8 +67,7 @@ public class AchievementService {
         Integer status = achievement.getStatus();
         m.put("statusName", ComDataUtil.getInstance().getStatusByValue(status));//性别类型的值转换成数据类型名
         s = achievement.getStudent();
-        t = achievement.getTeacher();
-        if (s == null && t ==null)
+        if (s == null)
             return m;
         if (s != null) {
             m.put("personId", s.getPerson().getPersonId());
@@ -85,22 +83,7 @@ public class AchievementService {
             m.put("phone", s.getPerson().getPhone());
             m.put("address", s.getPerson().getAddress());
             m.put("introduce", s.getPerson().getIntroduce());
-        }else{
-            m.put("personId", t.getPerson().getPersonId());
-            m.put("num", t.getPerson().getNum());
-            m.put("name", t.getPerson().getName());
-            m.put("dept", t.getPerson().getDept());
-            m.put("card", t.getPerson().getCard());
-            String gender = t.getPerson().getGender();
-            m.put("gender", t.getPerson().getGender());
-            m.put("genderName", ComDataUtil.getInstance().getDictionaryLabelByValue("XBM", gender)); //性别类型的值转换成数据类型名
-            m.put("birthday", t.getPerson().getBirthday());  //时间格式转换字符串
-            m.put("email", t.getPerson().getEmail());
-            m.put("phone", t.getPerson().getPhone());
-            m.put("address", t.getPerson().getAddress());
-            m.put("introduce", t.getPerson().getIntroduce());
         }
-
         return m;
     }
 
@@ -115,12 +98,6 @@ public class AchievementService {
         for (int i = 0; i < sList.size(); i++) {
             dataList.add(getMapFromAchievement(sList.get(i)));
         }
-        List<Achievement> tList = achievementRepository.findAchievementListByTeacherNumName(numName);  //数据库查询操作
-        if (tList == null || tList.size() == 0)
-            return dataList;
-        for (int i = 0; i < tList.size(); i++) {
-            dataList.add(getMapFromAchievement(tList.get(i)));
-        }
         return dataList;
     }
 
@@ -131,12 +108,6 @@ public class AchievementService {
             return dataList;
         for (int i = 0; i < sList.size(); i++) {
             dataList.add(getMapFromAchievement(sList.get(i)));
-        }
-        List<Achievement> tList = achievementRepository.findPassedAchievementListByTeacherNumName(numName);  //数据库查询操作
-        if (tList == null || tList.size() == 0)
-            return dataList;
-        for (int i = 0; i < tList.size(); i++) {
-            dataList.add(getMapFromAchievement(tList.get(i)));
         }
         return dataList;
     }
@@ -177,17 +148,6 @@ public class AchievementService {
     public List getAchievementMapListByStudentId(Integer studentId) {
         List dataList = new ArrayList();
         List<Achievement> sList = achievementRepository.findAchievementByStudentId(studentId);  //数据库查询操作
-        if (sList == null || sList.size() == 0)
-            return dataList;
-        for (int i = 0; i < sList.size(); i++) {
-            dataList.add(getMapFromAchievement(sList.get(i)));
-        }
-        return dataList;
-    }
-
-    public List getAchievementMapListByTeacherId(Integer teacherId) {
-        List dataList = new ArrayList();
-        List<Achievement> sList = achievementRepository.findAchievementByTeacherId(teacherId);  //数据库查询操作
         if (sList == null || sList.size() == 0)
             return dataList;
         for (int i = 0; i < sList.size(); i++) {
@@ -248,55 +208,6 @@ public class AchievementService {
         return CommonMethod.getReturnData(getMapFromAchievement(a)); //这里回传包含成就信息的Map对象
     }
 
-    public DataResponse achievementEditSave(DataRequest dataRequest) {
-        Integer achievementId = dataRequest.getInteger("achievementId");  //获取achievement_id值
-        Map form = dataRequest.getMap("form"); //参数获取Map对象
-        String achievementName = CommonMethod.getString(form,"achievementName");  //Map 获取属性的值
-        String level = CommonMethod.getString(form,"level");  //Map 获取属性的值
-        String type = CommonMethod.getString(form,"type");  //Map 获取属性的值
-        String content = CommonMethod.getString(form,"content");  //Map 获取属性的值
-        String time = CommonMethod.getString(form,"time");  //Map 获取属性的值
-        String num = CommonMethod.getString(form,"num");
-        String name = CommonMethod.getString(form,"name");
-        Optional<Student> s = studentRepository.findByPersonNum(num);
-        Student student = null;
-        Optional<Teacher> t = teacherRepository.findByPersonNum(num);
-        Teacher teacher = null;
-        if(s.isPresent()){
-            student = s.get();
-        }else if(t.isPresent()){
-            teacher = t.get();
-        }else{
-            return CommonMethod.getReturnMessageError("该学生或教师不存在，请输入正确姓名或学号");
-        }
-        Achievement a = null;
-        Optional<Achievement> op;
-        if(achievementId != null) {
-            op= achievementRepository.findById(achievementId);  //查询对应数据库中主键为id的值的实体对象
-            if(op.isPresent()) {
-                a = op.get();
-            }
-        }
-        if(a == null){
-            achievementId = getNewAchievementId(); //获取Achievement新的主键
-            a = new Achievement();
-            a.setAchievementId(achievementId);
-        }
-        a.setName(achievementName);
-        a.setLevel(level);
-        a.setContent(content);
-        a.setType(type);
-        a.setTime(time);
-        a.setStatus(1);
-        if(teacher == null){
-            a.setStudent(student);
-        }else{
-            a.setTeacher(teacher);
-        }
-        achievementRepository.saveAndFlush(a);//插入新的Achievement记录
-        return CommonMethod.getReturnData(a.getAchievementId());  // 将achievementId返回前端
-    }
-
 
     public DataResponse achievementStudentEditSave(DataRequest dataRequest) {
         Integer achievementId = dataRequest.getInteger("achievementId");  //获取achievement_id值
@@ -306,8 +217,6 @@ public class AchievementService {
         String type = CommonMethod.getString(form,"type");  //Map 获取属性的值
         String content = CommonMethod.getString(form,"content");  //Map 获取属性的值
         String time = CommonMethod.getString(form,"time");  //Map 获取属性的值
-        String num = CommonMethod.getString(form,"num");
-        String name = CommonMethod.getString(form,"name");
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
         if(!uOp.isPresent())

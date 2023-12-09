@@ -45,10 +45,6 @@ public class TeacherIntroduceService {
         o.put("title","基本信息");
         o.put("content",getTeacherBasicInfo(op.get()));
         attachList.add(o);
-        Map m = new HashMap();
-        m.put("title","所获荣誉");
-        m.put("content",getTeacherAchievement(op.get().getTeacherId()));
-        attachList.add(m);
         Map s = new HashMap();
         s.put("title","科研成果");
         s.put("content",getTeacherScientific(op.get().getTeacherId()));
@@ -71,23 +67,6 @@ public class TeacherIntroduceService {
         return result;
     }
 
-    public String getTeacherAchievement(Integer teacherId){
-        List<Achievement> pList = achievementRepository.findPassedAchievementByTeacherId(teacherId);
-        if(pList==null||pList.size()==0)
-            return "<ul>无所获荣誉</ul>" ;
-        String result="", prizeLevel="", prizeName="", content="";
-        result +="<ul>";
-        for(int i=0;i<pList.size();i++){
-            prizeLevel = pList.get(i).getLevel();
-            prizeName = pList.get(i).getName();
-            content = pList.get(i).getContent();
-            result += "<p>" + (i+1) + ". <b>级别</b>：" + prizeLevel +"</p>";
-            result += "<p><b>荣誉名称</b>： " + prizeName +"</p>";
-            result += "<p><b>荣誉详情</b>： " + content +"</p>";
-        }
-        result +="</ul>";
-        return result;
-    }
 
     public String getTeacherScientific(Integer teacherId){
         List<ScientificPayoffs> pList = scientificPayoffsRepository.findScientificPayoffsByTeacherId(teacherId);
