@@ -13,21 +13,35 @@ body{
             .el-tabs__item{
                 background-color: #f0f0f0; 
                 color: #929292;  
+                height: 35px;
             }
             .is-active{
-                background-color: #e3f2ef;   
+                background-color: #e5f1f3;   
                 color: #498f9a;
             }
         }
     }
     .el-tabs__content {
         position: absolute;
-        top: 40px;
+        top: 35px;
         bottom: 0px;
         width: 100%;
         background-color: white;
         overflow: auto;
+        padding: 10px;
     }
 }
+// 为了更高的优先级,无可奈何嵌套了这么多层
+.main {
+    .el-tabs--card > .el-tabs__header{
+        height: 35px;
+    }
+    .el-table__header thead{
+        th{
+            background-color: #D3E9EC;
+        }
+    }
+}
+
 
 
