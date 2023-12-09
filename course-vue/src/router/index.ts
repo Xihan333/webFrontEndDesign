@@ -69,6 +69,18 @@ const routes = [
         path: ('peer-assess'), 
         component: () => import('../views/student/PeerAssess.vue') 
       },
+      { 
+        path: ('all-blog'), 
+        component: () => import('../views/student/AllBlog.vue') 
+      },
+      { 
+        path: ('my-blog'), 
+        component: () => import('../views/student/MyBlog.vue') 
+      },
+      { 
+        path: ('new-blog'), 
+        component: () => import('../views/student/NewBlog.vue') 
+      },
     ]
   },
   {
@@ -131,6 +143,30 @@ const routes = [
       { 
         path: ('course-manage'),
         component: () => import('../views/admin/CourseManage.vue') 
+      },
+      { 
+        path: ('student-manage'),
+        component: () => import('../views/admin/StudentManage.vue') 
+      },
+      { 
+        path: ('teacher-manage'),
+        component: () => import('../views/admin/TeacherManage.vue') 
+      },
+      { 
+        path: ('class-manage'),
+        component: () => import('../views/admin/ClassManage.vue') 
+      },
+      { 
+        path: ('social-audit'),
+        component: () => import('../views/admin/SocialAudit.vue') 
+      },
+      { 
+        path: ('achievement-audit'),
+        component: () => import('../views/admin/AchievementAudit.vue') 
+      },
+      { 
+        path: ('peer-audit'),
+        component: () => import('../views/admin/PeerAudit.vue') 
       },
     ]
   },
