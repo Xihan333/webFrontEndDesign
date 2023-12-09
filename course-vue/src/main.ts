@@ -7,7 +7,7 @@ import ElementPlus from "element-plus";
 // import "element-plus/dist/index.css"; // 默认的样式
 import "uno.css";
 import './styles/normalize.css'
-import './styles/element/global.css'
+import './styles/element/global.scss'
 
 // If you want to use ElMessage, import it.
 // import "element-plus/theme-chalk/src/message.scss";

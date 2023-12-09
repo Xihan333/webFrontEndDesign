@@ -53,9 +53,11 @@
     width: 100%;
     border-radius: 5px;
     .side{
-        margin: 0px 20px 0px 6px;
+        position: absolute;
         width:220px;
-        height: 100%;
+        top: 0px;
+        bottom: 0px;
+        left: 6px;
         .sideMenu{
             position: absolute;
             top: 0px;
@@ -81,24 +83,15 @@
         }
     }
     .main {
-        :deep .el-tabs__header{
-            margin: 0 0 10px;
-        }
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 246px;
+        right: 8px;
         :deep .base_form{
             margin-left: 0px;
         }
-        margin-right: 10px;
     } 
-}
-.footer{
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    height: 20px;
-    background-color: #668e95;
-    font-size: 15px;
-    text-align: center;
-    color: white;
 }
 </style>
 <script setup>
