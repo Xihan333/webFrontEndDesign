@@ -1,0 +1,33 @@
+body{
+    background-color: rgb(245, 245, 245);
+}
+.el-tabs{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    .el-tabs__header {
+        margin: 0px;
+        .el-tabs__nav{
+            width: fit-content;
+            .el-tabs__item{
+                background-color: #f0f0f0; 
+                color: #929292;  
+            }
+            .is-active{
+                background-color: #e3f2ef;   
+                color: #498f9a;
+            }
+        }
+    }
+    .el-tabs__content {
+        position: absolute;
+        top: 40px;
+        bottom: 0px;
+        width: 100%;
+        background-color: white;
+        overflow: auto;
+    }
+}
+
+
