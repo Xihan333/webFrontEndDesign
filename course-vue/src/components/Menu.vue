@@ -7,7 +7,7 @@
         unique-opened="true"
     >
         <template v-for="item in itemList" :key="item.name">
-            <el-menu-item v-if="item.role==role||item.role==3" :index="item.path">
+            <el-menu-item v-if="item.role==role||item.role==3" :index="item.path" @click="openTab(item)">
                 <el-icon><UserFilled /></el-icon>
                 <span>{{item.name}}</span>
             </el-menu-item>
@@ -35,11 +35,8 @@
 .menu{
     border-radius: 5px;
     height: 100%;
+    overflow: auto;
 }
-// .el-menu-item :focus{
-//     background-color: #6FB6C1;
-//     color: white;
-// }
 .el-menu-item:hover{
     background-color: #6FB6C1;
     color: white;

@@ -60,7 +60,7 @@ export const useCommonStore = defineStore('common', () => {
           path:'score-manage',
         },
       ]
-    },
+    }, 
     {
       name:'课程中心',
       index:'0',
@@ -77,6 +77,25 @@ export const useCommonStore = defineStore('common', () => {
         {
           name:'查看成绩',
           path:'score-view',
+        },
+      ]
+    },
+    {
+      name:'人员管理',
+      index:'1',
+      role:0,
+      item:[
+        {
+          name:'学生管理',
+          path:'student-manage',
+        },
+        {
+          name:'教师管理',
+          path:'teacher-manage',
+        },
+        {
+          name:'班级管理',
+          path:'class-manage',
         },
       ]
     },
@@ -104,8 +123,46 @@ export const useCommonStore = defineStore('common', () => {
       ]
     },
     {
-      name:'账号安全',
+      name:'学工管理',
       index:'2',
+      role:0,
+      item:[
+        {
+          name:'社会实践',
+          path:'social-audit',
+        },
+        {
+          name:'成果奖励',
+          path:'achievement-audit',
+        },
+        {
+          name:'互评管理',
+          path:'peer-audit',
+        },
+      ]
+    },
+    {
+      name:'博客系统',
+      index:'2',
+      role:1,
+      item:[
+        {
+          name:'所有文章',
+          path:'all-blog',
+        },
+        {
+          name:'我的文章',
+          path:'my-blog',
+        },
+        {
+          name:'发布新文章',
+          path:'new-blog',
+        },
+      ]
+    },
+    {
+      name:'账号安全',
+      index:'3',
       role:3,
       item:[
         {
