@@ -17,9 +17,35 @@ export const useAppStore = defineStore('app', () => {
   }
 })
 
+export const useStudentStore = defineStore('student', () => {
+  let scoreList:object=[
+    {
+      "studentName":'',
+      "gradeName":'',
+      "courseNum":'000',
+      "courseName":'高等数学',
+      "credit":4,
+      "commonMark":90,
+      "finalMark":90,
+      "isResult":1
+    }
+  ] 
+  function updateScoreList(newValue:any){
+    scoreList=newValue;
+  }
+  return {
+    scoreList,updateScoreList
+  }
+})
+
+
 // ☯️采用组合式写法
 export const useCommonStore = defineStore('common', () => {
+  // 是否加载中
+  const loading=ref(false);
+  // 当前选中的标签页
   const selectedTab=ref('homepage')
+  // 已打开的标签页列表, 默认是首页
   const tabPaneList = ref([
     {
       title:'个人主页',
@@ -191,15 +217,19 @@ export const useCommonStore = defineStore('common', () => {
        //将需打开标签页路由赋予editableTabsvalue
        selectedTab.value=item.path;
   }
-  function updateSelectedTab(name:string){
+  function updateSelectedTab(name:string){//更新当前标签页
     selectedTab.value=name;
   }
-  function updateTabList(name:string){
+  function updateTabList(name:string){//更新标签页列表
     tabPaneList.value=tabPaneList.value.filter(tab=>tab.name!==name);
+  }
+  function updateLoading(newValue:boolean){
+    loading.value=newValue;
   }
 
   return {
-    tabPaneList,itemList,menuList,selectedTab,addTab,changeTab,updateSelectedTab,updateTabList
+    tabPaneList,itemList,menuList,selectedTab,addTab,changeTab,updateSelectedTab,updateTabList,
+    loading,updateLoading
   }
 }, {
   persist: {

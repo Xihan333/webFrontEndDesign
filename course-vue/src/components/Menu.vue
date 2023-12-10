@@ -46,7 +46,7 @@
 <script lang="ts" setup>
 import { useCommonStore } from "~/stores/app"
 
-const role=1;
+const role=1;// 暂时
 const store=useCommonStore();
 const itemList=store.itemList;
 const menuList=store.menuList;

@@ -1,7 +1,13 @@
 <template>
     <el-container>
         <el-header class="header">
-
+            <img src="../assets/img/logo.png" alt="校徽">
+            <div class="logout">
+                <p>欢迎回来，黄婉姗</p>
+                <div title="退出">
+                    <el-icon @click="logout" size="20px" id="logout"><Expand /></el-icon>
+                </div>
+            </div>
         </el-header>
         <el-container class="middle">
             <el-aside class="side">
@@ -28,7 +34,7 @@
                                 :label="item.title" 
                                 :name="item.name"
                 >
-                    <el-scrollbar>
+                    <el-scrollbar v-loading="loading">
                         <router-view/>  
                     </el-scrollbar>
                 </el-tab-pane>
@@ -42,13 +48,30 @@
     position: absolute;
     top: 0px;
     width: 100%;
-    height: 60px;
+    height: 40px;
     background-color: white;
     box-shadow: 0px 2px 6px rgb(213, 213, 213);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+        height: 94%;
+    }
+    .logout{
+        display: flex;
+        p{
+            margin: 0px 10px 0px 0px;
+            font-size: 13px;
+            line-height: 20px;
+        }
+    }
+    #logout:hover{
+        color: #6FB6C1;
+    }
 }
 .middle{
     position: absolute;
-    top: 68px;
+    top: 48px;
     bottom: 10px;
     width: 100%;
     border-radius: 5px;
@@ -103,7 +126,7 @@ import { storeToRefs } from "pinia";// 保证其响应性
 
 const role=1;
 const store=useCommonStore();
-const {selectedTab:tabValue,tabPaneList} = storeToRefs(store);
+const {selectedTab:tabValue,tabPaneList,loading} = storeToRefs(store);
 function clickTab(tab){
     var name=JSON.stringify(tab.paneName).replace('"','').replace('"','')//对tab参数处理，以获得当前点击的标签页的路由
     store.changeTab(name);
@@ -141,6 +164,9 @@ function removeTab(name) {
         name="/teacher/"+tabValue.value;
     }
     router.push(name)//路由跳转以实现切换界面
+}
+function logout(){
+
 }
 
 </script>
