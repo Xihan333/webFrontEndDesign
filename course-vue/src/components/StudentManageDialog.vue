@@ -79,7 +79,7 @@
 </template>
 
 <script setup>
-import {defineProps, defineEmits, ref, watch} from 'vue'
+import {defineProps, defineEmits, ref, watchEffect} from 'vue'
 import {ElMessageBox} from 'element-plus'
 import request from '../request/axios_config.ts'
 
@@ -111,13 +111,12 @@ const disabledDate = (time) => {
 }
 
 
-watch(() => props.dialogMode, (newMode) => {
-    console.log('发现有变动')
-    if (newMode === 'add') {
+watchEffect(() => {
+    if (props.dialogMode === 'add') {
       // 如果是新增模式，清空或重置表单数据
       rowData.value = {studentId:'',name:'', num:'', gender:'',genderName:'',dept:'',birthday:'',card:'',email:'',phone:''}
   }
-     else if (newMode === 'view') {
+     else if (props.dialogMode === 'view') {
       // 如果是查看模式，填充数据
       rowData.value = { ...props.rowData }
       console.log(rowData.value)
