@@ -72,7 +72,7 @@
   </template>
   
   <script setup>
-  import { defineProps, defineEmits, ref,watch } from 'vue'
+  import { defineProps, defineEmits, ref,watchEffect } from 'vue'
   import { ElMessageBox } from 'element-plus'
   import request from '../request/axios_config.ts'
 
@@ -101,13 +101,13 @@
     return time.getTime() > Date.now()
   }
 
-  // 监听 dialogMode 的变化
-  watch(() => props.dialogMode, (newMode) => {
-    if (newMode === 'add') {
+  // 监听
+  watchEffect(() => {
+    if (props.dialogMode === 'add') {
       // 如果是新增模式，清空或重置表单数据
       rowData.value = {socialId :'',theme: '',groupName: '',day: '',location:'',digest:'',harvest:''}
   }
-     else if (newMode === 'view') {
+     else if (props.dialogMode === 'view') {
       // 如果是查看模式，填充数据
       rowData.value = { ...props.rowData }
       console.log(rowData.value)
