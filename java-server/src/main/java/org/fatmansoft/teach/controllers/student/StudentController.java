@@ -136,6 +136,12 @@ public class StudentController {
         return studentService.getCourseOptionItemListByClazzId(dataRequest);
     }
 
+    //获取当前用所在班级学生名单（不包括该学生本人）
+    @PostMapping("/getMyClassStudents")
+    public DataResponse getMyClassStudents() {
+        return studentService.getMyClassStudents();
+    }
+
     //根据courseId获取选课学生
     @PostMapping("/getStudentOptionItemListByCourseId")
     public DataResponse getCourseOptionItemListByCourseId(@Valid @RequestBody DataRequest dataRequest) {
