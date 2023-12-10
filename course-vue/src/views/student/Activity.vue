@@ -62,7 +62,6 @@ onMounted(() => {
     updateTableData()
 })
 const updateTableData = async () => {
-    console.log('发起了请求')
     //这里有点迷糊，不太确定接口
     const res = await request.post('/api/activity/getStudentActivity',{
         data:{}
