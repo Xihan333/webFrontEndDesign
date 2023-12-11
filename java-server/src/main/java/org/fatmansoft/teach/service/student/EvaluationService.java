@@ -46,7 +46,7 @@ public class EvaluationService {
         return id;
     }
 
-    public DataResponse getEvaluationList(DataRequest dataRequest) {
+    public DataResponse getEvaluationList() {
         List dataList = evaluationService.getEvaluationMapList();
         return CommonMethod.getReturnData(dataList);
     }
@@ -61,14 +61,17 @@ public class EvaluationService {
         m.put("eval", evaluation.getEval());
         student = evaluation.getStudent();
         evaluator = evaluation.getEvaluator();
-        if (student == null)
-            return m;
-        if (student != null) {
-            m.put("personId", student.getPerson().getPersonId());
-            m.put("num", student.getPerson().getNum());
-            m.put("name", student.getPerson().getName());
-            m.put("className",student.getClazz().getClazzName());
-        }
+        m.put("student",student);
+        m.put("evaluator",evaluator);
+//        if (student == null)
+//            return m;
+//        if (student != null) {
+//            m.put("personId", student.getPerson().getPersonId());
+//            m.put("num", student.getPerson().getNum());
+//            m.put("name", student.getPerson().getName());
+//            m.put("className",student.getClazz().getClazzName());
+//        }
+//        m.put("evaluatorId",evaluator.getStudentId());
         return m;
     }
 
