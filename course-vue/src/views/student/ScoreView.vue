@@ -1,6 +1,6 @@
 <!-- 查看成绩 -->
 <template>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" border>
         <el-table-column prop="courseNum" label="课序号" width="auto" />
         <el-table-column prop="courseName" label="课程名称" width="auto" />
         <el-table-column prop="credit" label="学分" width="auto" />
@@ -14,30 +14,39 @@
 // 在Menu.vue中点击获取成绩数据, 通过pinia实现组件间数据传送
 import { useStudentStore, useCommonStore } from '~/stores/app'
 import { storeToRefs } from "pinia";// 保证其响应性
+import { onMounted } from 'vue';
+import request from '../../request/axios_config.ts'
+
 const studentStore=useStudentStore();
 const commonStore=useCommonStore();
-const tableData=studentStore.scoreList;
-console.log(tableData)
-// async()=>{
-//     // 📌获取成绩数据
-//     commonStore.updateLoading(true);
-//     const res = await request.post('/api/score/getScoreList',{
-//         data:{
-//             achievementId: rowData.achievementId
-//         } 
-//     })
-//     console.log(res)
-//     if(res.data.code==200){
-
-//         commonStore.updateLoading(false);
-//     }
-//     else{
-//         commonStore.updateLoading(false);
-//         ElMessage({
-//             message: '加载失败，请重试！',
-//             type: 'error',
-//             offset: 150
-//         })
-//     }
-// }
+let tableData=[];
+const userInfo=commonStore.userInfo;
+onMounted(async()=>{
+    commonStore.updateLoading(true);
+    // const res1 = await request.post('/auth/login',{
+    //     data:{
+    //         username: '202200300095',
+    //         password:'123456'
+    //     } 
+    // })
+    const res = await request.post('/score/getScoreList',{
+        data:{
+            userId: userInfo.id
+        } 
+    })
+    console.log('请看请求',res)
+    if(res.data.code==200){
+        //studentStore.updateScoreList(res.data.data);
+        tableData=res.data.data;
+        commonStore.updateLoading(false);
+    }
+    else{
+        commonStore.updateLoading(false);
+        ElMessage({
+            message: '加载失败，请重试！',
+            type: 'error',
+            offset: 150
+        })
+    }
+})
 </script>

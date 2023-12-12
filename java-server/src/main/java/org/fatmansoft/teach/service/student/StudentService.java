@@ -212,32 +212,37 @@ public class StudentService {
     public DataResponse getStudentOptionItemList(DataRequest dataRequest) {
         String numName = dataRequest.getString("numName");
         List<Student> sList = studentRepository.findStudentListByNumName(numName);  //数据库查询操作
-        OptionItem item;
-        List<OptionItem> itemList = new ArrayList();
-        for (Student s : sList) {
-            itemList.add(new OptionItem(s.getStudentId(), s.getPerson().getNum(), s.getPerson().getNum()+"-"+s.getPerson().getName()));
+        List dataList = new ArrayList();
+        if(sList == null || sList.size() == 0)
+            return CommonMethod.getReturnData(dataList);
+        for(int i = 0; i < sList.size();i++) {
+            dataList.add(getMapFromStudent(sList.get(i)));
         }
-        return CommonMethod.getReturnData(itemList);
+        return CommonMethod.getReturnData(dataList);
     }
 
     public DataResponse getCourseOptionItemListByClazzId(DataRequest dataRequest) {
         Integer clazzId=dataRequest.getInteger("clazzId");
         List<Student> sList = studentRepository.findStudentListByClazzClazzId(clazzId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Student s : sList) {
-            itemList.add(new OptionItem(s.getStudentId(), s.getPerson().getNum(), s.getPerson().getNum()+"-"+s.getPerson().getName()));
+        List dataList = new ArrayList();
+        if(sList == null || sList.size() == 0)
+            return CommonMethod.getReturnData(dataList);
+        for(int i = 0; i < sList.size();i++) {
+            dataList.add(getMapFromStudent(sList.get(i)));
         }
-        return CommonMethod.getReturnData(itemList);
+        return CommonMethod.getReturnData(dataList);
     }
 
     public DataResponse getStudentOptionItemListByCourseId(DataRequest dataRequest) {
         Integer courseId=dataRequest.getInteger("courseId");
         List<Student> sList = studentRepository.findStudentListByCourseId(courseId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Student s : sList) {
-            itemList.add(new OptionItem(s.getStudentId(), s.getPerson().getNum(), s.getPerson().getNum()+"-"+s.getPerson().getName()));
+        List dataList = new ArrayList();
+        if(sList == null || sList.size() == 0)
+            return CommonMethod.getReturnData(dataList);
+        for(int i = 0; i < sList.size();i++) {
+            dataList.add(getMapFromStudent(sList.get(i)));
         }
-        return CommonMethod.getReturnData(itemList);
+        return CommonMethod.getReturnData(dataList);
     }
 
 
@@ -397,5 +402,29 @@ public class StudentService {
         s.setClazz(c);
         studentRepository.save(s);  //修改保存学生信息
         return CommonMethod.getReturnData(s.getStudentId());  // 将studentId返回前端
+    }
+
+    public DataResponse getMyClassStudents() {
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student s= sOp.get();
+        Integer studentId = s.getStudentId();
+        Integer clazzId = s.getClazz().getClazzId();
+        List<Student> sList = studentRepository.findStudentListByClazzClazzId(clazzId);  //数据库查询操作
+        List dataList = new ArrayList();
+        if(sList == null || sList.size() == 0)
+            return CommonMethod.getReturnData(dataList);
+        for(int i = 0; i < sList.size();i++) {
+            if(sList.get(i).getStudentId() != studentId){
+                dataList.add(getMapFromStudent(sList.get(i)));
+            }
+        }
+        return CommonMethod.getReturnData(dataList);
     }
 }

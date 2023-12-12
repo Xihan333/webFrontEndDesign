@@ -83,7 +83,7 @@
       updateTableData()
     })
     const updateTableData = async () => {
-      const res = await request.get('/api/achievement/getStudentAchievement')
+      const res = await request.get('/achievement/getStudentAchievement')
       tableData.value = res.data.data
     }
     // 弹窗的显示

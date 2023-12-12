@@ -4,7 +4,7 @@ import { ElLoading } from 'element-plus'
 // 创建axios实例, 将来基于创建出的实例进行配置和请求
 // 这样做不会污染原始axios实例
 const instance = axios.create({
-  baseURL: '',
+  baseURL: 'http://localhost:9090/api',
   timeout: 5000
 })
 

@@ -345,7 +345,7 @@ public class TeacherCourseService {
     }
 
     public DataResponse selectCourse(DataRequest dataRequest) {
-        if(Const.COURSE_SELECT_AVAILABLE == 1){
+        if(Const.COURSE_SELECT_AVAILABLE.equals("1")){
             return CommonMethod.getReturnMessageError("选课未开启！");
         }
         Integer courseId = dataRequest.getInteger("courseId");
@@ -396,7 +396,7 @@ public class TeacherCourseService {
     }
 
     public DataResponse cancelCourse(DataRequest dataRequest) {
-        if(Const.COURSE_SELECT_AVAILABLE == 1){
+        if(Const.COURSE_SELECT_AVAILABLE.equals("1")){
             return CommonMethod.getReturnMessageError("选课未开启！");
         }
 
