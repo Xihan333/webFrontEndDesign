@@ -160,7 +160,6 @@ public class CourseController {
         return teacherCourseService.selectCourse(dataRequest);
     }
 
-    //TODO：管理增删某一门课程的学生 不知道管理要不要这个！！
 
     //退课
     @PostMapping("/cancelCourse")

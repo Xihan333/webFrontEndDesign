@@ -21,51 +21,79 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/score")
 public class ScoreController {
+
     @Autowired
     private CourseRepository courseRepository;
+
     @Autowired
     private ScoreRepository scoreRepository;
+
     @Autowired
     private ScoreService scoreService;
+
     @Autowired
     private StudentRepository studentRepository;
+
     @Autowired
     private TeacherRepository teacherRepository;
 
-    //获取某个学生的成绩 根据 gradeId clazzId userId  studentId courseId
+    //获取某个学生的成绩 根据 gradeId clazzId userId studentId courseId
     @PostMapping("/getScoreList")
     public DataResponse getScoreList(@Valid @RequestBody DataRequest dataRequest) {
         Integer gradeId = dataRequest.getInteger("gradeId");
         if(gradeId == null)
             gradeId = 0;
+        System.out.println("gradeId" + gradeId);
         Integer clazzId = dataRequest.getInteger("clazzId");
         if(clazzId == null)
             clazzId = 0;
-        Integer studentId=0;
-        Integer userId=dataRequest.getInteger("userId");
-        if(userId!=null){
+        System.out.println("clazzId" + clazzId);
+        Integer studentId = 0;
+        Integer userId = dataRequest.getInteger("userId");
+        if(userId != null){
             Student student=null;
             Optional<Student> opS=studentRepository.findByUserId(userId);
             if(opS.isPresent()){
-                student=opS.get();
+                student = opS.get();
             }
             if(student!=null){
-                studentId=student.getStudentId();
+                studentId = student.getStudentId();
             }
+            System.out.println("studentId" + studentId);
         }
         else {
-            studentId=dataRequest.getInteger("studentId");
+            studentId = dataRequest.getInteger("studentId");
         }
+        System.out.println("studentId" + studentId);
         Integer courseId = dataRequest.getInteger("courseId");
         if(courseId == null)
             courseId = 0;
+        System.out.println("courseId" + courseId);
         List<Score> sList = scoreRepository.findByStudentAndCourseAndGradeAndClazz(studentId, courseId, gradeId, clazzId);  //数据库查询操作
+        System.out.println(sList);
         List dataList = scoreService.getScoreMapList(sList);
         return CommonMethod.getReturnData(dataList);
     }
 
 
-    @PostMapping("/getScoreListByTeacherId")
+    //学生获取自己的课程
+    @PostMapping("/getMyCourseScores")
+    public DataResponse getMyCourseScores() {
+        return scoreService.getMyCourseScores();
+    }
+
+    //TODO: 教师id  course id
+    @PostMapping("/getTeacherCourseScores")
+    public DataResponse getTeacherCourseScores(@Valid @RequestBody DataRequest dataRequest) {
+        return scoreService.getTeacherCourseScores(dataRequest);
+    }
+
+
+    //TODO: 排名问题（留一留）
+
+
+
+    @PostMapping("/getScoreListByCourseId")
     public DataResponse getScoreListByTeacherId(@Valid @RequestBody DataRequest dataRequest) {
         Integer teacherId=0;
         Integer userId=dataRequest.getInteger("userId");
