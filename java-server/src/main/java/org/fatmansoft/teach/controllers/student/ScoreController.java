@@ -38,11 +38,14 @@ public class ScoreController {
         Integer gradeId = dataRequest.getInteger("gradeId");
         if(gradeId == null)
             gradeId = 0;
+        System.out.println("gradeId"+gradeId);
         Integer clazzId = dataRequest.getInteger("clazzId");
         if(clazzId == null)
             clazzId = 0;
+        System.out.println("clazzId"+clazzId);
         Integer studentId=0;
         Integer userId=dataRequest.getInteger("userId");
+        System.out.println("userId"+userId);
         if(userId!=null){
             Student student=null;
             Optional<Student> opS=studentRepository.findByUserId(userId);
@@ -55,8 +58,10 @@ public class ScoreController {
         }
         else {
             studentId=dataRequest.getInteger("studentId");
+            System.out.println("studentId"+studentId);
         }
         Integer courseId = dataRequest.getInteger("courseId");
+        System.out.println("courseId"+courseId);
         if(courseId == null)
             courseId = 0;
         List<Score> sList = scoreRepository.findByStudentAndCourseAndGradeAndClazz(studentId, courseId, gradeId, clazzId);  //数据库查询操作
