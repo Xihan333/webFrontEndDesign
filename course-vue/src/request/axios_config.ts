@@ -4,7 +4,7 @@ import { ElLoading } from 'element-plus'
 // 创建axios实例, 将来基于创建出的实例进行配置和请求
 // 这样做不会污染原始axios实例
 const instance = axios.create({
-  baseURL: '',
+  baseURL: 'http://localhost:9090/api',
   timeout: 5000
 })
 
@@ -13,7 +13,7 @@ let loading:any;
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前携带token(如果有的话)
-  config.headers.Authorization = 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDIyMDMwMDAzIiwiaWF0IjoxNzAyMDQ0OTA4LCJleHAiOjE3MDIxMzEzMDh9.cPXHuXf0JxKVzTDTDVh_VB49xc8WYMNnXh5nlAePN0upI4lhsFfIAsG6o3kwkhnsV_QKrSgQ2nqGCa_vXiCMfA'
+  config.headers.Authorization = 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDIyMDAzMDAwOTUiLCJpYXQiOjE3MDIyNzQ5OTksImV4cCI6MTcwMjM2MTM5OX0.bFwVik17At-Faoa_7wz2qNrM-PRBw4q8QdlDBwNoBn6ns_CGxuPM1oW0Vj6nxZLwXxMQUqGY5z-Jgh6T3d4dJg'
   console.log('请求url: ', config.url, '; 请求信息: ', config)
   // 开启加载动画
   loading = ElLoading.service({

@@ -41,6 +41,14 @@ export const useStudentStore = defineStore('student', () => {
 
 // ☯️采用组合式写法
 export const useCommonStore = defineStore('common', () => {
+  // 用户信息
+  let userInfo={
+    "id": 17,
+    "username": "202200300095",
+    "roles": "ROLE_STUDENT",
+    "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDIyMDAzMDAwOTUiLCJpYXQiOjE3MDIxOTg2NzMsImV4cCI6MTcwMjI4NTA3M30.uT9W-N-wD5f1Yzl-KbQ9kUhbKAZEGv-t_d6yb78oX5aHMQQb6d8ro0ri6-NTCHwQU5sZoO2G4dWwBQF_N-9d1w",
+    "tokenType": "Bearer"
+  };
   // 是否加载中
   const loading=ref(false);
   // 当前选中的标签页
@@ -229,7 +237,7 @@ export const useCommonStore = defineStore('common', () => {
 
   return {
     tabPaneList,itemList,menuList,selectedTab,addTab,changeTab,updateSelectedTab,updateTabList,
-    loading,updateLoading
+    loading,updateLoading,userInfo
   }
 }, {
   persist: {
