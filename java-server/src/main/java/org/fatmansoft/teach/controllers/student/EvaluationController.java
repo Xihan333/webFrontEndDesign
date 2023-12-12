@@ -24,8 +24,8 @@ public class EvaluationController {
     private EvaluationService evaluationService;
 
     @GetMapping("/getEvaluationList")
-    public DataResponse getEvaluationList(@Valid @RequestBody DataRequest dataRequest) {
-        return evaluationService.getEvaluationList(dataRequest);
+    public DataResponse getEvaluationList() {
+        return evaluationService.getEvaluationList();
     }
 
     @PostMapping("/evaluationEditSave")

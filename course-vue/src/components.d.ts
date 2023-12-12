@@ -38,6 +38,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SocialDialog: typeof import('./components/SocialDialog.vue')['default']
+    StudentManageDialog: typeof import('./components/StudentManageDialog.vue')['default']
+    TeacherManageDialog: typeof import('./components/TeacherManageDialog.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

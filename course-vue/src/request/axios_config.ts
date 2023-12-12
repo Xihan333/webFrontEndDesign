@@ -13,7 +13,7 @@ let loading:any;
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前携带token(如果有的话)
-  config.headers.Authorization = 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDIyMDAzMDAwOTUiLCJpYXQiOjE3MDIyNzQ5OTksImV4cCI6MTcwMjM2MTM5OX0.bFwVik17At-Faoa_7wz2qNrM-PRBw4q8QdlDBwNoBn6ns_CGxuPM1oW0Vj6nxZLwXxMQUqGY5z-Jgh6T3d4dJg'
+  config.headers.Authorization = 'Bearer ' + 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDIyMDMwMDAzIiwiaWF0IjoxNzAyMTgyMDcyLCJleHAiOjE3MDIyNjg0NzJ9.6T1gu2WP_n4IQ0c-l8eEQDbvBgixTOn41mGgh_SMeGMCVsQXNwL7lW_I7HRn9supwr-CpL9mfGpCx-hdLclLMw'
   console.log('请求url: ', config.url, '; 请求信息: ', config)
   // 开启加载动画
   loading = ElLoading.service({
