@@ -2,6 +2,7 @@ package org.fatmansoft.teach.controllers.student;
 
 import org.fatmansoft.teach.models.student.Student;
 import org.fatmansoft.teach.models.student.Course;
+import org.fatmansoft.teach.models.system.StaticValue;
 import org.fatmansoft.teach.models.teacher.Teacher;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
@@ -9,6 +10,7 @@ import org.fatmansoft.teach.payload.response.OptionItem;
 import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.student.*;
 import org.fatmansoft.teach.repository.system.PersonRepository;
+import org.fatmansoft.teach.repository.system.StaticValueRepository;
 import org.fatmansoft.teach.repository.system.UserRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherCourseRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
@@ -72,6 +74,9 @@ public class CourseController {
 
     @Autowired
     private CampusRepository campusRepository;
+
+    @Autowired
+    private StaticValueRepository staticValueRepository;
 
     //根据年级GradeId获取课程列表
     @PostMapping("/getCoursesByGradeId")
@@ -155,7 +160,7 @@ public class CourseController {
         return teacherCourseService.selectCourse(dataRequest);
     }
 
-    //TODO：管理增删某一门课程的学生
+    //TODO：管理增删某一门课程的学生 不知道管理要不要这个！！
 
     //退课
     @PostMapping("/cancelCourse")
@@ -163,12 +168,22 @@ public class CourseController {
         return teacherCourseService.cancelCourse(dataRequest);
     }
 
-    //开启选课（管理员）
+    /**
+     * 开启选课（管理员）
+     * @param dataRequest    string selectAvailable  1表示选课关闭 0表示开启
+     * @return
+     */
     @PostMapping("/changeCourseSelectAvailable")
     @PreAuthorize(" hasRole('ADMIN')")
     public DataResponse changeCourseSelectAvailable(@Valid @RequestBody DataRequest dataRequest){
-        Const.COURSE_SELECT_AVAILABLE = dataRequest.getInteger("available");
-        return CommonMethod.getReturnData(Const.COURSE_SELECT_AVAILABLE);
+        String select_available = dataRequest.getString("selectAvailable");
+        StaticValue available = staticValueRepository.findById(Const.COURSE_SELECT_AVAILABLE).orElse(null);
+        if(select_available.equals("1") || select_available.equals("0")){
+            available.setValue(select_available);
+        }else{
+            return CommonMethod.getReturnMessageError("获取参数值未知！");
+        }
+        staticValueRepository.save(available);
+        return CommonMethod.getReturnData(available.getValue());
     }
-
 }
