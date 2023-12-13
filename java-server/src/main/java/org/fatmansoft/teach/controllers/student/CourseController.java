@@ -167,6 +167,13 @@ public class CourseController {
         return teacherCourseService.cancelCourse(dataRequest);
     }
 
+    //添加学生选课（管理员）  studentId courseId teacerId
+    @PostMapping("/addStudentCourse")
+    public DataResponse addStudentCourse(@Valid @RequestBody DataRequest dataRequest){
+        return teacherCourseService.addStudentCourse(dataRequest);
+    }
+
+
     /**
      * 开启选课（管理员）
      * @param dataRequest    string selectAvailable  1表示选课关闭 0表示开启

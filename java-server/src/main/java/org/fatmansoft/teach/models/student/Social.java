@@ -3,6 +3,7 @@ package org.fatmansoft.teach.models.student;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
@@ -21,6 +22,7 @@ public class Social {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @NotBlank
     private Integer auditStatus = 0; //审核状态（审核中0、已通过1、未通过2）
 
     private String day; // 时间

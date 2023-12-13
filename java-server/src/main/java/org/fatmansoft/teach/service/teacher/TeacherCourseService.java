@@ -435,4 +435,38 @@ public class TeacherCourseService {
         return CommonMethod.getReturnMessageOK("退课成功");
     }
 
+    public DataResponse addStudentCourse(DataRequest dataRequest) {
+        Integer studentId = dataRequest.getInteger("studentId");
+        Integer courseId = dataRequest.getInteger("courseId");
+        Integer teacherId = dataRequest.getInteger("teacherId");
+        TeacherCourse teacherCourse = null;
+        Optional<TeacherCourse> optionalTeacherCourse = teacherCourseRepository.findByTeacherIdAndCourseId(teacherId,courseId);
+        if(optionalTeacherCourse.isEmpty()){
+            return CommonMethod.getReturnMessageError("课程不存在！");
+        }else{
+            teacherCourse = optionalTeacherCourse.get();
+        }
+
+        Optional<Student> sOp= studentRepository.findByStudentId(studentId);  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student student= sOp.get();
+
+        Integer selectedCount = teacherCourse.getSelectedCount();
+        Integer courseCapacity = teacherCourse.getCourseCapacity();
+        if(selectedCount >= courseCapacity){
+            teacherCourse.setCourseCapacity(++courseCapacity);
+        }
+
+        teacherCourse.setSelectedCount(++selectedCount);
+        teacherCourseRepository.save(teacherCourse);
+
+        Score score = new Score();
+        score.setTeacherCourse(teacherCourse);
+        score.setStudent(student);
+        score.setIsResult(0);
+        scoreRepository.save(score);
+
+        return CommonMethod.getReturnMessageOK("添加成功");
+    }
 }

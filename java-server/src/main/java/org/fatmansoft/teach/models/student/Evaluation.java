@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -28,8 +30,11 @@ public class Evaluation {
     @JoinColumn(name = "student_id")
     private Student student; //被评估者
 
+    @NotBlank
+    @Size(max = 200)
     private String eval; //评价内容
 
+    @NotBlank
     private String evalTime; //评价时间
 
 }
