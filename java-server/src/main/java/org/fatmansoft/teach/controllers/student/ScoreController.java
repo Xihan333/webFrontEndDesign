@@ -66,6 +66,7 @@ public class ScoreController {
         }
         System.out.println("studentId" + studentId);
         Integer courseId = dataRequest.getInteger("courseId");
+        System.out.println("courseId"+courseId);
         if(courseId == null)
             courseId = 0;
         System.out.println("courseId" + courseId);
@@ -82,7 +83,7 @@ public class ScoreController {
         return scoreService.getMyCourseScores();
     }
 
-    //TODO: 教师id  course id
+    //教师id  course id
     @PostMapping("/getTeacherCourseScores")
     public DataResponse getTeacherCourseScores(@Valid @RequestBody DataRequest dataRequest) {
         return scoreService.getTeacherCourseScores(dataRequest);
