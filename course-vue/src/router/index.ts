@@ -66,8 +66,16 @@ const routes = [
         component: () => import('../views/student/Achievement.vue') 
       },
       { 
-        path: ('peer-assess'), 
-        component: () => import('../views/student/PeerAssess.vue') 
+        path: ('peer-class'), 
+        component: () => import('../views/student/PeerClass.vue') 
+      },
+      { 
+        path: ('my-assess'), 
+        component: () => import('../views/student/MyAssess.vue') 
+      },
+      { 
+        path: ('assess-history'), 
+        component: () => import('../views/student/AssessHistory.vue') 
       },
       { 
         path: ('all-blog'), 

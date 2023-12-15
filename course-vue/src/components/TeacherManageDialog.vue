@@ -5,7 +5,7 @@
                    class="dialog" width="37%"
         >
         <template #header>
-            <div style="text-align: center; font-size: 18px ">新增学生</div>
+            <div style="text-align: center; font-size: 18px ">新增教师</div>
         </template>
         <el-form :model="rowData" size="large">
             <el-form-item label="姓名">
