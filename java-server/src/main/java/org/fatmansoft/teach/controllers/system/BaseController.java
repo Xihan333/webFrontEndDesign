@@ -375,7 +375,8 @@ public class BaseController {
 
     /**
      *  修改登录用户的密码
-     *  前台请求参数  oldPassword 用户的旧密码  newPassword 用户的新密码
+     *  前台请求参数  oldPassword 用户的旧
+     *  密码  newPassword 用户的新密码
      * 返回前端 正常操作
      * @return
      */

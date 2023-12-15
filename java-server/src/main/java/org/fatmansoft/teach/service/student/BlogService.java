@@ -45,7 +45,7 @@ public class BlogService {
         return id;
     }
 
-    public DataResponse getBlogList(DataRequest dataRequest) {
+    public DataResponse getBlogList() {
         List dataList = getBlogMapList();
         return CommonMethod.getReturnData(dataList);
     }

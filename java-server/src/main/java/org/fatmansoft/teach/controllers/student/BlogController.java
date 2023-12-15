@@ -33,12 +33,10 @@ public class BlogController {
 
     /**
      * 获取全部的博客
-     * @param dataRequest
-     * @return
      */
     @GetMapping("/getBlogList")
-    public DataResponse getBlogList(@Valid @RequestBody DataRequest dataRequest) {
-        return blogService.getBlogList(dataRequest);
+    public DataResponse getBlogList() {
+        return blogService.getBlogList();
     }
 
     /**
