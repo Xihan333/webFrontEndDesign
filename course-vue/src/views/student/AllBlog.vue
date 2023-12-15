@@ -17,9 +17,6 @@
             <p class="articles-count">文章 233</p>
             <button class="btn">查看文章</button>
         </div>
-        <div class="pinglyn">
-            我的评论
-        </div>
         <div class="comment">
             我的评论
         </div>
