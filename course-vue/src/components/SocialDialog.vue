@@ -122,7 +122,7 @@
     if (props.dialogMode === 'view') {
       // 调用修改接口
       console.log(props.rowData.socialId)
-      await request.post('/api/social/socialEditSave', {
+      await request.post('/social/socialEditSave', {
         data:{
             socialId:props.rowData.socialId,
             form:{
@@ -137,7 +137,7 @@
       })
     } else {
       // 则调用新增接口
-      await request.post('/api/social/socialEditSave', {
+      await request.post('/social/socialEditSave', {
         data:{
             socialId:null,
             form:{

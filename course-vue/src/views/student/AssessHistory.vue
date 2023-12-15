@@ -87,8 +87,8 @@ const searchedTableData = computed(() => tableData.value.filter(
     //空参的情况
     !search.value ||
     // 按照主题theme和团队名称groupName搜索，忽略大小写
-    item.name.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.num.toLowerCase().includes(search.value.toLowerCase())
+    item.student.person.name.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.student.person.num.toLowerCase().includes(search.value.toLowerCase())
 ))
 const searchFn = () => {
   // 点击查询按钮后才开始查询
@@ -112,13 +112,13 @@ const handleEdit = (rowData) => {
   show.value = true
 }
 async function handleDel(rowData)  {
+  console.log(rowData)
   const res = await request.post('/evaluation/evaluationDelete',{
     data:{
         evaluationId: rowData.evaluationId
     } 
   })
-  console.log(res.code)
-  console.log(res)
+  console.log(res.data)
   updateTableData()
   if(res.data.code==200){
      ElMessage({

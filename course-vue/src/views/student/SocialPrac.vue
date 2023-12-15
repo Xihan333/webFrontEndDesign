@@ -87,7 +87,7 @@ onMounted(() => {
   updateTableData()
 })
 const updateTableData = async () => {
-  const res = await request.post('/api/social/getStudentSocial',{
+  const res = await request.post('/social/getStudentSocial',{
     data:{}
   })
   tableData.value = res.data.data
@@ -144,7 +144,7 @@ const handleEdit = (rowData) => {
   show.value = true
 }
 async function handleDel(rowData)  {
-  const res = await request.post('/api/social/socialDelete',{
+  const res = await request.post('/social/socialDelete',{
     data:{
       socialId: rowData.socialId
     } 
