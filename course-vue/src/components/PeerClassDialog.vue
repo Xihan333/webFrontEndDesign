@@ -1,5 +1,3 @@
-
-import { formContextKey } from 'element-plus';
 <!-- 编辑学生互评班级管理的弹窗组件 -->
 <!-- 主要是评价 -->
 <template>
@@ -7,7 +5,7 @@ import { formContextKey } from 'element-plus';
         <el-dialog :model-value="show"
                    :before-close="handleClose"
                    class="dialog" width="37%"
-                   >
+        >
             <template #header>
                 <div style="text-align: center; font-size: 18px;">评价</div>
             </template>
@@ -54,7 +52,8 @@ import request from '../request/axios_config.ts'
 
 const rowData=ref({
     name:'',
-    num:''
+    num:'',
+    studentId:''
 })
 const content = ref()
 const props = defineProps({
@@ -63,14 +62,11 @@ const props = defineProps({
         required:true,
     },
     rowData:Object,
-    dialogMode:String
 })
 
 watchEffect(() => {
-    if(props.dialogMode === 'view'){
-        rowData.value = {...props.rowData }
-        console.log(rowData.value)
-    }
+    rowData.value = {...props.rowData }
+    console.log(rowData.value)
 })
 
 const emit = defineEmits(['update:show','updateTableData'])
@@ -83,10 +79,10 @@ const submit = async () => {
                 evaluation:{
                     eval:content.value
                 },
-                studentId:rowData.studentId
+                studentId:rowData.value.studentId
             }
         })
-        console.log(res.data.data)
+        console.log(res.data)
         
         emit('update:show', false)
         emit('updateTable')

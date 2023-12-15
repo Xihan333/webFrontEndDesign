@@ -1,7 +1,7 @@
 <template>
     <div class="MyAssessDialog">
         <el-dialog :model-value="show"
-                    before-close="handleClose"
+                   :before-close="handleClose"
                     class="dialog" width="37%"
         >
             <template #header>

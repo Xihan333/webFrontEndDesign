@@ -2,7 +2,7 @@
 <template>
     <div class="peer-class">
         <div>
-            <PeerClassDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />            
+            <PeerClassDialog v-model:show="show" :rowData="currentRowData"  @updateTable="updateTableData" />            
             <!-- 表格顶部按键 -->
             <div>
                 <el-button class="seeBtn" color="#6FB6C1" @click="seeHistory">查看历史评论</el-button>
@@ -99,11 +99,9 @@ const handleSizeChange = () => {
 
 // 操作相关
 const currentRowData = ref({})
-const dialogMode = ref('') // 此处只有'add'
 const handleEdit = (rowData) => {
 console.log(rowData)
   currentRowData.value = rowData
-  dialogMode.value = 'view'
   show.value = true
 }
 
