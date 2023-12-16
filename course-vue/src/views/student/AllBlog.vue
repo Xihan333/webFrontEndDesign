@@ -40,7 +40,7 @@
         <div class="myinfo">
             <img src="../../../public/avatar.jpg" alt="Avatar" class="avatar">
             <h3 class="nickname">小明同学</h3>
-            <p class="articles-count">文章 233</p>
+            <p class="articles-count">文章 {{ blogNum }}</p>
             <el-button type="primary" @click="goMyBlog" color="#6FB6C1" class="btn">查看文章</el-button>
         </div>
         <div class="comment">
@@ -62,19 +62,22 @@
 import {ref,onMounted,computed} from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import router from "~/router";
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const blogs = ref([])
 const evals = ref([])
+const blogNum = ref()
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()
         updateComment()
 })
 const updateTableData = async () => {
-    const res = await request.get('/blog/getBlogList',)
+    const res = await request.get('/blog/getBlogList')
+    const res1 = await request.get('/blog/getMyBlogNumber')
     console.log(res.data.data)
     blogs.value = res.data.data
+    blogNum.value = res1.data.data
 }
 const updateComment = async () => {
     const res = await request.get('/evaluation/getMyEvaluationList',)
