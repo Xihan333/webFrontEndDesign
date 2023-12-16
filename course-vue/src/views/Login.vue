@@ -52,7 +52,7 @@
 <script setup>
 import { ref } from 'vue';
 import router from '~/router';
-import request from '../request/axios_config.ts'
+import request from '../request/axios_config.js'
 import { useCommonStore } from "~/stores/app"
 
 const store=useCommonStore();

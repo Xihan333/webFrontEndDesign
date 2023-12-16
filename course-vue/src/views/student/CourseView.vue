@@ -28,7 +28,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useStudentStore, useCommonStore } from '~/stores/app'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const commonStore=useCommonStore();
 let courseList=[

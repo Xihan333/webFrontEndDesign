@@ -75,7 +75,7 @@
     //引入弹窗页面
     import AchievementDialog from '../../components/AchievementDialog.vue'
     import { ElMessage } from 'element-plus'
-    import request from '../../request/axios_config.ts'
+    import request from '../../request/axios_config.js'
     
     const tableData = ref([])
     onMounted(() => {
