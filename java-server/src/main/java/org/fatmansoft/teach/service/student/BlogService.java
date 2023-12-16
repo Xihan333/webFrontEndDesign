@@ -187,4 +187,19 @@ public class BlogService {
         List dataList = getBlogMapListByStudentId(studentId);
         return CommonMethod.getReturnData(dataList);
     }
+
+    public DataResponse getMyBlogNumber() {
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student s= sOp.get();
+        Integer studentId = s.getStudentId();
+        List dataList = getBlogMapListByStudentId(studentId);
+        return CommonMethod.getReturnData(dataList.size());
+    }
 }
