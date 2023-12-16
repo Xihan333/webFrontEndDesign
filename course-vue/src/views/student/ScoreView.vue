@@ -25,13 +25,13 @@ onMounted(async()=>{
     commonStore.updateLoading(true);
     // const res1 = await request.post('/auth/login',{
     //     data:{
-    //         username: '202200300095',
+    //         username: '2022030003',
     //         password:'123456'
     //     } 
     // })
     const res = await request.post('/score/getScoreList',{
         data:{
-            userId: userInfo.id
+            userId: 2
         } 
     })
     console.log('请看请求',res)
