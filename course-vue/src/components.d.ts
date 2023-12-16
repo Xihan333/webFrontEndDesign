@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AchievementDialog: typeof import('./components/AchievementDialog.vue')['default']
     ActivityDialog: typeof import('./components/ActivityDialog.vue')['default']
+    AssessHistoryDialog: typeof import('./components/AssessHistoryDialog.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -36,6 +37,9 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Menu: typeof import('./components/Menu.vue')['default']
+    MyAssessDialog: typeof import('./components/MyAssessDialog.vue')['default']
+    PeerAduitDialog: typeof import('./components/PeerAduitDialog.vue')['default']
+    PeerClassDialog: typeof import('./components/PeerClassDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SocialDialog: typeof import('./components/SocialDialog.vue')['default']
