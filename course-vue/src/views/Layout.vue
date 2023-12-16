@@ -124,19 +124,20 @@ import Menu from '../components/Menu.vue'
 import { ref } from "vue";
 import { storeToRefs } from "pinia";// 保证其响应性
 
-const role=1;
+const userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
+const role=userInfo.roles;
 const store=useCommonStore();
 const {selectedTab:tabValue,tabPaneList,loading} = storeToRefs(store);
 function clickTab(tab){
     var name=JSON.stringify(tab.paneName).replace('"','').replace('"','')//对tab参数处理，以获得当前点击的标签页的路由
     store.changeTab(name);
-    if(role==0){
+    if(role=='ROLE_ADMIN'){
         name="/admin/"+name;
     }
-    else if(role==1){
+    else if(role=='ROLE_STUDENT'){
         name="/student/"+name;
     }
-    else if(role==2){
+    else if(role=='ROLE_TEACHER'){
         name="/teacher/"+name;
     }
     router.push(name)//路由跳转以实现切换界面
@@ -154,13 +155,13 @@ function removeTab(name) {
         });
     }
     store.updateTabList(name);
-    if(role==0){
+    if(role=='ROLE_ADMIN'){
         name="/admin/"+tabValue.value;
     }
-    else if(role==1){
+    else if(role=='ROLE_STUDENT'){
         name="/student/"+tabValue.value;
     }
-    else if(role==2){
+    else if(role=='ROLE_TEACHER'){
         name="/teacher/"+tabValue.value;
     }
     router.push(name)//路由跳转以实现切换界面
@@ -168,6 +169,5 @@ function removeTab(name) {
 function logout(){
 
 }
-
 </script>
 
