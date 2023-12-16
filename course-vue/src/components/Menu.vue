@@ -7,13 +7,13 @@
         unique-opened="true"
     >
         <template v-for="item in itemList" :key="item.name">
-            <el-menu-item v-if="item.role==role||item.role==3" :index="item.path" @click="openTab(item)">
+            <el-menu-item v-if="item.role==role||item.role=='ALL'" :index="item.path" @click="openTab(item)">
                 <el-icon><UserFilled /></el-icon>
                 <span>{{item.name}}</span>
             </el-menu-item>
         </template>
         <template v-for="menu in menuList" :key="menu.name">
-            <el-sub-menu v-if="menu.role==role||menu.role==3" :index="menu.index">
+            <el-sub-menu v-if="menu.role==role||menu.role=='ALL'" :index="menu.index">
             <template #title>  
                 <el-icon><Menu /></el-icon>
                 <span>{{ menu.name }}</span>  
@@ -43,20 +43,21 @@
 }
 </style>
 
-<script lang="ts" setup>
+<script setup>
 import { useCommonStore } from "~/stores/app"
 
-const role=1;// 暂时
+const userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
+const role=userInfo.roles;
 const store=useCommonStore();
 const itemList=store.itemList;
 const menuList=store.menuList;
-const openTab=(item:object)=>{
+const openTab=(item)=>{
     store.addTab(item);
 }
-const handleOpen = (key: string, keyPath: string[]) => {
+const handleOpen = (key, keyPath) => {
     console.log(key, keyPath)
 }
-const handleClose = (key: string, keyPath: string[]) => {
+const handleClose = (key, keyPath) => {
     console.log(key, keyPath)
 }
 </script>

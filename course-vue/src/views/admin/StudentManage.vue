@@ -58,7 +58,7 @@
 import {ref, computed, onMounted} from 'vue'
 
 import StudentManageDialog from '../../components/StudentManageDialog.vue'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 import {ElMessage} from 'element-plus'
 
 const tableData = ref([])

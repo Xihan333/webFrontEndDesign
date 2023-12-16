@@ -26,8 +26,11 @@
     </table>
 </template>
 <script setup>
-let weeks=['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
-let classOrders=['第一节','第二节','第三节','第四节','第五节']
+import { onMounted } from 'vue';
+import { useStudentStore, useCommonStore } from '~/stores/app'
+import request from '../../request/axios_config.js'
+
+const commonStore=useCommonStore();
 let courseList=[
     {
         'courseName':'数学',
@@ -40,4 +43,23 @@ let courseList=[
         'timeOrder':2
     }
 ]
+onMounted(async()=>{
+    commonStore.updateLoading(true);
+    const res = await request.get('/course/getMyCourses')
+    console.log('请看请求',res)
+    if(res.data.code==200){
+        courseList=res.data.data;
+        commonStore.updateLoading(false);
+    }
+    else{
+        commonStore.updateLoading(false);
+        ElMessage({
+            message: '加载失败，请重试！',
+            type: 'error',
+            offset: 150
+        })
+    }
+})
+let weeks=['星期一','星期二','星期三','星期四','星期五','星期六','星期日']
+let classOrders=['第一节','第二节','第三节','第四节','第五节']
 </script>

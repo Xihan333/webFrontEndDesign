@@ -1,6 +1,6 @@
 import { createApp } from "vue";
+import { createPinia } from 'pinia'
 import App from "./App.vue";
-import pinia from "./stores";
 
 // 全部引入element-plus, 非按需引入
 import ElementPlus from "element-plus";
@@ -13,9 +13,11 @@ import './styles/element/global.scss'
 // import "element-plus/theme-chalk/src/message.scss";
 import router from "./router";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
+import persist from 'pinia-plugin-persistedstate'
 
 const app = createApp(App);
+const pinia = createPinia();
+pinia.use(persist)
 app.use(pinia);
 app.use(ElementPlus);
 app.use(router);

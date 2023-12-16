@@ -58,6 +58,12 @@ public class BlogController {
         return blogService.getMyBlogList();
     }
 
+    @GetMapping("getMyBlogNumber")
+    public DataResponse getMyBlogNumber() {
+        return blogService.getMyBlogNumber();
+    }
+
+
     /**
      * 删除博客
      * @param dataRequest

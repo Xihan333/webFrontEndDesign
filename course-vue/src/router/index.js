@@ -1,5 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
+
 //路由表
 const routes = [
   //当路由为空时，重定向到登录页面
@@ -17,18 +18,6 @@ const routes = [
     path: ('/student'),
     component: () => import('../views/Layout.vue'),
     redirect: ('/student/homepage'),
-    // 设置路由守卫进行登录判断及拦截
-    beforeEnter: () => {
-      //解决刷新退回登录页面问题
-      const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
-      if (!token) {
-        // ElMessage({
-        //   message: '请先登录!',
-        //   type: 'warning'
-        // })
-        // return ('/login')
-      }
-    },
     children: [
       // 主页
       { 
@@ -94,19 +83,7 @@ const routes = [
   {
     path: ('/teacher'),
     component: () => import('../views/Layout.vue'),
-    redirect: ('/teacher/homepage'),
-    // 设置路由守卫进行登录判断及拦截
-    beforeEnter: () => {
-      //解决刷新退回登录页面问题
-      const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
-      if (!token) {
-        // ElMessage({
-        //   message: '请先登录!',
-        //   type: 'warning'
-        // })
-        // return ('/login')
-      }
-    },
+    redirect: ('/teacher/homepage'),    
     children: [
       // 主页
       { 
@@ -135,18 +112,6 @@ const routes = [
     path: ('/admin'),
     component: () => import('../views/Layout.vue'),
     redirect: ('/admin/course-manage'),
-    // 设置路由守卫进行登录判断及拦截
-    beforeEnter: () => {
-      //解决刷新退回登录页面问题
-      const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
-      if (!token) {
-        // ElMessage({
-        //   message: '请先登录!',
-        //   type: 'warning'
-        // })
-        // return ('/login')
-      }
-    },
     children: [
       { 
         path: ('course-manage'),
@@ -189,5 +154,11 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+//判断是否登录
+router.beforeEach(async (to, from) => {
+  if(localStorage.getItem('KEY_COMMON') == null && to.name != 'login'){
+    return { name: 'login' }
+  }
+})
 //路由导出
 export default router;

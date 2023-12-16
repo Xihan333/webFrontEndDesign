@@ -15,7 +15,7 @@
 import { useStudentStore, useCommonStore } from '~/stores/app'
 import { storeToRefs } from "pinia";// 保证其响应性
 import { onMounted } from 'vue';
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const studentStore=useStudentStore();
 const commonStore=useCommonStore();
@@ -23,30 +23,18 @@ let tableData=[];
 const userInfo=commonStore.userInfo;
 onMounted(async()=>{
     commonStore.updateLoading(true);
-    // const res1 = await request.post('/auth/login',{
-    //     data:{
-    //         username: '202200300095',
-    //         password:'123456'
-    //     } 
-    // })
     const res = await request.post('/score/getScoreList',{
         data:{
-            userId: userInfo.id
+            userId: 2
         } 
     })
     console.log('请看请求',res)
     if(res.data.code==200){
-        //studentStore.updateScoreList(res.data.data);
         tableData=res.data.data;
         commonStore.updateLoading(false);
     }
     else{
         commonStore.updateLoading(false);
-        ElMessage({
-            message: '加载失败，请重试！',
-            type: 'error',
-            offset: 150
-        })
     }
 })
 </script>

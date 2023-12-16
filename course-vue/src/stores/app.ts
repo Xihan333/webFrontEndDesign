@@ -42,13 +42,9 @@ export const useStudentStore = defineStore('student', () => {
 // ☯️采用组合式写法
 export const useCommonStore = defineStore('common', () => {
   // 用户信息
-  let userInfo={
-    "id": 17,
-    "username": "202200300095",
-    "roles": "ROLE_STUDENT",
-    "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDIyMDAzMDAwOTUiLCJpYXQiOjE3MDIxOTg2NzMsImV4cCI6MTcwMjI4NTA3M30.uT9W-N-wD5f1Yzl-KbQ9kUhbKAZEGv-t_d6yb78oX5aHMQQb6d8ro0ri6-NTCHwQU5sZoO2G4dWwBQF_N-9d1w",
-    "tokenType": "Bearer"
-  };
+  let userInfo=ref({
+
+  });
   // 是否加载中
   const loading=ref(false);
   // 当前选中的标签页
@@ -66,24 +62,24 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'个人主页',
       path:'homepage',
-      role:1
+      role:'ROLE_STUDENT'
     },
     {
       name:'个人主页',
       path:'homepage',
-      role:2
+      role:'ROLE_TEACHER'
     },
     {
       name:'课程管理',
       path:'course-manage',
-      role:0
+      role:'ROLE_ADMIN'
     }
   ])
   const menuList = ref([
     {
       name:'课程中心',
       index:'0',
-      role:2,
+      role:'ROLE_TEACHER',
       item:[
         {
           name:'查看课程',
@@ -98,7 +94,7 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'课程中心',
       index:'0',
-      role:1,
+      role:'ROLE_STUDENT',
       item:[
         {
           name:'选课系统',
@@ -117,7 +113,7 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'人员管理',
       index:'1',
-      role:0,
+      role:'ROLE_ADMIN',
       item:[
         {
           name:'学生管理',
@@ -136,7 +132,7 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'学工管理',
       index:'1',
-      role:1,
+      role:'ROLE_STUDENT',
       item:[
         {
           name:'社会实践',
@@ -159,7 +155,7 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'学工管理',
       index:'2',
-      role:0,
+      role:'ROLE_ADMIN',
       item:[
         {
           name:'社会实践',
@@ -178,7 +174,7 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'博客系统',
       index:'2',
-      role:1,
+      role:'ROLE_STUDENT',
       item:[
         {
           name:'所有文章',
@@ -197,7 +193,7 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'账号安全',
       index:'3',
-      role:3,
+      role:'ALL',
       item:[
         {
           name:'修改个人信息',
@@ -234,17 +230,19 @@ export const useCommonStore = defineStore('common', () => {
   function updateLoading(newValue:boolean){
     loading.value=newValue;
   }
-
+  function setUserInfo(newValue:any){
+    userInfo.value=newValue;
+  }
   return {
     tabPaneList,itemList,menuList,selectedTab,addTab,changeTab,updateSelectedTab,updateTabList,
-    loading,updateLoading,userInfo
+    loading,updateLoading,userInfo,setUserInfo
   }
 }, {
   persist: {
-    key: id => 'KEY__' + id.toUpperCase(),
+    key: id => 'KEY_' + id.toUpperCase(),
     storage: localStorage,
     // 设置持久化存储的白名单, 以下这些数据会被持久化存储到localStorage
-    paths: ['userInfo',]
+    paths: ['userInfo']
   }
 })
 // // Utilities
