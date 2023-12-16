@@ -168,7 +168,7 @@ public class EvaluationService {
             op= evaluationRepository.findByEvaluationId(evaluationId);  //查询对应数据库中主键为id的值的实体对象
             if(op.isPresent()) {
                 a = op.get();
-                if(a.getStudent().getStudentId() != student.getStudentId()){
+                if(a.getEvaluator().getStudentId() != student.getStudentId()){
                     return CommonMethod.getReturnMessageError("删除失败，无法删除他人的博客！");
                 }
             }

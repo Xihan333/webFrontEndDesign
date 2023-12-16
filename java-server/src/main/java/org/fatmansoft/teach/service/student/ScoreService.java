@@ -1,19 +1,67 @@
 package org.fatmansoft.teach.service.student;
 
 import org.fatmansoft.teach.models.student.Score;
-import org.fatmansoft.teach.repository.student.ScoreRepository;
+import org.fatmansoft.teach.models.student.Student;
+import org.fatmansoft.teach.models.system.User;
+import org.fatmansoft.teach.models.teacher.Teacher;
+import org.fatmansoft.teach.models.teacher.TeacherCourse;
+import org.fatmansoft.teach.payload.request.DataRequest;
+import org.fatmansoft.teach.payload.response.DataResponse;
+import org.fatmansoft.teach.repository.student.*;
+import org.fatmansoft.teach.repository.system.PersonRepository;
+import org.fatmansoft.teach.repository.system.UserRepository;
+import org.fatmansoft.teach.repository.teacher.TeacherCourseRepository;
+import org.fatmansoft.teach.repository.teacher.TeacherRepository;
+import org.fatmansoft.teach.service.teacher.TeacherCourseService;
+import org.fatmansoft.teach.service.teacher.TeacherService;
+import org.fatmansoft.teach.util.CommonMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ScoreService {
+
     @Autowired
     private ScoreRepository scoreRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
+
+    @Autowired
+    private TeacherCourseRepository teacherCourseRepository;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private TeacherService teacherService;
+
+    @Autowired
+    private TeacherCourseService teacherCourseService;
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private GradeRepository gradeRepository;
+
+    @Autowired
+    private GradeService gradeService;
+
+    @Autowired
+    private CampusRepository campusRepository;
+
     public synchronized Integer getNewScoreId(){
         Integer  id = scoreRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -23,7 +71,7 @@ public class ScoreService {
         return id;
     };
     public Map getMapFromScore(Score s) {
-        Map m=new HashMap<>();
+        Map m = new HashMap<>();
         m.put("scoreId", s.getScoreId());
         m.put("studentNum",s.getStudent().getPerson().getNum());
         m.put("studentName",s.getStudent().getPerson().getName());
@@ -35,6 +83,7 @@ public class ScoreService {
         m.put("commonMark",s.getCommonMark());
         m.put("finalMark",s.getFinalMark());
         m.put("isResult",s.getIsResult());
+        m.put("ranking",s.getRanking());
         return m;
     }
 
@@ -46,5 +95,40 @@ public class ScoreService {
             dataList.add(getMapFromScore(list.get(i)));
         }
         return dataList;
+    }
+
+    public DataResponse getMyCourseScores() {
+        //获取当前用户（学生）的信息
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student student= sOp.get();
+        Integer studentId = student.getStudentId();
+        //数据库查询操作
+        List<Score> sList = scoreRepository.findScoreListByStudentId(studentId);
+        List dataList = getScoreMapList(sList);
+        return CommonMethod.getReturnData(dataList);
+    }
+
+    public DataResponse getTeacherCourseScores(DataRequest dataRequest) {
+        //获取当前用户（教师）的信息
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Teacher> sOp= teacherRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("教师不存在！");
+        Teacher teacher= sOp.get();
+        Integer teacherId = teacher.getTeacherId();
+        List<Score> sList = scoreRepository.findScoreListByTeachertId(teacherId);
+        List dataList = getScoreMapList(sList);
+        return CommonMethod.getReturnData(dataList);
     }
 }

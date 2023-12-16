@@ -148,7 +148,7 @@ export const useCommonStore = defineStore('common', () => {
         },
         {
           name:'学生互评',
-          path:'peer-assess',
+          path:'peer-class',
         },
       ]
     },

@@ -26,12 +26,18 @@ public interface ScoreRepository extends JpaRepository<Score,Integer> {
     @Query(value = "select s from TeacherCourse tc,Score s where tc.teacher.teacherId=?1 and tc.course.courseId=s.teacherCourse.course.courseId")
     List<Score> findScoreListByTeacherId(Integer teacherId);
 
-    @Query(value="from Score where (?1=0 or student.studentId=?1) and (?2=0 or teacherCourse.course.courseId=?2) and (?3=0 or student.clazz.grade.gradeId=?3) and (?4=0 or student.clazz.clazzId=?4)")
-    List<Score> findByStudentAndCourseAndGradeAndClazz(Integer studentId, Integer courseId,Integer gradeId,Integer clazzId);
+    @Query(value = "from Score where (?1=0 or student.studentId=?1) and (?2=0 or teacherCourse.course.courseId=?2) and (?3=0 or student.clazz.grade.gradeId=?3) and (?4=0 or student.clazz.clazzId=?4)")
+    List<Score> findByStudentAndCourseAndGradeAndClazz(Integer studentId, Integer courseId, Integer gradeId, Integer clazzId);
 
     @Query(value = "from Score where teacherCourse.course.courseId=?1")
     List<Score> findScoreListByCourseId(Integer courseId);
 
     @Query(value = "from Score where student.studentId=?1 and teacherCourse.course.courseId=?2 and teacherCourse.teacher.teacherId=?3")
     Optional<Score> findByStudentIdAndCourseIdAndTeacherId(Integer studentId, Integer courseId, Integer teacherId);
+
+    @Query(value = "from Score where student.studentId=?1")
+    List<Score> findScoreListByStudentId(Integer studentId);
+
+    @Query(value = "from Score where teacherCourse.teacher.teacherId=?1")
+    List<Score> findScoreListByTeachertId(Integer teacherId);
 }
