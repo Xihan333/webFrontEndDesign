@@ -32,8 +32,13 @@
           />
           <br/>
           <div class="verify">
-            <el-input class="verifyInput" v-model="verification" placeholder="验证码" />
-            <img src="../assets/img/1.jpeg">
+            <el-input class="verifyInput" v-model="verification" placeholder="请输入验证码" />
+            <img
+              @click="changeValiCode"
+              class="verifyImg"
+              referrerpolicy="no-referrer"
+              :src="img2"
+            />
           </div>
           <el-button 
             class="loginBtn" 
@@ -50,38 +55,64 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import router from '~/router';
+import { ElMessage } from 'element-plus'
 import request from '../request/axios_config.js'
 import { useCommonStore } from "~/stores/app"
 
 const store=useCommonStore();
 const account=ref('');
 const password=ref('');
+const img2=ref('');
+const verificationId=ref('');
 const verification=ref('');
+onMounted(() => {
+  // 发起请求获取当前表格数据
+  updateTableData()
+})
+const updateTableData = async () => {
+  changeValiCode()
+}
+  
+  
 async function login(){
-  const res = await request.post('/auth/login',{
+  const res2 = await request.post('/auth/testValidateInfo',{
     data:{
-      'username': account.value,
-      'password':password.value
-    } 
+      'validateCodeId' : verificationId.value,
+      'validateCode' : verification.value
+    }
   })
-  console.log('请看请求',res)
-  if(res.data.code==200){
-    store.setUserInfo(res.data.data)
-    let role=store.userInfo.roles;
-    if(role=='ROLE_ADMIN'){
-      router.push('/admin');
+  if(res2.data.code!=200){
+    ElMessage({
+           message: '验证码错误',
+           type: 'error',
+           offset: 150
+         })
+  }else {
+      const res = await request.post('/auth/login',{
+      data:{
+        'username': account.value,
+        'password': password.value
+      } 
+    })
+    console.log('请看请求',res)
+    if(res.data.code==200){
+      store.setUserInfo(res.data.data)
+      let role=store.userInfo.roles;
+      if(role=='ROLE_ADMIN'){
+        router.push('/admin');
+      }
+      else if(role=='ROLE_STUDENT'){
+        router.push('/student');
+      }
+      else if(role=='ROLE_TEACHER'){
+        router.push('/teacher');
+      }
     }
-    else if(role=='ROLE_STUDENT'){
-      router.push('/student');
+    else{
+      alert('加载失败');
     }
-    else if(role=='ROLE_TEACHER'){
-      router.push('/teacher');
-    }
-  }
-  else{
-    alert('加载失败');
   }
 }
 function forget(){
@@ -90,6 +121,22 @@ function forget(){
 function register(){
   //跳转到注册页面
 }
+
+async function changeValiCode(){
+  try {
+    const res = await request.get('/auth/getValidateCode')
+    verificationId.value = res.data.data.validateCodeId;
+    console.log(verificationId)
+    img2.value = res.data.data.img;
+  } catch (error) {
+    console.error('Failed to fetch verification image:', error);
+  }
+}
+
+function refreshVerification() {
+  changeValiCode()
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -170,7 +217,7 @@ function register(){
           width: 350px;
           margin-bottom: 20px;
           .verifyInput{
-            width: 100px;
+            width: 200px;
             height: 42px;
           }
           img{

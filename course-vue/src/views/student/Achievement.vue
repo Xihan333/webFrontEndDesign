@@ -22,12 +22,12 @@
         :data="paginatedTableData" 
         style="width: 100%">
   
-          <el-table-column prop="achievementName" label="成就名称" width="200" text-align="center" />   
-          <el-table-column prop="type" label="成就类别" width="150" text-align="center"/> 
-          <el-table-column prop="level" label="成就级别" width="120" text-align="center"/> 
+          <el-table-column prop="achievementName" label="成就名称" width="200" align="center" />   
+          <el-table-column prop="type" label="成就类别" width="150" align="center"/> 
+          <el-table-column prop="level" label="成就级别" width="120" align="center"/> 
           <!-- 时间 -->
-          <el-table-column sortable prop="time" label="时间" width="120" text-align="center"/>   
-          <el-table-column prop="content" label="内容" width="300" text-align="center"/>   
+          <el-table-column sortable prop="time" label="时间" width="120" align="center"/>   
+          <el-table-column prop="content" label="内容" width="300" align="center"/>   
           <!-- 审核状态，做了筛选 -->
           <el-table-column
             prop="statusName"
@@ -192,8 +192,4 @@
     .pagination{
       margin-top: 10px;
     }
-    el-table-column{
-      text-align: center;
-    }
-    
     </style>
