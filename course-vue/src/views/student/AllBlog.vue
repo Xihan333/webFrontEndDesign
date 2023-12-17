@@ -15,7 +15,7 @@
         </div>
         <!-- 卡片 -->
         <div class="blog" v-for="blog in paginatedBlogs" :key="blog.BlogId">
-            <div class="content">
+            <div class="content" @click="handleClickBlog(blog)">
                 <h2 class="title">{{ blog.BlogTitle }}</h2>
                 <p class="date">发布于 {{blog.createTime}} | {{ blog.name }}</p>
                 <p class="summary">{{ ellipsis(blog.content) }}</p>
@@ -61,9 +61,11 @@
 <script setup>
 import {ref,onMounted,computed} from 'vue';
 import { Search } from '@element-plus/icons-vue'
+import { useAppStore } from '../../stores/app.ts'
 import router from "~/router";
 import request from '../../request/axios_config.js'
 
+const store = useAppStore()
 const blogs = ref([])
 const evals = ref([])
 const blogNum = ref()
@@ -123,6 +125,12 @@ const handleSizeChange = () => {
 // 查看我的博客
 const goMyBlog = () => {
     router.push('my-blog')
+}
+
+const handleClickBlog = (blog) => {
+  console.log(blog);
+  store.blogInfo = blog
+  router.push('blog-info')
 }
 </script>
 
