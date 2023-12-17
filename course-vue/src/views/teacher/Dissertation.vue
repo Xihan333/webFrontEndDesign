@@ -1,0 +1,171 @@
+<!-- 教师论文 -->
+<template>
+    <div class="dissertation">
+        <div>
+            <DissertationDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
+            <el-button @click="handleAdd" color="#6FB6C1" class="add">新 增</el-button>
+            <div class="query">
+            <el-input
+                clearable
+                class="search"
+                v-model="inputSearch"
+                placeholder="搜索论文名称和时间..."
+                @keyup.enter="searchFn"
+                />
+            <el-button type="primary" @click="searchFn" color="#6FB6C1" class="searchBtn">查 询</el-button>
+            </div>
+        </div>
+        <el-table
+            :data="paginatedTableData"
+            style="width: 100%">
+                <el-table-column prop="paperName" label="论文名称" width="400" />
+                <el-table-column prop="author" label="论文作者" width="300" />
+                <el-table-column prop="day" label="发表时间" width="300" />
+                <el-table-column label="操作" width="200" >
+                    <template #default="scope">
+                        <el-button size="default" @click="handleEdit(scope.row)">
+                            查看
+                        </el-button>
+                        <el-button size="default" @click="handleDel(scope.row)">
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+        </el-table>
+        <el-row class="pagination">
+        <el-col>
+            <el-pagination
+                background
+                v-model:current-page="currentPage"
+                v-model:page-size="pageSize"
+                :page-sizes="[15, 25, 35, 50]"
+                :pager-count="7"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="searchedTableData.length"
+                @size-change="handleSizeChange"
+            />
+        </el-col>
+    </el-row>
+    </div>
+</template>
+
+<script setup>
+import { ref,computed,onMounted } from 'vue'
+//引入弹窗页面
+import DissertationDialog from '../../components/Dissertation.vue'
+import { ElMessage } from 'element-plus'
+import request from '../../request/axios_config.ts'
+
+const tableData = ref([])
+onMounted(() => {
+  // 发起请求获取当前表格数据
+  updateTableData()
+})
+const updateTableData = async () => {
+  const res = await request.post('/scientificPayoffs/getTeacherScientificPayoffs',{
+    data:{}
+  })
+  tableData.value = res.data.data
+}
+// 弹窗的显示
+const show = ref(false)
+
+// 右上角搜索框查询后的数据内容
+const search = ref('')
+const inputSearch = ref('')
+// 根据搜索框内容搜索, 空参搜索的话相当于显示所有
+const searchedTableData = computed(() => tableData.value.filter(
+  //这个item相当于给每一列一个命名，可以不改
+  item =>
+    //空参的情况
+    !search.value ||
+    // 按照主题theme和团队名称groupName搜索，忽略大小写
+    item.paperName.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.day.toLowerCase().includes(search.value.toLowerCase())
+))
+const searchFn = () => {
+  // 点击查询按钮后才开始查询
+  search.value = inputSearch.value
+}
+
+const currentPage = ref(1)
+const pageSize = ref(15)
+const paginatedTableData = computed(() => searchedTableData.value.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value))
+const handleSizeChange = () => {
+  currentPage.value = 1
+}
+
+// 操作相关
+const currentRowData = ref({})
+const dialogMode = ref('') // 'add' 或 'view'
+const handleAdd = () => {
+  currentRowData.value = {}  // 清空数据
+  dialogMode.value = 'add'
+  show.value = true
+}
+//查看
+const handleEdit = (rowData) => {
+  console.log(rowData)
+  currentRowData.value = rowData
+  dialogMode.value = 'view'
+  show.value = true
+}
+async function handleDel(rowData)  {
+  const res = await request.post('/scientificPayoffs/scientificPayoffsDelete',{
+    data:{
+      socialId: rowData.socialId
+    } 
+  })
+  console.log(res.code)
+  console.log(res)
+  updateTableData()
+  if(res.data.code==200){
+     ElMessage({
+       message: '删除成功！',
+       type: 'success',
+       offset: 150
+     })
+  }
+  else{
+    ElMessage({
+      message: '删除失败，请重试！',
+      type: 'error',
+      offset: 150
+    })
+  }
+}
+
+</script>
+
+<style lang="scss" scoped>
+el-table{
+  text-align: center;
+}
+.add{
+  width: 70px;
+  height: 35px;
+  margin-bottom: 5px;
+  color: white;
+  font-weight: bold;
+}
+.query{
+  float: right;
+  border-right: 0px;
+  .search{
+    border-color: #6FB6C1;
+    margin-left: auto;
+    margin-right: 10px;
+    width: 200px;
+  }
+  .searchBtn{
+    width: 70px;
+    margin-right: 10px;
+    color: white;
+  }
+}
+.pagination{
+  margin-top: 10px;
+}
+
+</style>
+

@@ -8,8 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AchievementDialog: typeof import('./components/AchievementDialog.vue')['default']
+    AchievementDialogAdmin: typeof import('./components/AchievementDialogAdmin.vue')['default']
     ActivityDialog: typeof import('./components/ActivityDialog.vue')['default']
     AssessHistoryDialog: typeof import('./components/AssessHistoryDialog.vue')['default']
+    copy: typeof import('./components/AchievementDialog copy.vue')['default']
+    DissertationDialog: typeof import('./components/DissertationDialog.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -27,6 +30,8 @@ declare module 'vue' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElRadio: typeof import('element-plus/es')['ElRadio']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']

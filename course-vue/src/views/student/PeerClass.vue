@@ -57,7 +57,7 @@
 import{ref, computed, onMounted} from 'vue'
 import router from "~/router";
 import PeerClassDialog from '../../components/PeerClassDialog.vue'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 import {ElMessage} from 'element-plus'
 
 const tableData = ref([])

@@ -59,7 +59,7 @@
 <script setup>
 import {defineProps, defineEmits, ref, watchEffect} from 'vue'
 import {ElMessageBox } from 'element-plus'
-import request from '../request/axios_config.ts'
+import request from '../request/axios_config.js'
 
 const rowData= ref({
     activityId : '',
@@ -99,7 +99,7 @@ const submit = async () => {
     try{
         if(props.dialogMode === 'view'){
             console.log(props.rowData.activityId)
-            await request.post('/api/activity/ActivityStudentEditSave',{
+            await request.post('/activity/ActivityStudentEditSave',{
                 data:{
                     activityId:props.rowData,activityId,
                     form:{
@@ -112,7 +112,7 @@ const submit = async () => {
             })
         }
         else{
-            await request.post('/api/activity/ActivityStudentEditSave',{
+            await request.post('/activity/ActivityStudentEditSave',{
                 data:{
                     activityId:null,
                     form:{
