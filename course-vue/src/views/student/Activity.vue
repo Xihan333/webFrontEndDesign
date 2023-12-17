@@ -56,7 +56,7 @@ import {ref,computed,onMounted} from 'vue'
 //引入弹窗界面
 import ActivityDialog from '../../components/ActivityDialog.vue'
 import{ElMessage} from 'element-plus'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const tableData = ref([])
 onMounted(() => {

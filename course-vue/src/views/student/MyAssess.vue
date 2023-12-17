@@ -45,7 +45,7 @@ import {ref, computed,onMounted} from 'vue'
 import router from "~/router";
 import MyAssessDialog from '../../components/MyAssessDialog.vue'
 import {ElMessage} from 'element-plus'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const tableData = ref([])
 onMounted(() => {

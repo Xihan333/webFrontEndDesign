@@ -70,7 +70,7 @@
   <script setup>
   import { defineProps, defineEmits, ref,watch } from 'vue'
   import { ElMessageBox } from 'element-plus'
-  import request from '../request/axios_config.ts'
+  import request from '../request/axios_config.js'
 
   
   const rowData= ref({
