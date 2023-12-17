@@ -4,50 +4,118 @@
       <img src="../assets/img/blueLogo.png">
       <p>教学服务平台</p>
     </div>
-    <div class="login">
-      <div class="side">
-        <el-button 
-          class="registerBtn" 
-          size="large"
-          type="primary" 
-          plain 
-          round
-          @click="register"
-        >
-          <el-icon size="large"><ArrowLeft /></el-icon> 
-          <p class="registerText">注册</p>  
-        </el-button>
-      </div>
-      <div class="main">
-        <div class="content">
-          <h1>Welcome</h1>
-          <el-input class="input" v-model="account" placeholder="用户名" />
-          <br/>
-          <el-input
-            class="input"
-            v-model="password"
-            type="password"
-            placeholder="密码"
-            show-password
-          />
-          <br/>
-          <div class="verify">
-            <el-input class="verifyInput" v-model="verification" placeholder="请输入验证码" />
-            <img
-              @click="changeValiCode"
-              class="verifyImg"
-              referrerpolicy="no-referrer"
-              :src="img2"
+  
+    <div class = "auth-container">
+      <div v-if = "showLogin" class="login">
+        <div class="side">
+          <el-button 
+            class="registerBtn" 
+            size="large"
+            type="primary" 
+            plain 
+            round
+            @click="showLogin=false"
+          >
+            <el-icon size="large"><ArrowLeft /></el-icon> 
+            <p class="registerText" >注册</p>  
+          </el-button>
+        </div>
+        <div class="main">
+          <div class="content">
+            <br/>
+            <br/>
+            <br/>
+            <h1>Welcome</h1>
+            <br/>
+            <br/>
+            <el-input class="input" v-model="account" placeholder="用户名" />
+            <br/>
+            <el-input
+              class="input"
+              v-model="password"
+              type="password"
+              placeholder="密码"
+              show-password
             />
+            <br/>
+            <div class="verify">
+              <el-input class="verifyInput" v-model="verification" placeholder="请输入验证码" />
+              <img
+                @click="changeValiCode"
+                class="verifyImg"
+                referrerpolicy="no-referrer"
+                :src="img2"
+              />
+            </div>
+            <el-button 
+              class="loginBtn" 
+              type="primary"
+              @click="login"  
+            >登录</el-button>
+            <br/>
+            <el-link type="primary" @click="forget">忘记密码？</el-link>
+            <p class="copyright">Copyright©2023</p>
           </div>
+        </div>
+      </div>
+      <div v-else class="register">
+        <div class="main2">
+          <div class="content">
+            <h1>Register</h1>
+            <el-input class="input" v-model="register.account" placeholder="用户名" />
+            <br/>
+            <el-input class="input" v-model="register.name" placeholder="姓名" />
+            <br/>
+            <el-input
+              class="input"
+              v-model="register.password"
+              type="password"
+              placeholder="密码"
+              show-password
+            />
+            <br/>
+            <el-input
+              class="input"
+              v-model="register.confirmPassword"
+              type="password"
+              placeholder="确认密码"
+              show-password
+            />
+            <br/>
+            <el-form-item >
+              <el-radio-group v-model="register.role">
+                <el-radio label="STUDENT" border>学生</el-radio>
+                <el-radio label="TEACHER" border>教师</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <br/>
+            <div class="verify">
+              <el-input class="email" v-model="register.email" placeholder="注册邮箱" />
+              <el-button class="verifyBtn" type="primary" @click="getCode">获取验证码</el-button>
+            </div>
+            <el-input class="verifyInput" v-model="register.mailVerificationCode" placeholder="请输入验证码" />
+            <br/>
+            <el-button 
+              class="registerBtn" 
+              type="primary"
+              @click="registerUser"  
+            >注册</el-button>
+            <br/>
+            <p class="copyright">Copyright©2023</p>
+          </div>
+        </div>
+        <div class="side2">
           <el-button 
             class="loginBtn" 
-            type="primary"
-            @click="login"  
-          >登录</el-button>
-          <br/>
-          <el-link type="primary" @click="forget">忘记密码？</el-link>
-          <p class="copyright">Copyright©2023</p>
+            size="large"
+            type="primary" 
+            plain 
+            round
+            @click="showLogin=true"
+          >
+            <el-icon size="large"><ArrowLeft /></el-icon> 
+            <p class="loginText">登录</p>  
+          </el-button>
         </div>
       </div>
     </div>
@@ -61,12 +129,22 @@ import { ElMessage } from 'element-plus'
 import request from '../request/axios_config.js'
 import { useCommonStore } from "~/stores/app"
 
+const showLogin = ref('true');
 const store=useCommonStore();
 const account=ref('');
 const password=ref('');
 const img2=ref('');
 const verificationId=ref('');
 const verification=ref('');
+const register = ref({
+  account: '',
+  password: '',
+  confirmPassword: '',
+  role: '1',
+  name: '',
+  email: '',
+  mailVerificationCode: ''
+})
 onMounted(() => {
   // 发起请求获取当前表格数据
   updateTableData()
@@ -115,12 +193,57 @@ async function login(){
     }
   }
 }
-function forget(){
+async function forget(){
   //跳转到找回密码页面
 }
-function register(){
-  //跳转到注册页面
+async function registerUser(){
+  const res = await request.post('/auth/registerUser',{
+    data:{
+      'username': register.account.value,
+      'password': register.password.value,
+      'name' : register.name.value,
+      'eamil': register.email.value,
+      'mailVerificationCode' : mailVerificationCode.value
+    }
+  })
+  if(res2.data.code!=200){
+    ElMessage({
+           message: '验证码错误',
+           type: 'error',
+           offset: 150
+         })
+  } else {
+      if(register.role=='STUDENT'){
+        router.push('/student');
+      }
+      else if(register.role=='TEACHER'){
+        router.push('/teacher');
+      }
+  } 
 }
+
+async function getCode(){
+  const res3 = await request.post('/auth/sendEmail',{
+    data:{
+      'email': register.email,
+      'subject': "注册账号"
+    }
+  })
+  if(res3.data.code==200){
+    ElMessage({
+      message: '验证码发送成功',
+      type: 'success',
+      offset: 150
+    })
+  }else{
+    ElMessage({
+      message: '验证码发送失败',
+      type: 'error',
+      offset: 150
+    })
+  }
+}
+
 
 async function changeValiCode(){
   try {
@@ -169,10 +292,15 @@ function refreshVerification() {
       letter-spacing: 2px;
     }
   }
-  .login{
+  .auth-container{
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    .login{
     margin: auto;
-    height: 450px;
-    width: 700px;
+    height: 650px;
+    width: 800px;
     border-radius: 20px;
     box-shadow: 0px 0px 10px #658d93;
     border:1px solid #228FA0;
@@ -181,12 +309,12 @@ function refreshVerification() {
       display: inline-block;
       vertical-align: top;
       height: 100%;
-      width: 20%;
+      width: 30%;
       background-color: #6FB6C1;
       text-align: center;
       .registerBtn{
         padding: 5px 10px;
-        margin-top: 340px;
+        margin-top: 540px;
         .registerText{
           margin: 0px 10px 0px 10px;
           font-size: large;
@@ -194,11 +322,11 @@ function refreshVerification() {
       }
     }
     .main{
-      // display: inline-block;
+      display: inline-block;
       display: inline-flex;
       vertical-align: top;
       height: 100%;
-      width: 80%;
+      width: 70%;
       background-color: #ffffff;
       .content{
         margin: 26px auto 10px auto;
@@ -216,6 +344,10 @@ function refreshVerification() {
           justify-content: space-between;
           width: 350px;
           margin-bottom: 20px;
+          .email{
+            width: 100px;
+            height: 40px;
+          }
           .verifyInput{
             width: 200px;
             height: 42px;
@@ -238,5 +370,77 @@ function refreshVerification() {
       }
     }
   }
+  .register{
+    margin: auto;
+    height: 650px;
+    width: 800px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px #658d93;
+    border:1px solid #228FA0;
+    overflow: hidden;
+    .side2{
+      display: inline-block;
+      vertical-align: top;
+      height: 100%;
+      width: 30%;
+      background-color: #6FB6C1;
+      text-align: center;
+      .loginBtn{
+        padding: 5px 10px;
+        margin-top: 540px;
+        .loginText{
+          margin: 0px 10px 0px 10px;
+          font-size: large;
+        }
+      }
+    }
+    .main2{
+      display: inline-block;
+      display: inline-flex;
+      vertical-align: top;
+      height: 100%;
+      width: 70%;
+      background-color: #ffffff;
+      .content{
+        margin: 26px auto 10px auto;
+        h1{
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .input{
+          width: 350px;
+          height: 42px;
+          margin-bottom: 20px;
+        }
+        .verify{
+          display: flex;
+          justify-content: space-between;
+          width: 350px;
+          margin-bottom: 20px;
+          .verifyBtn{
+            width: 100px;
+            height: 40px;
+          }
+        }
+        .verifyInput{
+            width: 350px;
+            height: 40px;
+            margin-bottom: 20px;
+          }
+        .registerBtn{
+          height: 40px;
+          width: 350px;
+        }
+        .copyright{
+          margin-top: 45px;
+          color: #b0b0b0;
+          text-align: center;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  }
+
 }
 </style>

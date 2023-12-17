@@ -74,9 +74,7 @@
   import { defineProps, defineEmits, ref,watch } from 'vue'
   import request from '../request/axios_config.js'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import 'element-plus/theme-chalk/el-message.css'
-  import 'element-plus/theme-chalk/el-message-box.css'
-  
+
   const rowData= ref({
     achievementId: '',
     achievementName: '',
