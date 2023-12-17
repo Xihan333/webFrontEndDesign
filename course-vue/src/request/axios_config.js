@@ -7,7 +7,12 @@ const instance = axios.create({
   timeout: 5000
 })
 
-const userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
+let userInfo={
+  'accessToken':''
+}
+if(localStorage.getItem('KEY_COMMON')){
+  userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
+}
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
