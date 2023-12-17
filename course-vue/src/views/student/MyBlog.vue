@@ -4,7 +4,7 @@
         <div class="myInfo">
             <img src="../../../public/avatar.jpg" alt="Avatar" class="avatar">
             <div class="info">
-                <h3 class="nickname">小明同学</h3>
+                <h3 class="nickname">{{ name }}</h3>
                 <p class="articles-count">文章   {{ blogNum }}</p>
             </div>
             <el-button type="primary" @click="goNewBlog" color="#6FB6C1" class="btn">写新文章</el-button>
@@ -44,6 +44,7 @@
 <script setup>
 import {ref,onMounted,computed} from 'vue';
 import {Delete,Edit} from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import { useAppStore } from '../../stores/app.ts'
 import router from "~/router";
 import request from '../../request/axios_config.js'
@@ -51,6 +52,7 @@ import request from '../../request/axios_config.js'
 const store = useAppStore()
 const blogs = ref([])
 const blogNum = ref()
+const name = ref('小明同学')
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()
@@ -101,9 +103,10 @@ const handleEdit = (blog) => {
   console.log(blog)
 }
 async function handleDel(blog)  {
+
   const res = await request.post('/blog/blogDelete',{
     data:{
-      blogId: blog.blogId
+      blogId: blog.BlogId
     } 
   })
   console.log(res.code)
@@ -153,6 +156,7 @@ async function handleDel(blog)  {
         }
         .articles-count {
             color: #666;
+            font-size: 14px;
         }
     }
     .btn {
@@ -175,8 +179,6 @@ async function handleDel(blog)  {
 
         .content{
             margin: auto 0;
-            display: inline-block;
-            vertical-align:middle;
         }
         .title {
             margin: 10px 0;
@@ -200,8 +202,7 @@ async function handleDel(blog)  {
         }
         .operation{
             margin-left: 70%;
-            display: inline-block;
-            vertical-align:middle;
+            
         }
     }
 }

@@ -5,15 +5,24 @@
         <div class="authorBox">
             <p class="authorInfo">{{ blogInfo.name }} 于 {{ blogInfo.createTime }} 发布</p>
         </div>
-        <p class="content">{{ blogInfo.content }}</p>
+        <!-- 使用 v-html 指令安全地输出解析后的 HTML -->
+        <div class="content" v-html="renderedContent"></div>
     </div>
 </template>
 
 <script setup>
+import {ref,computed} from 'vue'
 import { useAppStore } from '../../stores/app.ts'
 import { storeToRefs } from 'pinia'
 
 const store = useAppStore()
+import MarkdownIt from 'markdown-it';
+
+// 创建一个 MarkdownIt 实例
+const md = new MarkdownIt();
+// 创建一个计算属性来解析 Markdown 内容
+const renderedContent = computed(() => md.render(blogInfo.value.content));
+
 const { blogInfo } = storeToRefs(store);
 
 // const blogInfo = ref({
