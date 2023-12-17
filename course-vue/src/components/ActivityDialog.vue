@@ -99,7 +99,7 @@ const submit = async () => {
     try{
         if(props.dialogMode === 'view'){
             console.log(props.rowData.activityId)
-            await request.post('/api/activity/ActivityStudentEditSave',{
+            await request.post('/activity/ActivityStudentEditSave',{
                 data:{
                     activityId:props.rowData,activityId,
                     form:{
@@ -112,7 +112,7 @@ const submit = async () => {
             })
         }
         else{
-            await request.post('/api/activity/ActivityStudentEditSave',{
+            await request.post('/activity/ActivityStudentEditSave',{
                 data:{
                     activityId:null,
                     form:{
