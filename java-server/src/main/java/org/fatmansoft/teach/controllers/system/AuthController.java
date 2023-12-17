@@ -92,8 +92,8 @@ public class AuthController {
         return authService.sendEmail(dataRequest);
     }
 
-    @PostMapping("/getValidateCode")
-    public DataResponse getValidateCode(@Valid @RequestBody DataRequest dataRequest) {
+    @GetMapping("/getValidateCode")
+    public DataResponse getValidateCode() {
         return CommonMethod.getReturnData(LoginControlUtil.getInstance().getValidateCodeDataMap());
     }
 

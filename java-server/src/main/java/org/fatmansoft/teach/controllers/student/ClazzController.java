@@ -60,4 +60,10 @@ public class ClazzController {
     public DataResponse getNoClazzStudents(){
         return clazzService.getNoClazzStudents();
     }
+
+    @PostMapping("/studentDelete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DataResponse studentDelete(@Valid @RequestBody DataRequest dataRequest) {
+        return clazzService.studentDelete(dataRequest);
+    }
 }
