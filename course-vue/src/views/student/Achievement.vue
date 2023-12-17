@@ -22,12 +22,12 @@
         :data="paginatedTableData" 
         style="width: 100%">
   
-          <el-table-column prop="achievementName" label="成就名称" width="150" />   
-          <el-table-column prop="type" label="成就类别" width="120" /> 
-          <el-table-column prop="level" label="成就级别" width="120" /> 
+          <el-table-column prop="achievementName" label="成就名称" width="200" text-align="center" />   
+          <el-table-column prop="type" label="成就类别" width="150" text-align="center"/> 
+          <el-table-column prop="level" label="成就级别" width="120" text-align="center"/> 
           <!-- 时间 -->
-          <el-table-column sortable prop="time" label="时间" width="120" />   
-          <el-table-column prop="content" label="内容" width="180"/>   
+          <el-table-column sortable prop="time" label="时间" width="120" text-align="center"/>   
+          <el-table-column prop="content" label="内容" width="300" text-align="center"/>   
           <!-- 审核状态，做了筛选 -->
           <el-table-column
             prop="statusName"
@@ -40,7 +40,7 @@
             ]"
             :filter-method="filterStatus"
           />
-          <el-table-column label="操作" width="180" >
+          <el-table-column label="操作" width="220" text-align="center">
             <!-- 操作部分，根据需要修改 -->
             <template #default="scope">
               <el-button size="default" @click="handleEdit(scope.row)">
@@ -137,7 +137,7 @@
       show.value = true
     }
     async function handleDel(rowData)  {
-      const res = await request.post('/api/achievement/achievementDelete',{
+      const res = await request.post('/achievement/achievementDelete',{
         data:{
           achievementId: rowData.achievementId
         } 
@@ -191,6 +191,9 @@
     }
     .pagination{
       margin-top: 10px;
+    }
+    el-table-column{
+      text-align: center;
     }
     
     </style>

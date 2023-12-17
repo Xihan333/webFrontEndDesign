@@ -81,7 +81,7 @@
 <script setup>
 import {defineProps, defineEmits, ref, watchEffect} from 'vue'
 import {ElMessageBox} from 'element-plus'
-import request from '../request/axios_config.ts'
+import request from '../request/axios_config.js'
 
 const radio2 = ref('1')
 const rowData= ref({
@@ -128,7 +128,7 @@ const submit = async () => {
     const res = ref({})
     if(props.dialogMode === 'view'){
         console.log(props.rowData.teacherId)
-        res.value = await request.post('/api/teacher/teacherEditSave',{
+        res.value = await request.post('/teacher/teacherEditSave',{
             data:{
                 teacherId:props.rowData,teacherId,
                 form:{
@@ -144,7 +144,7 @@ const submit = async () => {
             }
         })
     }else{
-        res.value = await request.post('/api/teacher/teacherEditSave',{
+        res.value = await request.post('/teacher/teacherEditSave',{
             data:{
                 teacherId: null,
                 form:{

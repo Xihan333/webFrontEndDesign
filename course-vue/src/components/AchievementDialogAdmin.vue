@@ -57,10 +57,13 @@
         </el-form>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="cancel">取消</el-button>
-            <el-button type="primary" @click="submit">
-              提交
+            <el-button type="primary" @click="pass">
+              审核通过
             </el-button>
+            <el-button type="primary" @click="fail">
+              审核不通过
+            </el-button>
+            <el-button @click="cancel">取消</el-button>
           </span>
         </template>
       </el-dialog>
@@ -70,6 +73,7 @@
   <script setup>
   import { defineProps, defineEmits, ref,watch } from 'vue'
   import { ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import request from '../request/axios_config.js'
 
   
@@ -111,45 +115,56 @@
 
 
   const emit = defineEmits(['update:show','updateTable'])
-  
-  const submit = async () => {
-    try {
-      if (props.dialogMode === 'view') {
-        // 调用修改接口
-        console.log(props.rowData.achievementId)
-        await request.post('/achievement/achievementStudentEditSave', {
-          data:{
-              achievementId:props.rowData.achievementId,
-              form:{
-                  achievementName: rowData.value.achievementName,
-                  level: rowData.value.level,
-                  type: rowData.value.type,
-                  time: rowData.value.time,
-                  content:rowData.value.content
-              }
-          }
+  const pass = async () => {
+    const res = await request.post('/achievement/examine/achievementPass',{
+        data:{
+          achievementId:props.rowData.achievementId
+        } 
+      })
+      console.log(res.code)
+      console.log(res)
+      if(res.data.code==200){
+        ElMessage({
+          message: '审核通过提交成功！',
+          type: 'success',
+          offset: 150
         })
-    } else {
-      // 则调用新增接口
-        await request.post('/achievement/achievementStudentEditSave', {
-          data:{
-              achievementId:null,
-              form:{
-                  achievementName: rowData.value.achievementName,
-                  level: rowData.value.level,
-                  type: rowData.value.type,
-                  time: rowData.value.time,
-                  content:rowData.value.content
-              }
-          }
+      }
+      else{
+        ElMessage({
+          message: '提交失败，请重试！',
+          type: 'error',
+          offset: 150
         })
-    }
-    emit('update:show', false) // 关闭对话框
-    emit('updateTable') // 通知父组件更新表格
-  } catch (error) {
-    console.error('请求失败:', error)
+      }
+      emit('update:show', false)
+      emit('updateTable')
   }
-    emit('update:show', false)
+
+  const fail = async () => {
+    const res = await request.post('/achievement/examine/achievementFail',{
+        data:{
+          achievementId:props.rowData.achievementId
+        } 
+      })
+      console.log(res.code)
+      console.log(res)
+      if(res.data.code==200){
+        ElMessage({
+          message: '审核不通过提交成功！',
+          type: 'success',
+          offset: 150
+        })
+      }
+      else{
+        ElMessage({
+          message: '提交失败，请重试！',
+          type: 'error',
+          offset: 150
+        })
+      }
+      emit('update:show', false)
+      emit('updateTable')
   }
   
   // 点击对话框背后黑幕时也会触发关闭

@@ -58,7 +58,7 @@ import { ref,computed,onMounted } from 'vue'
 //引入弹窗页面
 import PeerAuditDialog from '../../components/PeerAuditDialog.vue'
 import { ElMessage } from 'element-plus'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const tableData = ref([])
 onMounted(() => {
