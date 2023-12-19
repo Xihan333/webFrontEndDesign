@@ -176,9 +176,12 @@ async function handleDel(blog)  {
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         margin-bottom: 20px;
         overflow: hidden;
-
+        position: relative;
         .content{
+            width: 70%;
             margin: auto 0;
+            vertical-align:top;
+            display: inline-block;
         }
         .title {
             margin: 10px 0;
@@ -199,10 +202,14 @@ async function handleDel(blog)  {
             color: #333;
             margin-left: 20px;
             margin-right: 80px;
+            // width: 60%;
         }
         .operation{
-            margin-left: 70%;
-            
+            position: absolute;
+            margin-left: 10%;
+            margin-top: 20px;
+            vertical-align:top;
+            display: inline-block;
         }
     }
 }
