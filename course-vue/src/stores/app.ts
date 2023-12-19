@@ -56,7 +56,11 @@ export const useStudentStore = defineStore('student', () => {
 export const useCommonStore = defineStore('common', () => {
   // 用户信息
   let userInfo=ref({
-
+    'accessToken': "",
+    'id': 0,
+    'roles': "",
+    'tokenType': "",
+    'username': ""
   });
   // 是否加载中
   const loading=ref(false);
@@ -70,7 +74,6 @@ export const useCommonStore = defineStore('common', () => {
       close:false
     }
   ])
-  // 假定role中, 0代表管理员, 1代表学生, 2代表教师, 3代表all
   const itemList = ref([
     {
       name:'个人主页',

@@ -1,5 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
+import { ElMessage } from "element-plus";
 
 //路由表
 const routes = [
@@ -167,6 +168,11 @@ const router = createRouter({
 //判断是否登录
 router.beforeEach(async (to, from) => {
   if(localStorage.getItem('KEY_COMMON') == null && to.name != 'login'){
+    ElMessage({
+      message: '请先登录！',
+      type: 'error',
+      offset: 150
+    })
     return { name: 'login' }
   }
 })

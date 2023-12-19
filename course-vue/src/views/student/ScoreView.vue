@@ -14,23 +14,23 @@
 // 在Menu.vue中点击获取成绩数据, 通过pinia实现组件间数据传送
 import { useStudentStore, useCommonStore } from '~/stores/app'
 import { storeToRefs } from "pinia";// 保证其响应性
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import request from '../../request/axios_config.js'
 
 const studentStore=useStudentStore();
 const commonStore=useCommonStore();
-let tableData=[];
+let tableData=ref([]);
 const userInfo=commonStore.userInfo;
 onMounted(async()=>{
     commonStore.updateLoading(true);
     const res = await request.post('/score/getScoreList',{
         data:{
-            userId: 2
+            userId: commonStore.userInfo.id
         } 
     })
     console.log('请看请求',res)
     if(res.data.code==200){
-        tableData=res.data.data;
+        tableData.value=res.data.data;
         commonStore.updateLoading(false);
     }
     else{
