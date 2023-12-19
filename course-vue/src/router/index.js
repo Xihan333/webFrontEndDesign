@@ -14,6 +14,12 @@ const routes = [
     name: "login",
     component: () => import("~/views/Login.vue"),
   },
+  //忘记密码
+  {
+    path: "/forget-password",
+    name: "forget-password",
+    component: () => import("~/views/forget-password.vue"),
+  },
   {
     path: ('/student'),
     component: () => import('../views/Layout.vue'),

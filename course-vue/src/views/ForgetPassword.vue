@@ -6,7 +6,7 @@
     </div>
   
     <div class = "auth-container">
-      <div v-if = "showLogin" class="login">
+      <div class="forget-password">
         <div class="side">
           <el-button 
             class="registerBtn" 
@@ -14,63 +14,24 @@
             type="primary" 
             plain 
             round
-            @click="showLogin=false"
+            @click="toLogin"
           >
             <el-icon size="large"><ArrowLeft /></el-icon> 
-            <p class="registerText" >注册</p>  
+            <p class="registerText" >返回登陆</p>  
           </el-button>
         </div>
         <div class="main">
           <div class="content">
             <br/>
+            <h1>忘记密码</h1>
             <br/>
-            <br/>
-            <h1>Welcome</h1>
-            <br/>
-            <br/>
-            <el-input class="input" v-model="account" placeholder="用户名" />
-            <br/>
-            <el-input
-              class="input"
-              v-model="password"
-              type="password"
-              placeholder="密码"
-              show-password
-            />
-            <br/>
-            <div class="verify">
-              <el-input class="verifyInput" v-model="verification" placeholder="请输入验证码" />
-              <img
-                @click="changeValiCode"
-                class="verifyImg"
-                referrerpolicy="no-referrer"
-                :src="img2"
-              />
-            </div>
-            <el-button 
-              class="loginBtn" 
-              type="primary"
-              @click="login"  
-            >登录</el-button>
-            <br/>
-            <el-link type="primary" @click="forget">忘记密码？</el-link>
-            <p class="copyright">Copyright©2023</p>
-          </div>
-        </div>
-      </div>
-      <div v-else class="register">
-        <div class="main2">
-          <div class="content">
-            <h1>Register</h1>
             <el-input class="input" v-model="register.account" placeholder="用户名" />
-            <br/>
-            <el-input class="input" v-model="register.name" placeholder="姓名" />
             <br/>
             <el-input
               class="input"
               v-model="register.password"
               type="password"
-              placeholder="密码"
+              placeholder="新密码"
               show-password
             />
             <br/>
@@ -78,16 +39,9 @@
               class="input"
               v-model="register.confirmPassword"
               type="password"
-              placeholder="确认密码"
+              placeholder="确认新密码"
               show-password
             />
-            <br/>
-            <el-form-item >
-              <el-radio-group v-model="register.role">
-                <el-radio label="STUDENT" border>学生</el-radio>
-                <el-radio label="TEACHER" border>教师</el-radio>
-              </el-radio-group>
-            </el-form-item>
             <br/>
             <div class="verify">
               <el-input class="email" v-model="register.email" placeholder="注册邮箱" />
@@ -98,24 +52,11 @@
             <el-button 
               class="registerBtn" 
               type="primary"
-              @click="registerUser"  
-            >注册</el-button>
+              @click="resetPassWord"  
+            >重置密码</el-button>
             <br/>
             <p class="copyright">Copyright©2023</p>
           </div>
-        </div>
-        <div class="side2">
-          <el-button 
-            class="loginBtn" 
-            size="large"
-            type="primary" 
-            plain 
-            round
-            @click="showLogin=true"
-          >
-            <el-icon size="large"><ArrowLeft /></el-icon> 
-            <p class="loginText">登录</p>  
-          </el-button>
         </div>
       </div>
     </div>
@@ -129,19 +70,11 @@ import { ElMessage,ElMessageBox } from 'element-plus'
 import request from '../request/axios_config.js'
 import { useCommonStore } from "~/stores/app"
 
-const showLogin = ref('true');
 const store=useCommonStore();
-const account=ref('');
-const password=ref('');
-const img2=ref('');
-const verificationId=ref('');
-const verification=ref('');
 const register = ref({
-  account: '202200300043',
-  password: '123456',
+  password: '',
   confirmPassword: '',
-  role: 'STUDENT',
-  name: '',
+  account: '',
   email: '',
   mailVerificationCode: ''
 })
@@ -153,57 +86,12 @@ const updateTableData = async () => {
   changeValiCode()
 }
   
-  
-async function login(){
-  const res2 = await request.post('/auth/testValidateInfo',{
-    data:{
-      'validateCodeId' : verificationId.value,
-      'validateCode' : verification.value
-    }
-  })
-  if(res2.data.code!=200){
-    ElMessage({
-           message: '验证码错误',
-           type: 'error',
-           offset: 150
-         })
-  }else {
-      const res = await request.post('/auth/login',{
-      data:{
-        'username': account.value,
-        'password': password.value
-      } 
-    })
-    console.log('请看请求',res)
-    if(res.data.code==200){
-      store.setUserInfo(res.data.data)
-      let role=store.userInfo.roles;
-      if(role=='ROLE_ADMIN'){
-        router.push('/admin');
-      }
-      else if(role=='ROLE_STUDENT'){
-        router.push('/student');
-      }
-      else if(role=='ROLE_TEACHER'){
-        router.push('/teacher');
-      }
-    }
-    else{
-      alert('加载失败');
-    }
-  }
-}
-async function forget(){
-  //跳转到找回密码页面
-}
-async function registerUser(){
-  const res = await request.post('/auth/registerUser',{
+async function resetPassWord(){
+  const res = await request.post('/auth/resetPassWord',{
     data:{
       'username': register.value.account,
-      'password': register.value.password,
-      'name' : register.value.name,
+      'newPassword': register.value.password,
       'email': register.value.email,
-      'role': register.value.role,
       'mailVerificationCode' : register.value.mailVerificationCode
     }
   })
@@ -214,7 +102,7 @@ async function registerUser(){
            offset: 150
          })
   } else {
-    ElMessageBox.alert('注册成功！',{
+    ElMessageBox.alert('密码重置成功！',{
       confirmButtonText: 'OK'
     })
     showLogin = true
@@ -244,20 +132,8 @@ async function getCode(){
   }
 }
 
-
-async function changeValiCode(){
-  try {
-    const res = await request.get('/auth/getValidateCode')
-    verificationId.value = res.data.data.validateCodeId;
-    console.log(verificationId)
-    img2.value = res.data.data.img;
-  } catch (error) {
-    console.error('Failed to fetch verification image:', error);
-  }
-}
-
-function refreshVerification() {
-  changeValiCode()
+const toLogin = () =>{
+    router.push('login')
 }
 
 </script>
