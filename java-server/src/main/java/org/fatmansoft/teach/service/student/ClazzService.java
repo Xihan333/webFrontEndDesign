@@ -3,6 +3,7 @@ package org.fatmansoft.teach.service.student;
 import org.fatmansoft.teach.models.student.*;
 import org.fatmansoft.teach.models.student.Clazz;
 import org.fatmansoft.teach.models.system.User;
+import org.fatmansoft.teach.models.teacher.Teacher;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
@@ -53,14 +54,35 @@ public class ClazzService {
         return id;
     };
 
+    public Map getMapFromClazz(Clazz clazz) {
+        Map m = new HashMap();
+        Student s;
+        Teacher t;
+        if (clazz == null)
+            return m;
+        m.put("clazzId",clazz.getClazzId());
+        m.put("clazzName", clazz.getClazzName());
+        m.put("gradeId", clazz.getGrade().getGradeId());
+        m.put("gradeName", clazz.getGrade().getGradeName());
+        m.put("campusId", clazz.getCampus().getCampusId());
+        m.put("campusName", clazz.getCampus().getName());
+        return m;
+    }
+
     public DataResponse getClazzOptionItemListByGradeId(DataRequest dataRequest) {
         Integer gradeId=dataRequest.getInteger("gradeId");
-        List<Clazz> cList = clazzRepository.findClazzListByGradeGradeId(gradeId);  //数据库查询操作
-        List<OptionItem> itemList = new ArrayList();
-        for (Clazz c : cList) {
-            itemList.add(new OptionItem(c.getClazzId(), c.getClazzName(), c.getClazzName()));
+        List<Clazz> sList = clazzRepository.findClazzListByGradeGradeId(gradeId);
+        return CommonMethod.getReturnData(getClazzMapList(sList));
+    }
+
+    public List getClazzMapList(List<Clazz> sList) {
+        List dataList = new ArrayList();
+        if (sList == null || sList.size() == 0)
+            return dataList;
+        for (int i = 0; i < sList.size(); i++) {
+            dataList.add(getMapFromClazz(sList.get(i)));
         }
-        return CommonMethod.getReturnData(itemList);
+        return dataList;
     }
 
     public DataResponse clazzEditSave(DataRequest dataRequest) {
@@ -131,5 +153,16 @@ public class ClazzService {
             dataList.add(studentService.getMapFromStudent(sList.get(i)));
         }
         return CommonMethod.getReturnData(dataList);
+    }
+
+    public DataResponse studentDelete(DataRequest dataRequest) {
+        Integer studentId = dataRequest.getInteger("studentId");
+        Optional<Student> sOp= studentRepository.findByStudentId(studentId);
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student s = sOp.get();
+        s.setClazz(null);
+        studentRepository.save(s);
+        return CommonMethod.getReturnMessageOK();
     }
 }

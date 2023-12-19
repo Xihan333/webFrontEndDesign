@@ -66,7 +66,7 @@ onMounted(() => {
     updateTableData()
 })
 const updateTableData = async () => {
-    const res = await request.post('/api/student/getStudentList',{
+    const res = await request.post('/student/getStudentList',{
         data:{
             numName:''
         }
@@ -115,7 +115,7 @@ const handleEdit = (rowData) => {
 }
 
 async function handleDel(rowData) {
-    const res = await request.post('/api/student/studentDelete',{
+    const res = await request.post('/student/studentDelete',{
         data:{
             studentId :rowData.studentId
         }

@@ -79,6 +79,10 @@ const routes = [
         path: ('new-blog'), 
         component: () => import('../views/student/NewBlog.vue') 
       },
+      { 
+        path: ('blog-info'), 
+        component: () => import('../views/student/BlogInfo.vue') 
+      },
     ]
   },
   {

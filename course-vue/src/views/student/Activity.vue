@@ -56,7 +56,7 @@ import {ref,computed,onMounted} from 'vue'
 //引入弹窗界面
 import ActivityDialog from '../../components/ActivityDialog.vue'
 import{ElMessage} from 'element-plus'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const tableData = ref([])
 onMounted(() => {
@@ -64,7 +64,7 @@ onMounted(() => {
 })
 const updateTableData = async () => {
     //这里有点迷糊，不太确定接口
-    const res = await request.post('/api/activity/getStudentActivity',{
+    const res = await request.post('/activity/getStudentActivity',{
         data:{}
     })
     console.log(res.data)
@@ -115,7 +115,7 @@ const handleEdit = (rowData) => {
 }
 
 async function handleDel(rowData) {
-    const res = await request.post('/api/activity/ActivityDelete',{
+    const res = await request.post('/activity/ActivityDelete',{
         data:{
             activityId :rowData.activityId
         }

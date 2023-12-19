@@ -37,12 +37,11 @@ public class LoginControlUtil {
         // 创建一个随机数生成器类
 
         // 将图像填充为白色
-        g.setColor(Color.WHITE);
+        g.setColor(new Color(240, 240, 240));
         g.fillRect(0, 0, width, height);
 
         // 创建字体，字体的大小应该根据图片的高度来定。
-        Font font = new Font("Fixedsys", Font.PLAIN | Font.BOLD, fontHeight);
-        // 设置字体。
+        Font font = new Font("Arial", Font.BOLD, fontHeight); // 修改为你想要的字体和大小
         g.setFont(font);
 
          //画边框。
@@ -51,7 +50,7 @@ public class LoginControlUtil {
 
         // 随机产生160条干扰线，使图象中的认证码不易被其它程序探测到。
         g.setColor(Color.WHITE);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 160; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
             int xl = random.nextInt(12);

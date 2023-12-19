@@ -15,7 +15,7 @@
         </div>
         <!-- 卡片 -->
         <div class="blog" v-for="blog in paginatedBlogs" :key="blog.BlogId">
-            <div class="content">
+            <div class="content" @click="handleClickBlog(blog)">
                 <h2 class="title">{{ blog.BlogTitle }}</h2>
                 <p class="date">发布于 {{blog.createTime}} | {{ blog.name }}</p>
                 <p class="summary">{{ ellipsis(blog.content) }}</p>
@@ -39,7 +39,7 @@
     <div class="sidebar">
         <div class="myinfo">
             <img src="../../../public/avatar.jpg" alt="Avatar" class="avatar">
-            <h3 class="nickname">小明同学</h3>
+            <h3 class="nickname">{{ name }}</h3>
             <p class="articles-count">文章 {{ blogNum }}</p>
             <el-button type="primary" @click="goMyBlog" color="#6FB6C1" class="btn">查看文章</el-button>
         </div>
@@ -49,7 +49,7 @@
                 <div class="myCmt" v-for="comment in evals" :key="comment.evaluationId">
                     <img src="../../../public/user.png" alt="未知" class="cmtAvatar">
                     <div class="BesideAvatar">
-                        <p class="cmtName">小明同学的同学</p>
+                        <p class="cmtName">{{ name }}的同学</p>
                         <p class="cmtContent">{{ cutCmt(comment.eval) }}</p>
                     </div>
                 </div>
@@ -61,12 +61,15 @@
 <script setup>
 import {ref,onMounted,computed} from 'vue';
 import { Search } from '@element-plus/icons-vue'
+import { useAppStore } from '../../stores/app.ts'
 import router from "~/router";
 import request from '../../request/axios_config.js'
 
+const store = useAppStore()
 const blogs = ref([])
 const evals = ref([])
 const blogNum = ref()
+const name = ref('小明同学')
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()
@@ -123,6 +126,12 @@ const handleSizeChange = () => {
 // 查看我的博客
 const goMyBlog = () => {
     router.push('my-blog')
+}
+
+const handleClickBlog = (blog) => {
+  console.log(blog);
+  store.blogInfo = blog
+  router.push('blog-info')
 }
 </script>
 

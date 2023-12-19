@@ -12,8 +12,20 @@ export const useAppStore = defineStore('app', () => {
       close:false
     }
   ])
+  //查看博客显示的信息
+  const blogInfo = ref({
+      createTime: "2023-12-17 01:38:51",
+      num: "2022030003",
+      BlogId: 5,
+      name: "杨平",
+      BlogTag: "Sample Tag",
+      updateTime: null,
+      personId: 2,
+      BlogTitle: "Sample Title",
+      content: "Sample Content"
+  })
   return {
-    tabPaneList,userInfo
+    tabPaneList,userInfo,blogInfo
   }
 })
 
@@ -37,6 +49,7 @@ export const useStudentStore = defineStore('student', () => {
     scoreList,updateScoreList
   }
 })
+
 
 
 // ☯️采用组合式写法

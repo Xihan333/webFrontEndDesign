@@ -277,7 +277,7 @@ public class StudentService {
         Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
-        Student s= sOp.get();
+        Student s = sOp.get();
         Integer studentId = s.getStudentId();
         Person p = u.getPerson();
 
