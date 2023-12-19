@@ -2,7 +2,7 @@
 <template>
     <div class="peer-audit">
         <div>
-        <DissertationDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
+        <PeerAuditDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
         <!-- 查询部分 -->
         <div class="query">
             <el-input
@@ -56,7 +56,7 @@
 <script setup>
 import { ref,computed,onMounted } from 'vue'
 //引入弹窗页面
-import PeerAuditDialog from '../../components/PeerAuditDialog.vue'
+import PeerAduitDialog from '../../components/PeerAduitDialog.vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
 
@@ -83,7 +83,7 @@ const searchedTableData = computed(() => tableData.value.filter(
         item.student.person.num.toLowerCase().includes(search.value.toLowerCase()) ||
         item.student.person.name.toLowerCase().includes(search.value.toLowerCase()) ||
         item.evaluator.person.num.toLowerCase().includes(search.value.toLowerCase()) ||
-        item.evaluator.person.name.toLowerCase().includes(search.value.toLowerCase()) ||
+        item.evaluator.person.name.toLowerCase().includes(search.value.toLowerCase())
 ))
 
 const searchFn = () => {
