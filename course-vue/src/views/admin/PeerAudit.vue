@@ -2,7 +2,7 @@
 <template>
     <div class="peer-audit">
         <div>
-        <PeerAuditDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
+        <PeerAduitDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
         <!-- 查询部分 -->
         <div class="query">
             <el-input
@@ -18,10 +18,10 @@
     <el-table
         :data="paginatedTableData"
         style="width: 100%">
-            <el-table-column prop="rowData.evaluator.person.num" label="评价人学号" width="200" />
-            <el-table-column prop="rowData.evaluator.person.name" label="评价人姓名" width="250" />
-            <el-table-column prop="rowData.student.person.num" label="被评价人学号" width="200"/>
-            <el-table-column prop="rowData.student.person.name" label="被评论者" width="250" />
+            <el-table-column prop="evaluator.person.num" label="评价人学号" width="200" />
+            <el-table-column prop="evaluator.person.name" label="评价人姓名" width="250" />
+            <el-table-column prop="student.person.num" label="被评价人学号" width="200"/>
+            <el-table-column prop="student.person.name" label="被评论者" width="250" />
             <el-table-column prop="eval" label="评论内容" width="300" />
             <el-table-column prop="evalTime" label="评论时间" width="250" />
             <el-table-column label="操作" width="200" >
@@ -60,15 +60,14 @@ import PeerAduitDialog from '../../components/PeerAduitDialog.vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
 
-const tableData = ref([])
+const tableData = ref([{}])
 onMounted(() => {
   // 发起请求获取当前表格数据
   updateTableData()
 })
 const updateTableData = async () => {
-  const res = await request.post('/evaluation/getEvaluationList',{
-    data:{}
-  })
+  const res = await request.get('/evaluation/getEvaluationList')
+  console.log(res.data.data)
   tableData.value = res.data.data
 }
 
@@ -144,6 +143,7 @@ el-table{
 .query{
   float: right;
   border-right: 0px;
+  margin-bottom: 10px;
   .search{
     border-color: #6FB6C1;
     margin-left: auto;
