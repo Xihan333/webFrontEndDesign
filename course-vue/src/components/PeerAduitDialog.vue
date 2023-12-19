@@ -70,12 +70,22 @@ import request from '../request/axios_config.js'
 
 const rowData=ref({
     evaluationId:'',
-    student.studentId:'',
-    evaluator.studentId:'',
-    student.person.num:'',
-    student.person.name:'',
-    eval:'',
-    evalTime:''
+    eval:'', 
+    evalTime:'', 
+    student:{
+        studentId:'',  //被评价人id
+        person:{
+            name:'',
+            num:'',
+        }
+    },
+    evaluator:{
+        studentId:'',  //被评价人id
+        person:{
+            name:'',
+            num:'',
+        }
+    },
 })
 
 const props = defineProps({
