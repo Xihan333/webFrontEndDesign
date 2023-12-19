@@ -49,8 +49,9 @@
             </div>
             <el-input class="verifyInput" v-model="register.mailVerificationCode" placeholder="请输入验证码" />
             <br/>
+            <br/>
             <el-button 
-              class="registerBtn" 
+              class="loginBtn" 
               type="primary"
               @click="resetPassWord"  
             >重置密码</el-button>
@@ -173,7 +174,7 @@ const toLogin = () =>{
     display: flex;
     height: 100%;
     width: 100%;
-    .login{
+    .forget-password{
     margin: auto;
     height: 650px;
     width: 800px;
@@ -221,90 +222,20 @@ const toLogin = () =>{
           width: 350px;
           margin-bottom: 20px;
           .email{
-            width: 100px;
-            height: 40px;
-          }
-          .verifyInput{
-            width: 200px;
+            width: 250px;
             height: 42px;
           }
-          img{
-            width: 100px;
-            height: 40px;
-          }
-        }
-        .loginBtn{
-          height: 40px;
-          width: 350px;
-        }
-        .copyright{
-          margin-top: 45px;
-          color: #b0b0b0;
-          text-align: center;
-          font-size: 14px;
-        }
-      }
-    }
-  }
-  .register{
-    margin: auto;
-    height: 650px;
-    width: 800px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px #658d93;
-    border:1px solid #228FA0;
-    overflow: hidden;
-    .side2{
-      display: inline-block;
-      vertical-align: top;
-      height: 100%;
-      width: 30%;
-      background-color: #6FB6C1;
-      text-align: center;
-      .loginBtn{
-        padding: 5px 10px;
-        margin-top: 540px;
-        .loginText{
-          margin: 0px 10px 0px 10px;
-          font-size: large;
-        }
-      }
-    }
-    .main2{
-      display: inline-block;
-      display: inline-flex;
-      vertical-align: top;
-      height: 100%;
-      width: 70%;
-      background-color: #ffffff;
-      .content{
-        margin: 26px auto 10px auto;
-        h1{
-          text-align: center;
-          margin-bottom: 30px;
-        }
-        .input{
-          width: 350px;
-          height: 42px;
-          margin-bottom: 20px;
-        }
-        .verify{
-          display: flex;
-          justify-content: space-between;
-          width: 350px;
-          margin-bottom: 20px;
           .verifyBtn{
-            width: 100px;
-            height: 40px;
+            width: 150px;
+            height: 42px;
           }
         }
         .verifyInput{
             width: 350px;
-            height: 40px;
-            margin-bottom: 20px;
+            height: 42px;
           }
-        .registerBtn{
-          height: 40px;
+        .loginBtn{
+          height: 42px;
           width: 350px;
         }
         .copyright{
@@ -316,7 +247,6 @@ const toLogin = () =>{
       }
     }
   }
-  }
-
+}
 }
 </style>
