@@ -18,7 +18,7 @@ const routes = [
   {
     path: "/forget-password",
     name: "forget-password",
-    component: () => import("~/views/forget-password.vue"),
+    component: () => import("~/views/forgetPassword.vue"),
   },
   {
     path: ('/student'),
