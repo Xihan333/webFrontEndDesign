@@ -137,8 +137,8 @@ const img2=ref('');
 const verificationId=ref('');
 const verification=ref('');
 const register = ref({
-  account: '202200300043',
-  password: '123456',
+  account: '',
+  password: '',
   confirmPassword: '',
   role: 'STUDENT',
   name: '',
@@ -193,9 +193,11 @@ async function login(){
     }
   }
 }
-async function forget(){
-  //跳转到找回密码页面
+
+const forget = () =>{
+    router.push('forget-password')
 }
+
 async function registerUser(){
   const res = await request.post('/auth/registerUser',{
     data:{
