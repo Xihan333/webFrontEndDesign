@@ -91,4 +91,8 @@ export default defineConfig({
       },
     },
   },
+  //md-editor相关
+  optimizeDeps: {
+    include: ['@kangc/v-md-editor/lib/theme/vuepress.js'],
+  },
 });

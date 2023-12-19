@@ -73,19 +73,16 @@ const name = ref('小明同学')
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()
-        updateComment()
 })
 const updateTableData = async () => {
     const res = await request.get('/blog/getBlogList')
     const res1 = await request.get('/blog/getMyBlogNumber')
+    const res2 = await request.get('/evaluation/getMyEvaluationList',)
+    console.log(res2.data.data)
     console.log(res.data.data)
+    evals.value = res2.data.data
     blogs.value = res.data.data
     blogNum.value = res1.data.data
-}
-const updateComment = async () => {
-    const res = await request.get('/evaluation/getMyEvaluationList',)
-    console.log(res.data.data)
-    evals.value = res.data.data
 }
 
 // 超出部分显示省略号
