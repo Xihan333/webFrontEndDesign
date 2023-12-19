@@ -30,7 +30,7 @@ onMounted(async()=>{
     })
     console.log('请看请求',res)
     if(res.data.code==200){
-        tableData=res.data.data;
+        tableData.value=res.data.data;
         commonStore.updateLoading(false);
     }
     else{
