@@ -470,4 +470,29 @@ public class TeacherCourseService {
 
         return CommonMethod.getReturnMessageOK("添加成功");
     }
+
+    public DataResponse getMyAccessCourses() {
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student student= sOp.get();
+        Integer studentId = student.getStudentId();
+        if(student.getClazz() == null){
+            return CommonMethod.getReturnMessageError("学生无班级！");
+        }
+        Integer gradeId = student.getClazz().getGrade().getGradeId();
+        List<TeacherCourse> cList = teacherCourseRepository.findTeacherCourseListByGradeGradeId(gradeId);  //数据库查询操作
+        List dataList = new ArrayList();
+        if(cList == null || cList.size() == 0)
+            return CommonMethod.getReturnData(dataList);
+        for(int i = 0; i < cList.size(); i++) {
+            dataList.add(getMapFromTeacherCourse(cList.get(i)));
+        }
+        return CommonMethod.getReturnData(dataList);
+    }
 }

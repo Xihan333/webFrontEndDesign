@@ -210,4 +210,20 @@ public class EvaluationService {
         }
         return dataList;
     }
+
+    public DataResponse evaluationAdminDelete(DataRequest dataRequest) {
+        Integer evaluationId = dataRequest.getInteger("evaluationId");  //获取evaluation_id值
+        Evaluation a = null;
+        Optional<Evaluation> op;
+        if(evaluationId != null) {
+            op = evaluationRepository.findByEvaluationId(evaluationId);  //查询对应数据库中主键为id的值的实体对象
+            if(op.isPresent()) {
+                a = op.get();
+            }
+        }
+        if(a != null) {
+            evaluationRepository.delete(a);//删除该条
+        }
+        return CommonMethod.getReturnMessageOK("删除成功");  //通知前端操作正常
+    }
 }

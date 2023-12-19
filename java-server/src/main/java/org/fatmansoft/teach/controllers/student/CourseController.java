@@ -84,6 +84,12 @@ public class CourseController {
         return courseService.getCoursesByGradeId(dataRequest);
     }
 
+    //TODO: 获取我可选的课程（根据token获取年级id） 需要返回teacherCourseId
+    @GetMapping("/getMyAccessCourses")
+    public DataResponse getMyAccessCourses() {
+        return teacherCourseService.getMyAccessCourses();
+    }
+
     //获取我的课表（学生端）
     @GetMapping("/getMyCourses")
     public DataResponse getMyCourses() {

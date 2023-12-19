@@ -72,6 +72,7 @@ public class ScoreService {
     };
     public Map getMapFromScore(Score s) {
         Map m = new HashMap<>();
+        m.put("teacherCourseId",s.getTeacherCourse().getId());
         m.put("scoreId", s.getScoreId());
         m.put("studentNum",s.getStudent().getPerson().getNum());
         m.put("studentName",s.getStudent().getPerson().getName());

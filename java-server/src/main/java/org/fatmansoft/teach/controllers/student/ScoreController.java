@@ -78,7 +78,7 @@ public class ScoreController {
 
 
     //学生获取自己的课程
-    @PostMapping("/getMyCourseScores")
+    @GetMapping("/getMyCourseScores")
     public DataResponse getMyCourseScores() {
         return scoreService.getMyCourseScores();
     }
