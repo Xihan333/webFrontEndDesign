@@ -91,6 +91,7 @@ public class TeacherCourseService {
             m.put("gradeName", tc.getCourse().getGrade().getGradeName());
         }
         m.put("hour", tc.getCourse().getHour());
+        m.put("type", tc.getCourse().getType());
         m.put("credit", tc.getCourse().getCredit());
         m.put("day", tc.getDay());
         m.put("timeOrder", tc.getTimeOrder());

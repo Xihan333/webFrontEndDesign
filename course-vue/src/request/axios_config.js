@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useCommonStore } from "~/stores/app"
 
 // 创建axios实例, 将来基于创建出的实例进行配置和请求
 // 这样做不会污染原始axios实例
@@ -13,9 +14,11 @@ let userInfo={
 if(localStorage.getItem('KEY_COMMON')){
   userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
 }
+const commonStore=useCommonStore();
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
+  commonStore.updateLoading(true);
   // 在发送请求之前携带token
   config.headers.Authorization = 'Bearer ' + userInfo.accessToken;
   console.log('请求url: ', config.url, '; 请求信息: ', config)
@@ -27,6 +30,7 @@ instance.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
+  commonStore.updateLoading(false);
   // 2xx 范围内的状态码都会触发该函数。
   // axios会把响应数据多包装一层
   return response

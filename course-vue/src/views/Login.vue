@@ -81,7 +81,11 @@ async function login(){
     }
   }
   else{
-    alert('加载失败');
+    ElMessage({
+      message: '登录失败，请重试！',
+      type: 'error',
+      offset: 150
+    })
   }
 }
 function forget(){
