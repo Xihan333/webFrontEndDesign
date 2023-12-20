@@ -72,7 +72,7 @@
   </template>
   
   <script setup>
-  import { defineProps, defineEmits, ref,watchEffect } from 'vue'
+  import { defineProps, defineEmits, ref, watch} from 'vue'
   import { ElMessageBox } from 'element-plus'
   import request from '../request/axios_config.js'
 
@@ -102,7 +102,7 @@
   }
 
   // 监听
-  watchEffect(() => {
+  watch(() => {
     if (props.dialogMode === 'add') {
       // 如果是新增模式，清空或重置表单数据
       rowData.value = {socialId :'',theme: '',groupName: '',day: '',location:'',digest:'',harvest:''}
@@ -121,6 +121,7 @@
     try {
     if (props.dialogMode === 'view') {
       // 调用修改接口
+      console
       console.log(props.rowData.socialId)
       await request.post('/social/socialEditSave', {
         data:{

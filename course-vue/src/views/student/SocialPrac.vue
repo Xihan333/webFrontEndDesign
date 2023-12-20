@@ -87,9 +87,7 @@ onMounted(() => {
   updateTableData()
 })
 const updateTableData = async () => {
-  const res = await request.post('/social/getStudentSocial',{
-    data:{}
-  })
+  const res = await request.get('/social/getStudentSocial')
   tableData.value = res.data.data
 }
 // 弹窗的显示

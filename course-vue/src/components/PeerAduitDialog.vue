@@ -1,12 +1,12 @@
 <!-- 管理员端评价管理 -->
 <template>
-    <div class="PeerAuditDialog">
+    <div class="PeerAduitDialog">
         <el-dialog :model-value="show"
-                 :before-close="handleClose"
-                 class="dialog" width="37%"
+                   :before-close="handleClose"
+                   class="dialog" width="37%"
         >
             <template #header>
-                <div style="text-align: center; font-size: 18px;">查看评价详情</div>
+                <div style="text-align: center; font-size: 18px">查看详情</div>
             </template>
             <el-form :model="form" size="large">
                 <el-form-item label="评价人学号">
@@ -70,18 +70,28 @@ import request from '../request/axios_config.js'
 
 const rowData=ref({
     evaluationId:'',
-    student.studentId:'',
-    evaluator.studentId:'',
-    student.person.num:'',
-    student.person.name:'',
-    eval:'',
-    evalTime:''
+    eval:'', 
+    evalTime:'', 
+    student:{
+        studentId:'',  //被评价人id
+        person:{
+            name:'',
+            num:'',
+        }
+    },
+    evaluator:{
+        studentId:'',  //被评价人id
+        person:{
+            name:'',
+            num:'',
+        }
+    },
 })
 
 const props = defineProps({
     show:{
-        type:Boolean,
-        required:true,
+        type: Boolean,
+        required: true,
     },
     rowData:Object,
     dialogMode: String

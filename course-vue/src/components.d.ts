@@ -11,7 +11,9 @@ declare module 'vue' {
     AchievementDialogAdmin: typeof import('./components/AchievementDialogAdmin.vue')['default']
     ActivityDialog: typeof import('./components/ActivityDialog.vue')['default']
     AssessHistoryDialog: typeof import('./components/AssessHistoryDialog.vue')['default']
+    ClassManageDialog: typeof import('./components/ClassManageDialog.vue')['default']
     DissertationDialog: typeof import('./components/DissertationDialog.vue')['default']
+    EditorMarkdown: typeof import('./components/EditorMarkdown.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -47,6 +49,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SocialDialog: typeof import('./components/SocialDialog.vue')['default']
+    SocialDialogAdmin: typeof import('./components/SocialDialogAdmin.vue')['default']
     StudentManageDialog: typeof import('./components/StudentManageDialog.vue')['default']
     TeacherManageDialog: typeof import('./components/TeacherManageDialog.vue')['default']
   }

@@ -118,7 +118,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import * as echarts from "echarts";
+// import * as echarts from "echarts";
 import {
   type OptionItem,
   type StudentItem,
@@ -131,7 +131,7 @@ import {
   uploadPhoto,
 } from "~/services/infoServ";
 import { message } from "~/tools/messageBox";
-const echart = echarts;
+// const echart = echarts;
 
 export default defineComponent({
   data: () => ({

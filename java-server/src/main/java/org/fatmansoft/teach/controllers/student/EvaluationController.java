@@ -6,6 +6,7 @@ import org.fatmansoft.teach.repository.student.EvaluationRepository;
 import org.fatmansoft.teach.repository.student.StudentRepository;
 import org.fatmansoft.teach.service.student.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,8 +48,15 @@ public class EvaluationController {
 
 
     @PostMapping("/evaluationDelete")
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse achievementDelete(@Valid @RequestBody DataRequest dataRequest) {
         return evaluationService.evaluationDelete(dataRequest);
+    }
+
+    @PostMapping("/evaluationAdminDelete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DataResponse evaluationAdminDelete(@Valid @RequestBody DataRequest dataRequest) {
+        return evaluationService.evaluationAdminDelete(dataRequest);
     }
 
     /**
