@@ -37,4 +37,6 @@ public class Blog {
     private String updateTime; // 设定是作者可以在任意时间修改
 
     private String content; //文章内容
+
+    private String digest; //摘要
 }

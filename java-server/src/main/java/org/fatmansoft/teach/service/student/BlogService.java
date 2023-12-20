@@ -62,6 +62,7 @@ public class BlogService {
         m.put("createTime", blog.getCreateTime());
         m.put("updateTime", blog.getUpdateTime());
         m.put("content", blog.getContent());
+        m.put("digest",blog.getDigest());
         s = blog.getStudent();
         if (s == null)
             return m;
@@ -90,6 +91,7 @@ public class BlogService {
         String title = CommonMethod.getString(blog,"title");
         String tag = CommonMethod.getString(blog,"tag");
         String content = CommonMethod.getString(blog,"content");
+        String digest = CommonMethod.getString(blog,"digest");
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
         if(!uOp.isPresent())
@@ -123,6 +125,7 @@ public class BlogService {
         a.setTitle(title);
         a.setContent(content);
         a.setStudent(student);
+        a.setDigest(digest);
         blogRepository.saveAndFlush(a);//插入新的Blog记录
         return CommonMethod.getReturnData(a.getBlogId(),"修改或新增成功");  // 将BlogId返回前端
     }
