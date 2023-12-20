@@ -18,8 +18,8 @@
                 </div>
                 <el-row class="operation">
                     <template #default="scope">
-                        <el-button type="primary" :icon="Edit" circle @click="toBlogEdit(scope)"/>
-                        <el-button type="danger" :icon="Delete" circle @click="handleDel(scope)" />
+                        <el-button type="primary" :icon="Edit" circle @click="toBlogEdit(blog)"/>
+                        <el-button type="danger" :icon="Delete" circle @click="handleDel(blog)" />
                     </template>
                 </el-row>
             </div>
@@ -27,10 +27,10 @@
                 <el-col>
                     <el-pagination
                     background
-                    :hide-on-single-page="false"
-                    v-model:current-page="currentPage"
-                    default-page-size = "15"
-                    :pager-count="7"
+                    :hide-on-single-page = true
+                    v-model:current-page ="currentPage"
+                    default-page-size = "8"
+                    :pager-count = "7"
                     layout="total, prev, pager, next, jumper"
                     :total="blogs.length"
                     @size-change="handleSizeChange"
@@ -75,7 +75,7 @@ const ellipsis = (value) => {
 
 // 分页相关
 const currentPage = ref(1)
-const paginatedBlogs = computed(() => blogs.value.slice((currentPage.value - 1) * 15, currentPage.value * 15))
+const paginatedBlogs = computed(() => blogs.value.slice((currentPage.value - 1) * 8, currentPage.value * 8))
 const handleSizeChange = () => {
   currentPage.value = 1
 }
@@ -103,7 +103,7 @@ const handleEdit = (blog) => {
   console.log(blog)
 }
 async function handleDel(blog)  {
-
+    console.log(blog)
   const res = await request.post('/blog/blogDelete',{
     data:{
       blogId: blog.BlogId
