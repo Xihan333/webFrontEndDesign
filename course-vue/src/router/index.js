@@ -117,6 +117,10 @@ const routes = [
         path: ('score-manage'),
         component: () => import('../views/teacher/ScoreManage.vue') 
       },
+      { 
+        path: ('dissertation'),
+        component: () => import('../views/teacher/Dissertation.vue') 
+      },
     ]
   },
   {

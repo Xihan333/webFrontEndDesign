@@ -129,7 +129,7 @@ import { ElMessage,ElMessageBox } from 'element-plus'
 import request from '../request/axios_config.js'
 import { useCommonStore } from "~/stores/app"
 
-const showLogin = ref('true');
+const showLogin = ref(true);
 const store=useCommonStore();
 const account=ref('');
 const password=ref('');
@@ -174,8 +174,14 @@ async function login(){
         'password': password.value
       } 
     })
-    console.log('请看请求',res)
-    if(res.data.code==200){
+    console.log('请看请求',res.data)
+    if(res.data == undefined){
+      ElMessage({
+        message: '账号或密码错误',
+        type: 'error',
+        offset: 200
+      })
+    } else if(res.data.code==200){
       store.setUserInfo(res.data.data)
       let role=store.userInfo.roles;
       if(role=='ROLE_ADMIN'){
@@ -187,9 +193,6 @@ async function login(){
       else if(role=='ROLE_TEACHER'){
         router.push('/teacher');
       }
-    }
-    else{
-      alert('加载失败');
     }
   }
 }
