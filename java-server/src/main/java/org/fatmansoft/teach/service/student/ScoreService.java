@@ -73,6 +73,7 @@ public class ScoreService {
     public Map getMapFromScore(Score s) {
         Map m = new HashMap<>();
         m.put("scoreId", s.getScoreId());
+        m.put("courseId",s.getTeacherCourse().getCourse().getCourseId());
         m.put("studentNum",s.getStudent().getPerson().getNum());
         m.put("studentName",s.getStudent().getPerson().getName());
         m.put("clazzName",s.getStudent().getClazz().getClazzName());
@@ -115,7 +116,7 @@ public class ScoreService {
         return CommonMethod.getReturnData(dataList);
     }
 
-    public DataResponse getTeacherCourseScores(DataRequest dataRequest) {
+    public DataResponse getTeacherCourseScores() {
         //获取当前用户（教师）的信息
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
