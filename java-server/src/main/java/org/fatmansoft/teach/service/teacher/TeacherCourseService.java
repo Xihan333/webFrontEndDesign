@@ -200,10 +200,10 @@ public class TeacherCourseService {
         course.setCampus(campus);
 
         Teacher teacher;
-        Integer teacherId = CommonMethod.getInteger(map,"teacherId");
-        Optional<Teacher> opTeacher = teacherRepository.findByTeacherId(teacherId);
+        String teacherNum = CommonMethod.getString(map,"teacherNum");
+        Optional<Teacher> opTeacher = teacherRepository.findByPersonNum(teacherNum);
         if(opTeacher.isEmpty()){
-            return CommonMethod.getReturnMessageError("教师不存在！请检查id是否正确！");
+            return CommonMethod.getReturnMessageError("教师不存在！请检查工号是否正确！");
         }else{
             teacher = opTeacher.get();
         }
@@ -263,14 +263,14 @@ public class TeacherCourseService {
         course.setCampus(campus);
 
         Teacher teacher;
-        Integer teacherId = CommonMethod.getInteger(map,"teacherId");
-        Optional<Teacher> opTeacher = teacherRepository.findByTeacherId(teacherId);
+        String teacherNum = CommonMethod.getString(map,"teacherNum");
+        Optional<Teacher> opTeacher = teacherRepository.findByPersonNum(teacherNum);
         if(opTeacher.isEmpty()){
-            return CommonMethod.getReturnMessageError("教师不存在！请检查id是否正确！");
+            return CommonMethod.getReturnMessageError("教师不存在！请检查名字是否正确！");
         }else{
             teacher = opTeacher.get();
         }
-
+        Integer teacherId = teacher.getTeacherId();
         TeacherCourse teacherCourse = null;
         Optional<TeacherCourse> opTeacherCourse = teacherCourseRepository.findByTeacherIdAndCourseId(teacherId, courseId);
         if(opTeacherCourse.isPresent()){

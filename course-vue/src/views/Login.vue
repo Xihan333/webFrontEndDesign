@@ -214,10 +214,11 @@ async function registerUser(){
   })
   if(res2.data.code!=200){
     ElMessage({
-           message: '验证码错误',
-           type: 'error',
-           offset: 150
-         })
+      message: '验证码错误',
+      type: 'error',
+      offset: 150
+    })
+    changeValiCode()
   } else {
     ElMessageBox.alert('注册成功！',{
       confirmButtonText: 'OK'
