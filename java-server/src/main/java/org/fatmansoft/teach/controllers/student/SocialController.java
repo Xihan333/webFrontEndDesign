@@ -60,7 +60,7 @@ public class SocialController {
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
-    @PostMapping("/getStudentSocial")
+    @GetMapping("/getStudentSocial")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     public DataResponse getStudentSocial() {
         Integer userId = CommonMethod.getUserId();
