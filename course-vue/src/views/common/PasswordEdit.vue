@@ -68,14 +68,20 @@ async function resetPassWord(){
     }
   })
   console.log(res.data)
-  store.updateLoading(false);
-  
-  if(res.data.code!=200){
+  if(res.data == undefined){
+    ElMessage({
+      message: '账号或密码错误',
+      type: 'error',
+      offset: 200
+    })
+    store.updateLoading(false);
+  } else if(res.data.code!=200){
     ElMessage({
       message: '修改密码错误',
       type: 'error',
       offset: 150
     })
+    store.updateLoading(false);
   } else {
       ElMessageBox.alert('密码修改成功！',{
       confirmButtonText: 'OK'
