@@ -18,7 +18,7 @@
             <div class="content" @click="handleClickBlog(blog)">
                 <h2 class="title">{{ blog.BlogTitle }}</h2>
                 <p class="date">发布于 {{blog.createTime}} | {{ blog.name }}</p>
-                <p class="summary">{{ ellipsis(blog.content) }}</p>
+                <p class="summary">{{ ellipsis(blog.digest) }}</p>
             </div>
         </div>
         <el-row class="pagination">
@@ -107,7 +107,7 @@ const searchedBlogs = computed(() => blogs.value.filter(
     !search.value ||
     item.BlogTitle.toLowerCase().includes(search.value.toLowerCase()) ||
     item.name.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.content.toLowerCase().includes(search.value.toLowerCase())
+    item.digest.toLowerCase().includes(search.value.toLowerCase())
 ))
 const searchFn = () => {
   search.value = inputSearch.value

@@ -29,6 +29,13 @@ VMdEditor.use(githubTheme, {
   Hljs: hljs,
 });
 
+//preview
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
+import '@kangc/v-md-editor/lib/style/preview.css';
+
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+});
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -37,6 +44,7 @@ app.use(pinia);
 app.use(ElementPlus);
 app.use(router);
 app.use(VMdEditor);
+app.use(VMdPreview);
 // app.component('EditorMarkdown',EditorMarkdown)
 app.mount("#app");
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
