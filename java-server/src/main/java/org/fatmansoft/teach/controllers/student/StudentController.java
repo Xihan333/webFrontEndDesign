@@ -238,14 +238,11 @@ public class StudentController {
 
     /**
      * getStudentIntroduceData 前端获取学生个人简历数据请求服务
-     * @param dataRequest 从前端获取 studentId 查询学生信息的主键 student_id
-     * @return  根据studentId从数据库中查出相关数据，存在Map对象里，并返回前端
      */
-
-    @PostMapping("/getStudentIntroduceData")
+    @GetMapping("/getStudentIntroduceData")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    public DataResponse getStudentIntroduceData(@Valid @RequestBody DataRequest dataRequest) {
-        return studentService.getStudentIntroduceData(dataRequest);
+    public DataResponse getStudentIntroduceData() {
+        return studentService.getStudentIntroduceData();
     }
 
     /**
