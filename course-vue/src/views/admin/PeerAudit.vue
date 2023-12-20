@@ -109,7 +109,7 @@ const handleEdit = (rowData) => {
 }
 
 async function handleDel(rowData)  {
-  const res = await request.post('/evaluation/evaluationDelete',{
+  const res = await request.post('/evaluation/evaluationAdminDelete',{
     data:{
       evaluationId: rowData.evaluationId
     } 
