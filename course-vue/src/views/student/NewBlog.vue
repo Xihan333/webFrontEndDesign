@@ -54,7 +54,7 @@
 
 <script setup>
 import { ref,onMounted,nextTick } from "vue";
-import { ElInput } from 'element-plus'
+import { ElInput,ElMessage } from 'element-plus'
 import router from "~/router";
 import request from '../../request/axios_config.js'
  
@@ -105,6 +105,21 @@ async function submit(){
             }
         }
     })
+    if(res.data.code==200){
+        ElMessage({
+            message:'发布成功！',
+            type:'success',
+            offset:150
+        })
+        router.push('my-blog')
+    }
+    else{
+        ElMessage({
+            message:'出错啦，请重试！',
+            type:'error',
+            offset:150
+        })        
+    }
     console.log(res.data.msg)
 }
 

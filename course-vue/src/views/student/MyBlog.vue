@@ -14,7 +14,7 @@
                 <div class="content" @click="handleClickBlog(blog)">
                     <h2 class="title">{{ blog.BlogTitle }}</h2>
                     <p class="date">发布于 {{blog.createTime}} </p>
-                    <p class="summary">{{ ellipsis(blog.digest) }}</p>
+                    <p class="summary">{{ ellipsis(blog.digest,blog.content) }}</p>
                 </div>
                 <el-row class="operation">
                     <template #default="scope">
@@ -66,7 +66,8 @@ const updateTableData = async () => {
 }
 
 // 超出部分显示省略号
-const ellipsis = (value) => {
+const ellipsis = (value,content) => {
+    if(!value)  value = content
     if (value && value.length > 150) {
         return value.substring(0, 150) + '...[查看全文]';
     }
