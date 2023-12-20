@@ -71,6 +71,10 @@ public class ClazzService {
 
     public DataResponse getClazzOptionItemListByGradeId(DataRequest dataRequest) {
         Integer gradeId=dataRequest.getInteger("gradeId");
+        if(gradeId == null){
+            List<Clazz> sList = clazzRepository.findAll();
+            return CommonMethod.getReturnData(getClazzMapList(sList));
+        }
         List<Clazz> sList = clazzRepository.findClazzListByGradeGradeId(gradeId);
         return CommonMethod.getReturnData(getClazzMapList(sList));
     }
