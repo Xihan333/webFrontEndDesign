@@ -42,10 +42,10 @@
     <el-table
      :data="paginatedTableData"
      style="width: 100%">
-        <el-table-column prop="clazzName" label="班级名称" width="200" />
-        <el-table-column prop="gradeName" label="年级" width="300" />
-        <el-table-column prop="campusName" label="学院" width="250" />
-        <el-table-column label="操作" width="180" >
+        <el-table-column prop="clazzName" label="班级名称" width="350" />
+        <el-table-column prop="gradeName" label="年级" width="400" />
+        <el-table-column prop="campusName" label="学院" width="500" />
+        <el-table-column label="操作" width="350" >
         <!-- 操作部分，根据需要修改 -->
         <template #default="scope">
           <el-button size="default" @click="handleEdit(scope.row)">
