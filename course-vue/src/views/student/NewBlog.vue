@@ -19,7 +19,7 @@
                 @close="handleClose(tag)"
             >
                 {{ tag }}
-            </el-tag>
+            </el-tag>                                                                                             
             <el-input
                 v-if="inputVisible"
                 ref="InputRef"
@@ -32,47 +32,81 @@
             <el-button v-else class="tagsBtn" size="small" @click="showInput">
                 + New Tag
             </el-button>
-            <div>
-                <el-button class="submit" type="primary">发布博客</el-button>
+            <br/>
+            <p class="digestName">*摘要</p>
+            <el-input
+              class="digest"
+              v-model="digest"
+              maxlength="300"
+              :autosize="{ minRows: 3 }"
+              type="textarea"
+              placeholder="请输入摘要"
+              show-word-limit 
+            />
+            <div class="ope">
                 <el-button class="back">返回文章</el-button>
+                <el-button class="submit" type="primary" @click="submit()">发布博客</el-button>
             </div>
             
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref,onMounted,nextTick } from "vue";
 import { ElInput } from 'element-plus'
+import router from "~/router";
+import request from '../../request/axios_config.js'
+ 
 
 const markdown = ref('')
 const title = ref('')
-
+const digest = ref('')
 // tag相关 Start
 const inputValue = ref('')
-const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
+const dynamicTags = ref('Tag1')
 const inputVisible = ref(false)
-const InputRef = ref<InstanceType<typeof ElInput>>()
+// const InputRef = ref<InstanceType<typeof ElInput>>()
 
-const handleClose = (tag:string) => {
-  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
+const handleClose = () => {
+  dynamicTags.value = ''
 }
 
 const showInput = () => {
   inputVisible.value = true
   nextTick(() => {
-    InputRef.value!.input!.focus()
+    // InputRef.value!.input!.focus()
   })
 }
 
 const handleInputConfirm = () => {
   if (inputValue.value) {
-    dynamicTags.value.push(inputValue.value)
+    dynamicTags.value = inputValue.value
   }
   inputVisible.value = false
   inputValue.value = ''
 }
 // tag相关 end
+
+const back = () =>{
+    router.push('all-blog')
+}
+
+async function submit(){
+    console.log(markdown.value)
+    const res = await request.post('/blog/blogEditSave',{
+        data:{
+            blogId: "",
+            blog: {
+                title: title.value,
+                tag: dynamicTags.value,
+                content: markdown.value,
+                digest:digest.value
+            }
+        }
+    })
+    console.log(res.data.msg)
+}
 
 </script>
 
@@ -85,7 +119,7 @@ const handleInputConfirm = () => {
     margin-left: 10px;
     margin-bottom:20px ;
     font-size: 25px;
-    opacity: 0.5;
+    // opacity: 0.5;
 }
 .box{
     width: 50%;
@@ -117,10 +151,35 @@ const handleInputConfirm = () => {
         margin-top: 20px;
         margin-left: 20px;
     }
-    .submit{
-        display: block;
-        margin-top: 20px;
+    .ope{
+        padding-bottom: 10px;
+        .back{
+            margin-top: 40px;
+            margin-left: 20px;
+            width: 100px;
+            height: 40px;
+        }
+        .submit{
+            // display: block;
+            margin-top: 40px;
+            margin-left: 20px;
+            width: 100px;
+            height: 40px;
+        }
+    }
+    .digestName{
         margin-left: 20px;
+        font-size: 16px;
+        color: rgb(93, 93, 93);
+        display: inline-block;
+        vertical-align:top;
+    }
+    .digest{
+        margin-top: 15px;
+        margin-left: 20px;
+        width: 70%;
+        display: inline-block;
+        vertical-align:top;
     }
 }
 </style>

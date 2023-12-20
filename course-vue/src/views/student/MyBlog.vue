@@ -14,7 +14,7 @@
                 <div class="content" @click="handleClickBlog(blog)">
                     <h2 class="title">{{ blog.BlogTitle }}</h2>
                     <p class="date">发布于 {{blog.createTime}} </p>
-                    <p class="summary">{{ ellipsis(blog.content) }}</p>
+                    <p class="summary">{{ ellipsis(blog.digest) }}</p>
                 </div>
                 <el-row class="operation">
                     <template #default="scope">
