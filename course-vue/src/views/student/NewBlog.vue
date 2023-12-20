@@ -32,6 +32,11 @@
             <el-button v-else class="tagsBtn" size="small" @click="showInput">
                 + New Tag
             </el-button>
+            <div>
+                <el-button class="submit" type="primary">发布博客</el-button>
+                <el-button class="back">返回文章</el-button>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -109,6 +114,11 @@ const handleInputConfirm = () => {
     .tagsBtn{
         display: inline-block;
         vertical-align:middle;
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+    .submit{
+        display: block;
         margin-top: 20px;
         margin-left: 20px;
     }

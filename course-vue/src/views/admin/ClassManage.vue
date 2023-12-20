@@ -26,7 +26,7 @@
                    />
             </el-select>
         </div>
-        <el-button class="query" type="primary" size="default" @click="fetchDate(campusName,gradeName)">查 询</el-button>
+        <el-button class="query" type="primary" size="default" @click="fetchDate(campus,grade)">查 询</el-button>
 
         <div class="query">
             <el-input
@@ -81,6 +81,7 @@ import { ref,computed,onMounted } from 'vue'
 import ClassManageDialog from '../../components/ClassManageDialog.vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
+import { filterOption } from '../../assets/js/config.js'
 
 const campus = ref('')
 const grade = ref('')
@@ -89,6 +90,9 @@ const campusType = computed(() => filterOption.allCampuses)
 const gradeType = computed(() => filterOption.allGrades) 
 
 const tableData = ref([])
+const filterTableData = ref([])
+
+
 onMounted(async ()=> {
     updateTableData()
 })
@@ -99,7 +103,9 @@ const updateTableData = async () => {
       gradeId:1
     }
   })
+  console.log(res.data.data)
   tableData.value = res.data.data
+  filterTableData.value = res.data.data
 }
 
 const show = ref(false)
@@ -107,7 +113,19 @@ const show = ref(false)
 const search = ref('')
 const inputSearch = ref('')
 
-const searchedTableData = computed(() => tableData.value.filter(
+// filiterTableData.value = computed(() => tableData.value) 
+const fetchDate = (campus, grade) => {
+  const filtered = computed(() => tableData.value.filter(
+        person =>
+          (!campus&&!grade) ||
+          (person.campusName.toLowerCase().includes(campus) && person.gradeName.toLowerCase().includes(grade)) ||
+          (person.campusName.toLowerCase().includes(campus) && !grade) ||
+          (person.gradeName.toLowerCase().includes(grade) && !campus)
+    )) 
+    console.log(filterTableData.value)
+    filterTableData.value = filtered.value
+}
+const searchedTableData = computed(() => filterTableData.value.filter(
     item =>
     //空参的情况
     !search.value ||
@@ -142,6 +160,7 @@ const handleEdit = (rowData) => {
   dialogMode.value = 'view'
   show.value = true
 }
+
 async function handleDel(rowData)  {
   const res = await request.post('/clazz/clazzDelete',{
     data:{
@@ -167,36 +186,14 @@ async function handleDel(rowData)  {
   }
 }
 
-const filiterTableData = tableData.value
-const fetchDate = (campusName, gradeName) => {
-    filiterTableData.value = filiterTableData.filter(
-        person =>
-            person.campusName.toLowerCase().includes(campusName) && 
-            person.gradeName.toLowerCase().includes(gradeName)
-    )
-    console.log(filiterTableData.value) 
-}
+const changeSelect = computed(() => {
+  console.log(campus.value)
+  console.log(grade.value)
+})
 
 // const tableData = computed(() => filiterTableData.value)
 
-const filterOption = {
-    allCampuses: [
-        {id: 1, label: '软件学院', value : 1},
-        {id: 2, label: '集成电路学院', value : 2},
-        {id: 3, label: '计算机科学与技术学院', value : 3},
-        {id: 4, label: '基础医学院', value : 4},
-        {id: 5, label: '电气与自动化学院', value : 5},
-        {id: 6, label: '外语学院', value : 6},
-        {id: 7, label: '药学院', value : 7},
-        {id: 8, label: '物理学院', value : 8}
-    ],
-    allGrades: [
-        {id: 1, label: '大一', value : 1},
-        {id: 2, label: '大二', value : 2},
-        {id: 3, label: '大三', value : 3},
-        {id: 4, label: '大四', value : 4}
-    ]
-}
+
 
 
 </script>
