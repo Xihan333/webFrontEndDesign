@@ -1,6 +1,6 @@
 <!-- 班级管理 -->
 <template>
-    <div class="clas-manage">
+    <div class="class-manage">
         <div>
         <ClassManageDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
         <el-button @click="handleAdd" color="#6FB6C1" class="add">新 增</el-button>
@@ -26,7 +26,7 @@
                    />
             </el-select>
         </div>
-        <el-button class="query" type="primary" size="default" @click="fetchDate(campus,grade)">查 询</el-button>
+        <el-button class="query" type="primary" size="default" @click="fetchDate(campusName,gradeName)">查 询</el-button>
 
         <div class="query">
             <el-input
@@ -43,8 +43,8 @@
      :data="paginatedTableData"
      style="width: 100%">
         <el-table-column prop="clazzName" label="班级名称" width="200" />
-        <el-table-column prop="grade" label="年级" width="300" />
-        <el-table-column prop="campus" label="学院" width="250" />
+        <el-table-column prop="gradeName" label="年级" width="300" />
+        <el-table-column prop="campusName" label="学院" width="250" />
         <el-table-column label="操作" width="180" >
         <!-- 操作部分，根据需要修改 -->
         <template #default="scope">
@@ -78,17 +78,15 @@
 <script setup>
 import { ref,computed,onMounted } from 'vue'
 //引入弹窗页面
-import SocialDialog from '../../components/ClassManageDialog.vue'
+import ClassManageDialog from '../../components/ClassManageDialog.vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
-
-import { filterOptions } from '@/assets/config.js'
 
 const campus = ref('')
 const grade = ref('')
 
-const campusType = computed(() => filterOptions.allCampuses)
-const gradeType = computed(() => filterOptions.allGrades) 
+const campusType = computed(() => filterOption.allCampuses)
+const gradeType = computed(() => filterOption.allGrades) 
 
 const tableData = ref([])
 onMounted(async ()=> {
@@ -97,7 +95,9 @@ onMounted(async ()=> {
 
 const updateTableData = async () => {
   const res = await request.post('/clazz/getClazzOptionItemListByGradeId',{
-    data:{}
+    data:{
+      gradeId:1
+    }
   })
   tableData.value = res.data.data
 }
@@ -168,32 +168,32 @@ async function handleDel(rowData)  {
 }
 
 const filiterTableData = tableData.value
-const fetchDate = (campus, grade) => {
+const fetchDate = (campusName, gradeName) => {
     filiterTableData.value = filiterTableData.filter(
         person =>
-            person.campus.toLowerCase().includes(campus) && 
-            person.grade.toLowerCase().includes(grade)
+            person.campusName.toLowerCase().includes(campusName) && 
+            person.gradeName.toLowerCase().includes(gradeName)
     )
     console.log(filiterTableData.value) 
 }
 
-const table = computed(() => filiterTableData.value)
+// const tableData = computed(() => filiterTableData.value)
 
-export const filterOptions = {
+const filterOption = {
     allCampuses: [
-        {id: 1, label: '软件学院', value : 1}
-        {id: 2, label: '集成电路学院', value : 2}
-        {id: 3, label: '计算机科学与技术学院', value : 3}
-        {id: 4, label: '基础医学院', value : 4}
-        {id: 5, label: '电气与自动化学院', value : 5}
-        {id: 6, label: '外语学院', value : 6}
-        {id: 7, label: '药学院', value : 7}
+        {id: 1, label: '软件学院', value : 1},
+        {id: 2, label: '集成电路学院', value : 2},
+        {id: 3, label: '计算机科学与技术学院', value : 3},
+        {id: 4, label: '基础医学院', value : 4},
+        {id: 5, label: '电气与自动化学院', value : 5},
+        {id: 6, label: '外语学院', value : 6},
+        {id: 7, label: '药学院', value : 7},
         {id: 8, label: '物理学院', value : 8}
-    ]
+    ],
     allGrades: [
-        {id: 1, label: '大一', value : 1}
-        {id: 2, label: '大二', value : 2}
-        {id: 3, label: '大三', value : 3}
+        {id: 1, label: '大一', value : 1},
+        {id: 2, label: '大二', value : 2},
+        {id: 3, label: '大三', value : 3},
         {id: 4, label: '大四', value : 4}
     ]
 }
