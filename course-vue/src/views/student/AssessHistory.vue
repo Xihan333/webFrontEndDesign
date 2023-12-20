@@ -24,11 +24,11 @@
         <el-table
             :data="paginatedTableData" 
             style="width: 100%">
-            <el-table-column prop="student.person.name" label="被评人姓名" width="150" />
-            <el-table-column prop="student.person.num" label="被评人学号" width="200"/>
-            <el-table-column prop="evalTime" label="评价时间" width="180" />
-            <el-table-column prop="eval" label="评价内容" width="300"/>
-            <el-table-column label="操作" width="180" >
+            <el-table-column prop="student.person.name" label="被评人姓名" width="250" />
+            <el-table-column prop="student.person.num" label="被评人学号" width="330"/>
+            <el-table-column prop="evalTime" label="评价时间" width="340" />
+            <el-table-column prop="eval" label="评价内容" width="380"/>
+            <el-table-column label="操作" width="220" >
             <!-- 操作部分，根据需要修改 -->
                 <template #default="scope">
                     <el-button size="default" @click="handleEdit(scope.row)">

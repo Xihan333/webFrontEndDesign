@@ -145,7 +145,7 @@ const toLogin = () =>{
   display: flex;
   height: 100%;
   width: 100%;
-  background-image: url('../assets/img/background.jpg');
+  background-image: url('../../assets/img/background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   .mark{

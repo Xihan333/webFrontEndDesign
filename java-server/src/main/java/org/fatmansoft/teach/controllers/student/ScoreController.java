@@ -77,16 +77,16 @@ public class ScoreController {
     }
 
 
-    //学生获取自己的课程
+    //学生获取自己的成绩
     @GetMapping("/getMyCourseScores")
     public DataResponse getMyCourseScores() {
         return scoreService.getMyCourseScores();
     }
 
     //教师id  course id
-    @PostMapping("/getTeacherCourseScores")
-    public DataResponse getTeacherCourseScores(@Valid @RequestBody DataRequest dataRequest) {
-        return scoreService.getTeacherCourseScores(dataRequest);
+    @GetMapping("/getTeacherCourseScores")
+    public DataResponse getTeacherCourseScores() {
+        return scoreService.getTeacherCourseScores();
     }
 
 

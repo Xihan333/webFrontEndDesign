@@ -1,94 +1,83 @@
 <template>
-  <div class="base_form">
-    <div class="base_header">
-      <div class="blue_column"></div>
-      <div class="base_title">学生信息</div>
-    </div>
-    <div class="form-div" style="margin-top: 5px">
-      <table class="content">
-        <tr>
-          <td colspan="1" style="text-align: right">学号</td>
-          <td colspan="1"><input v-model="form.num" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">姓名</td>
-          <td colspan="1"><input v-model="form.name" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">学院</td>
-          <td colspan="1"><input v-model="form.dept" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">专业</td>
-          <td colspan="1"><input v-model="form.major" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">班级</td>
-          <td colspan="1">
-            <input v-model="form.className" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">证件号码</td>
-          <td colspan="1"><input v-model="form.card" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">性别</td>
-          <td colspan="1">
-            <select class="commInput" v-model="form.gender" style="width: 97%">
-              <option value="0">请选择...</option>
-              <option
-                v-for="item in genderList"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.title }}
-              </option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">出生日期</td>
-          <td colspan="1">
-            <el-date-picker
-              v-model="form.birthday"
-              type="date"
-              style="width: 100%"
-              value-format="yyyy-MM-dd"
-              placeholder="选择出生日期"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">邮箱</td>
-          <td colspan="1"><input v-model="form.email" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">电话</td>
-          <td colspan="1"><input v-model="form.phone" style="width: 97%" /></td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">地址</td>
-          <td colspan="1">
-            <input v-model="form.address" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <button class="commButton" @click="submit">提交</button>
-          </td>
-        </tr>
-      </table>
+<div class = "auth-container">
+  <div class="forget-password">
+    <div class="main">
+      <template #header>
+        <div style="text-align: center; font-size: 18px ">新增学生</div>
+      </template>
+      <el-form :model="rowData" size="large">
+            <el-form-item label="姓名">
+                <el-input v-model="rowData.name"
+                maxlength="20"
+                placeholder="请输入姓名"
+                show-word-limit
+                />
+            </el-form-item>
+            <el-form-item label="学号">
+                <el-input v-model="rowData.num"
+                maxlength="20"
+                placeholder="请输入学号"
+                show-word-limit
+                />
+            </el-form-item>
+            <el-form-item label="性别">
+                <el-radio-group v-model="rowData.gender">
+                    <el-radio label="1" border>男</el-radio>
+                    <el-radio label="2" border>女</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="出生日期">                
+                <el-date-picker
+                 v-model="rowData.birthday"
+                 type="date"
+                 :disabled-date="disabledDate"
+                 palceholder="请选择时间"
+                 :size="size"
+                 format="YYYY/MM/DD"
+                 value-format="YYYY/MM/DD"
+                 />
+            </el-form-item>
+            <el-form-item label="身份证号">
+                <el-input v-model="rowData.card"
+                maxlength="18"
+                placeholder="请输入身份证号"
+                show-word-limit
+                />
+            </el-form-item>
+            <el-form-item label="专业">
+                <el-input v-model="rowData.dept"
+                maxlength="18"
+                placeholder="请输入专业"
+                show-word-limit
+                />
+            </el-form-item>
+            <el-form-item label="电话号码">
+                <el-input v-model="rowData.phone"
+                maxlength="11"
+                placeholder="请输入电话号码"
+                show-word-limit
+                />
+            </el-form-item>
+            <el-form-item label="电子邮箱">
+                <el-input v-model="rowData.email"
+                maxlength="30"
+                placeholder="请输入电子邮箱"
+                show-word-limit
+                />
+            </el-form-item>
+        </el-form>
+        
     </div>
   </div>
+</div>
 </template>
-<script lang="ts">
-import { getDictionaryOptionItemList } from "~/services/systemServ";
-import { getStudentInfo, studentEditSave } from "~/services/personServ";
-import { defineComponent } from "vue";
-import router from "~/router";
-import { type OptionItem, type StudentItem } from "~/models/general";
-import { getOptionItem } from "~/tools/comMethod";
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import request from '../../request/axios_config.js'
+import { updatePassword } from "~/services/infoServ";
+import { ElMessage,ElMessageBox } from 'element-plus'
+import { useCommonStore } from "~/stores/app"
 
 export default defineComponent({
   //数据
