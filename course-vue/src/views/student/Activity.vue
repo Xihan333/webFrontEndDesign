@@ -15,7 +15,7 @@
         <el-button type="primary" @click="searchFn" color="#6FB6C1" class="searchBtn">查 询</el-button>
         </div>
     </div>
-    <el-table
+    <el-table border
        :data="paginatedTableData"
        style="width: 100%">
        <el-table-column prop="title" label="活动主题" width="300" />
