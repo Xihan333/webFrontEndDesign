@@ -21,7 +21,7 @@
             </div>
         </div>
         <!-- 表格部分 -->
-        <el-table
+        <el-table border
             :data="paginatedTableData"
             style="width: 100%">
             <el-table-column prop="name" label="姓名" width="280" />

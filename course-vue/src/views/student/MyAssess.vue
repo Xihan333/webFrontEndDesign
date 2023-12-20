@@ -10,7 +10,7 @@
         </div>
         </div>
         <!-- 表格部分 -->
-        <el-table
+        <el-table border
             :data="paginatedTableData"
             style="width: 100%;">
             <el-table-column prop="evalTime" label="评价时间" width="480"/>
