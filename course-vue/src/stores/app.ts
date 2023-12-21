@@ -146,6 +146,17 @@ export const useCommonStore = defineStore('common', () => {
       ]
     },
     {
+      name:'论文管理',
+      index:'1',
+      role:'ROLE_TEACHER',
+      item:[
+        {
+          name:'我的论文',
+          path:'dissertation',
+        },
+      ]
+    }, 
+    {
       name:'学工管理',
       index:'1',
       role:'ROLE_STUDENT',

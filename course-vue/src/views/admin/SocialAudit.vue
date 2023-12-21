@@ -18,7 +18,7 @@
         </div>
       </div>
       <!-- 表格部分 -->
-      <el-table 
+      <el-table border
         :data="paginatedTableData" 
         style="width: 100%">
           <!-- 实践主题 -->
