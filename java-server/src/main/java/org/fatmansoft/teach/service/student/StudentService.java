@@ -169,6 +169,7 @@ public class StudentService {
             m.put("credit", tc.getCourse().getCredit());
             m.put("commonMark",s.getCommonMark());
             m.put("finalMark",s.getFinalMark());
+            m.put("totalMark",s.getCommonMark()+s.getFinalMark());
             m.put("ranking", s.getRanking());
             list.add(m);
         }
