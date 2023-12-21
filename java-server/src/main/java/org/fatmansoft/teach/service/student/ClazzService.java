@@ -115,6 +115,8 @@ public class ClazzService {
         }else{
             return CommonMethod.getReturnMessageError("年级不存在！");
         }
+        a.setGrade(grade);
+        a.setClazzName(clazzName);
         Optional<Campus> oc = campusRepository.findByCampusId(campusId);
         Campus campus;
         if(oc.isPresent()){
@@ -122,6 +124,7 @@ public class ClazzService {
         }else{
             return CommonMethod.getReturnMessageError("学院不存在！");
         }
+        a.setCampus(campus);
         clazzRepository.saveAndFlush(a);//插入新的Clazz记录
         return CommonMethod.getReturnData(a.getClazzId(),"修改或新增成功");  // 将ClazzId返回前端
     }
