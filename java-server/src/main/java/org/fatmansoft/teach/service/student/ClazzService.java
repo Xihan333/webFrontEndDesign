@@ -154,6 +154,7 @@ public class ClazzService {
     public DataResponse getNoClazzStudents() {
         List dataList = new ArrayList();
         List<Student> sList = studentRepository.findStudentNoClazz();  //数据库查询操作
+        System.out.println(sList);
         if(sList == null || sList.size() == 0)
             return CommonMethod.getReturnData(dataList);
         for(int i = 0; i < sList.size();i++) {

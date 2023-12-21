@@ -2,10 +2,14 @@
     <div class="homepage">
         <div class="head">
             <el-image style="width: 120px; height: 160px" src="url" fit="cover" class="photo" />
-            <div class="info">
-                <h2 class="name">{{ userInfo.name }}</h2>
-                <p class="clazz">{{ userInfo.clazz.campusName }} · {{ userInfo.clazz.clazzName }} · {{ userInfo.clazz.gradeName }}</p>
-                
+            <div class="base-info">
+                <div class="firstLine">
+                    <h2 class="name">{{ userInfo.name }}</h2>
+                    <p class="clazz">{{ userInfo.campusName }} · {{ userInfo.className }} · {{ userInfo.gradeName }}</p> 
+                </div>
+                <div class="other">
+                    
+                </div>
             </div>
         </div>
         <div class="GPA">
@@ -62,7 +66,7 @@ const userInfo = ref({
     email: '',
     phone: '',
     introduce: '',
-    clazzName:'软工1班',
+    className:'软工1班',
     gradeName:'大二',
     campusName:'软件学院',
     
@@ -78,6 +82,7 @@ const updateTableData = async () => {
     const achievement = await request.get('/achievement/getStudentAchievement')
     const social = await request.get('/social/getStudentSocial')
     userInfo.value = info.data.data
+    console.log(userInfo.value)
     AchievementData.value = achievement.data.data
     SocialData.value = social.data.data
 }
@@ -111,19 +116,24 @@ const gpa = ref()
         display: inline-block;
         vertical-align:middle;
     }
-    .info{
+    .base-info{
         display: inline-block;
         vertical-align:middle;
         margin-left: 10px;
         width: 70%;
-        .name{
-            float: left;
-            margin-right: 20px;
+        .firstLine{
+            .name{
+                float: left;
+                margin-right: 20px;
+            }
+            .clazz{
+                font-size: 14px;
+                color: rgb(141, 141, 141);
+                
+            }
         }
-        .clazz{
-            font-size: 14px;
-            color: rgb(141, 141, 141);
-            
+        .other{
+
         }
     }
 }

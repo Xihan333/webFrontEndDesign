@@ -2,6 +2,9 @@
 <template>
     <div class="class-manage">
         <div>
+          <el-button class="seeBtn" color="#6FB6C1" @click="seeStudent">查看未分配班级同学</el-button>
+        </div>
+        <div>
         <el-button size="default" @click="handleAdd()" color="#6FB6C1">新 增</el-button>
         <br/>
         <div class="options">
@@ -294,6 +297,12 @@ const changeSelect = computed(() => {
 })
 
 // const tableData = computed(() => filiterTableData.value)
+
+// 切换页面
+const seeStudent = () =>{
+    router.push('without-class')
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -302,6 +311,7 @@ el-table{
 }
 
 .query{
+  margin-top: 10px;
   display: inline-block;
   vertical-align:middle;
   float: right;
@@ -351,4 +361,9 @@ el-table{
   }
 }
 
+.seeBtn{
+  width: 150px;
+  color: white;
+  margin-bottom: 10px;
+}
 </style>
