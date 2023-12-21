@@ -17,12 +17,12 @@
           :data="paginatedTableData"
           style="width: 100%"
         >
-            <el-table-column prop="num" label="学号" width="auto"/>
-            <el-table-column prop="name" label="姓名" width="auto"/>
-            <el-table-column prop="genderName" label="性别" width="auto"/>
-            <el-table-column prop="card" label="身份证号" width="auto"/>
-            <el-table-column prop="borthday" label="出生日期" width="auto"/>
-            <el-table-column prop="phone" label="电话号码" width="auto"/>            
+            <el-table-column prop="num" label="学号" width="auto" align="center"/>
+            <el-table-column prop="name" label="姓名" width="auto" align="center"/>
+            <el-table-column prop="genderName" label="性别" width="auto" align="center"/>
+            <el-table-column prop="card" label="身份证号" width="auto" align="center"/>
+            <el-table-column prop="borthday" label="出生日期" width="auto" align="center"/>
+            <el-table-column prop="phone" label="电话号码" width="auto" align="center"/>            
         </el-table>
         <el-row class="pagination">
         <el-col>

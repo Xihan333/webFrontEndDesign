@@ -18,15 +18,15 @@
         <el-table border
             :data="paginatedTableData"
             style="width: 100%">
-            <el-table-column prop="name" label="姓名" width="200" />
-            <el-table-column prop="num" label="学号" width="230" />
-            <el-table-column prop="genderName" label="性别" width="90"/>
-            <el-table-column prop="card" label="身份证号" width="280" />
-            <el-table-column prop="dept" label="专业" width="150" />
-            <el-table-column prop="birthday" label="出生日期" width="120"/>
-            <el-table-column prop="phone" label="电话号码" width="120"/>
-            <el-table-column prop="email" label="电子邮箱" width="120" />
-            <el-table-column label="操作" width="180" >
+            <el-table-column prop="name" label="姓名" width="200" align="center"/>
+            <el-table-column prop="num" label="学号" width="230" align="center"/>
+            <el-table-column prop="genderName" label="性别" width="90" align="center"/>
+            <el-table-column prop="card" label="身份证号" width="280" align="center"/>
+            <el-table-column prop="dept" label="专业" width="150" align="center"/>
+            <el-table-column prop="birthday" label="出生日期" width="120" align="center"/>
+            <el-table-column prop="phone" label="电话号码" width="120" align="center"/>
+            <el-table-column prop="email" label="电子邮箱" width="120" align="center"/>
+            <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-button size="default" @click="handleEdit(scope.row)">
                         编辑
