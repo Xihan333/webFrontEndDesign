@@ -130,7 +130,7 @@ const submit = async () => {
         console.log(props.rowData.studentId)
         res.value = await request.post('/student/studentEditSave',{
             data:{
-                studentId:props.rowData,studentId,
+                studentId:props.rowData.studentId,
                 form:{
                     name:rowData.value.name,
                     num:rowData.value.num,
