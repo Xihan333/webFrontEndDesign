@@ -3,7 +3,7 @@
         <el-header class="header">
             <img src="../assets/img/logo.png" alt="校徽">
             <div class="logout">
-                <p>欢迎回来，黄婉姗</p>
+                <p>欢迎回来，{{userInfo.username}}</p>
                 <div title="退出">
                     <el-icon @click="logout" size="20px" id="logout"><Expand /></el-icon>
                 </div>
@@ -167,7 +167,8 @@ function removeTab(name) {
     router.push(name)//路由跳转以实现切换界面
 }
 function logout(){
-
+    localStorage.clear();
+    router.push('/login');
 }
 </script>
 

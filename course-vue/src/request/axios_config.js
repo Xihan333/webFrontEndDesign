@@ -34,6 +34,7 @@ instance.interceptors.response.use(function (response) {
   // axios会把响应数据多包装一层
   return response
 }, function (error) {
+  commonStore.updateLoading(false);
   // 超出 2xx 范围的状态码都会触发该函数。
   // 处理响应错误
   console.error('请求出错! url: ', error.config.url, '; 详细信息: ', error)
