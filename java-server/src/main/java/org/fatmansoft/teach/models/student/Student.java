@@ -34,6 +34,4 @@ public class Student {
     @JoinColumn(name = "clazz_id")
     private Clazz clazz;
 
-    private Integer gpa;
-
 }
