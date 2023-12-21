@@ -105,17 +105,16 @@
   }
 
   // 监听
-  watch(() => {
-    if (props.dialogMode === 'add') {
-      // 如果是新增模式，清空或重置表单数据
-      rowData.value = {socialId :'',theme: '',groupName: '',day: '',location:'',digest:'',harvest:''}
-  }
-     else if (props.dialogMode === 'view') {
-      // 如果是查看模式，填充数据
-      rowData.value = { ...props.rowData }
-      console.log(rowData.value)
+  watchEffect(() => {
+    if(props.dialogMode ==='add'){
+        //新增则清空或重置表单数据
+        rowData.value = {socialId :'',theme: '',groupName: '',day: '',location:'',digest:'',harvest:''}
     }
-  })
+    else if(props.dialogMode === 'view'){
+        rowData.value = {...props.rowData}
+        console.log(rowData.value)
+    }
+})
 
 
   const emit = defineEmits(['update:show','updateTable'])
