@@ -7,6 +7,7 @@ import org.fatmansoft.teach.models.system.EUserType;
 import org.fatmansoft.teach.models.system.Person;
 import org.fatmansoft.teach.models.system.User;
 import org.fatmansoft.teach.models.teacher.Teacher;
+import org.fatmansoft.teach.models.teacher.TeacherCourse;
 import org.fatmansoft.teach.payload.request.DataRequest;
 import org.fatmansoft.teach.payload.response.DataResponse;
 import org.fatmansoft.teach.payload.response.OptionItem;
@@ -15,9 +16,14 @@ import org.fatmansoft.teach.repository.student.ScoreRepository;
 import org.fatmansoft.teach.repository.system.PersonRepository;
 import org.fatmansoft.teach.repository.system.UserRepository;
 import org.fatmansoft.teach.repository.system.UserTypeRepository;
+import org.fatmansoft.teach.repository.teacher.ScientificPayoffsRepository;
+import org.fatmansoft.teach.repository.teacher.TeacherCourseRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
+import org.fatmansoft.teach.service.student.CourseService;
 import org.fatmansoft.teach.service.system.BaseService;
 import org.fatmansoft.teach.service.student.AchievementService;
+import org.fatmansoft.teach.service.teacher.ScientificPayoffsService;
+import org.fatmansoft.teach.service.teacher.TeacherCourseService;
 import org.fatmansoft.teach.service.teacher.TeacherIntroduceService;
 import org.fatmansoft.teach.service.teacher.TeacherService;
 import org.fatmansoft.teach.util.CommonMethod;
@@ -61,6 +67,21 @@ public class TeacherController {
 
     @Autowired
     private AchievementService achievementService;
+
+    @Autowired
+    private ScientificPayoffsRepository scientificPayoffsRepository;
+
+    @Autowired
+    private ScientificPayoffsService scientificPayoffsService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private TeacherCourseService teacherCourseService;
+
+    @Autowired
+    private TeacherCourseRepository teacherCourseRepository;
 
 
     public synchronized Integer getNewPersonId(){  //synchronized 同步方法
@@ -262,11 +283,15 @@ public class TeacherController {
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("教师不存在！");
         Teacher s= sOp.get();
+        Integer teacherId = s.getTeacherId();
         Map info = teacherService.getMapFromTeacher(s);  // 查询教师信息Map对象
         info.put("introduce", teacherIntroduceService.getIntroduceDataMap(u.getUserId()));
         Map data = new HashMap();
         data.put("info",info);
         data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
+        data.put("scientificPayoffsList",scientificPayoffsService.getScientificPayoffsMapList(s.getPerson().getNum()));
+        List<TeacherCourse> tcList = teacherCourseRepository.findCourseListByTeacherId(teacherId);  //数据库查询操作
+        data.put("coursesList",teacherCourseService.TeacherCourseList(tcList));
         return CommonMethod.getReturnData(data);//将前端所需数据保留Map对象里，返还前端
     }
 

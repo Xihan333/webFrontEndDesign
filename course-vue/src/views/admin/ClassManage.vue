@@ -1,6 +1,6 @@
 <!-- 班级管理 -->
 <template>
-    <!-- <div class="class-manage"> -->
+    <div class="class-manage">
         <div>
         <el-button size="default" @click="handleAdd()" color="#6FB6C1">新 增</el-button>
         <br/>
@@ -44,10 +44,14 @@
     <el-table border
      :data="paginatedTableData"
      style="width: 100%">
-        <el-table-column prop="clazzName" label="班级名称" width="350" />
-        <el-table-column prop="gradeName" label="年级" width="400" />
-        <el-table-column prop="campusName" label="学院" width="500" />
-        <el-table-column label="操作" width="350" >
+        <el-table-column prop="clazzName" label="班级名称" width="auto">
+          <template #default="scope">
+            <a href="javascript:" @click="handleClickName(scope)">{{ scope.row.clazzName }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="gradeName" label="年级" width="auto" />
+        <el-table-column prop="campusName" label="学院" width="auto" />
+        <el-table-column label="操作" width="auto" >
         <!-- 操作部分，根据需要修改 -->
         <template #default="scope">
           <el-button size="default" @click="handleDel(scope.row)">
@@ -86,11 +90,11 @@
         </div>
         <div class="campus">
           <p>学院</p>
-          <el-select v-model="rowData.value.campusId" value-key="id"
+          <el-select v-model="campusId" value-key="id"
             placeholder="请选择学院" clearable @change="changeSelect">
           >
           <el-option
-           v-for="item in campusType"
+           v-for="item in campusType1"
            :key="item.id"
            :label="item.label"
            :value="item.value"
@@ -99,17 +103,17 @@
         </div>
         <div class="grade">
           <p>年级</p>
-          <el-select v-model="rowData.value.gradeId" value-key="id"
+          <el-select v-model="gradeId" value-key="id"
             placeholder="请选择年级" clearable @change="changeSelect">
           >
           <el-option
-           v-for="item in gradeType"
+           v-for="item in gradeType1"
            :key="item.id"
            :label="item.label"
            :value="item.value"
            />
           </el-select>
-        </div>
+        </div> 
       </div>
       <template #footer>
         <span class="dialog-footer">
@@ -118,7 +122,7 @@
         </span>
       </template>
     </el-dialog>
-  <!-- </div> -->
+  </div>
 </template>
 
 
@@ -127,14 +131,21 @@ import { ref,computed,onMounted } from 'vue'
 //引入弹窗页面
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
-import { filterOption } from '../../assets/js/config.js'
+import { filterOption,filterOptions } from '../../assets/js/config.js'
+import { useAppStore } from '../../stores/app.ts'
+import router from "~/router";
 
-const campus = ref('')
+const store = useAppStore()
+
+
 const grade = ref('')
 const clazzId=ref();
 
 const campusType = computed(() => filterOption.allCampuses)
 const gradeType = computed(() => filterOption.allGrades) 
+
+const campusType1 = computed(() => filterOptions.allCampuses)
+const gradeType1 = computed(() => filterOptions.allGrades) 
 
 const tableData = ref([])
 const filterTableData = ref([])
@@ -180,6 +191,14 @@ const searchedTableData = computed(() => filterTableData.value.filter(
     item.clazzName.toLowerCase().includes(search.value.toLowerCase())
 ))
 
+
+const handleClickName = (clazzName) => {
+  console.log(clazzName.row.clazzId)
+  store.classmate = clazzName.row
+  router.push('classmate')
+}
+
+
 const searchFn = () => {
   // 点击查询按钮后才开始查询
   search.value = inputSearch.value
@@ -194,14 +213,15 @@ const handleSizeChange = () => {
 
 const dialogVisible = ref(false);
 const clazzName=ref();
-
+const campusId=ref()
+const gradeId=ref()
 
 function handleAdd(){
   dialogVisible.value=true;
   clazzName.value="";
-  campus.value="";
-  grade.value="";
-  clazzId="";
+  campusId.value="";
+  gradeId.value="";
+  //clazzId.value="";
 }
 
 //查看
@@ -238,20 +258,24 @@ async function handleDel(rowData)  {
 }
 
 async function confirm(){
-  let map=new Map();
-  map.set('clazzName',clazzName.value);
-  map.set('campus',campus.value);
-  map.set('grade',grade.value);
-  const form=Object.fromEntries(map);
-  // console.log(clazzId)
+  console.log(gradeId.value)
+  console.log(clazzName.value)
+  console.log(campusId.value)
+
   const res = await request.post('/clazz/clazzEditSave',{
     data:{
-      form:form
+      clazzId:"",
+      clazz:{
+        clazzName:clazzName.value,
+        gradeId:gradeId.value,
+        campusId:campusId.value,
+      }
     }
   })
-  console.log('请看请求',res)
+  console.log('请看请求',res.data)
   if(res.data.code==200){
     dialogVisible.value=false;
+    updateTableData()
   }
   else{
     ElMessage({
@@ -260,12 +284,13 @@ async function confirm(){
       offset: 150
     })
   }
+  console.log('hhhhhhhhh',gradeId)
 }
 
 
 const changeSelect = computed(() => {
-  console.log(campus.value)
-  console.log(grade.value)
+  // console.log(campus.value)
+  // console.log(grade.value)
 })
 
 // const tableData = computed(() => filiterTableData.value)

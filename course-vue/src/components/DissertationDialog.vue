@@ -1,4 +1,4 @@
-<!-- 教师管理弹窗 -->
+<!-- 教师论文弹窗 -->
 <template>
     <div class="DissertationDialog">
         <el-dialog :model-value="show"
@@ -17,7 +17,7 @@
                 />
             </el-form-item>
             <el-form-item label="论文作者">
-                <el-input v-model="rowData.author"
+                <el-input v-model="rowData.authors"
                 maxlength="50"
                 placeholder="请输入论文名称"
                 show-word-limit
@@ -44,7 +44,7 @@
             </el-button>
           </span>
         </template>
-        </el-dialog>
+      </el-dialog>
     </div>
 </template>
 
@@ -56,7 +56,7 @@ import request from '../request/axios_config.js'
 const rowData=ref({
     scientificPayoffsId:'',
     paperName:'',
-    author:'',
+    authors:'',
     day:''
 })
 
@@ -77,7 +77,7 @@ const disabledDate = (time) => {
 watchEffect(() => {
     if (props.dialogMode === 'add') {
       // 如果是新增模式，清空或重置表单数据
-      rowData.value = {scientificPayoffsId :'',paperName: '',author: '',day: ''}
+      rowData.value = {scientificPayoffsId :'',paperName: '',authors: '',day: ''}
 }
     else if (props.dialogMode === 'view') {
       // 如果是查看模式，填充数据
@@ -98,7 +98,7 @@ const submit = async () => {
             scientificPayoffsId:props.rowData.scientificPayoffsId,
             form:{
                 paperName: rowData.value.paperName,
-                author: rowData.value.author,
+                authors: rowData.value.authors,
                 day: rowData.value.day
             }
         }
@@ -110,7 +110,7 @@ const submit = async () => {
             scientificPayoffsId:null,
             form:{
                 paperName: rowData.value.paperName,
-                author: rowData.value.author,
+                authors: rowData.value.authors,
                 day: rowData.value.day
             }
         }
