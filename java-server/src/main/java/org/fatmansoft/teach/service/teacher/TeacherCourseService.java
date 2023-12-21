@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.service.teacher;
 
 import org.fatmansoft.teach.models.student.*;
+import org.fatmansoft.teach.models.system.StaticValue;
 import org.fatmansoft.teach.models.system.User;
 import org.fatmansoft.teach.models.teacher.Teacher;
 import org.fatmansoft.teach.models.teacher.TeacherCourse;
@@ -10,6 +11,7 @@ import org.fatmansoft.teach.payload.response.OptionItem;
 import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.student.*;
 import org.fatmansoft.teach.repository.system.PersonRepository;
+import org.fatmansoft.teach.repository.system.StaticValueRepository;
 import org.fatmansoft.teach.repository.system.UserRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherCourseRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
@@ -65,6 +67,9 @@ public class TeacherCourseService {
 
     @Autowired
     private CampusRepository campusRepository;
+
+    @Autowired
+    private StaticValueRepository staticValueRepository;
 
     public synchronized Integer getNewTeacherCourseId() {  //synchronized 同步方法
         Integer id = teacherCourseRepository.getMaxId();  // 查询最大的id
@@ -350,7 +355,9 @@ public class TeacherCourseService {
     }
 
     public DataResponse selectCourse(DataRequest dataRequest) {
-        if(Const.COURSE_SELECT_AVAILABLE.equals("1")){
+        StaticValue available = staticValueRepository.findById(Const.COURSE_SELECT_AVAILABLE).orElse(null);
+
+        if(available.getValue().equals("1")){
             return CommonMethod.getReturnMessageError("选课未开启！");
         }
         Integer courseId = dataRequest.getInteger("courseId");

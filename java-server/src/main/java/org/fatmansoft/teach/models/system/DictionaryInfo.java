@@ -28,7 +28,7 @@ public class DictionaryInfo {
     private Integer pid;
 
     @Size(max = 40)
-    private String value;
+    private String value;  //1不能选 0能选
 
     @Size(max = 40)
     private String label;
