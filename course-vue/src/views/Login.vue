@@ -73,6 +73,7 @@
               placeholder="密码"
               show-password
             />
+            <div v-if="isInputInvalidPassword" class="error-message-password">{{ inputErrorMessagePassword }}</div>
             <br/>
             <el-input
               class="input"
@@ -91,8 +92,10 @@
             <br/>
             <div class="verify">
               <el-input class="email" v-model="register.email" placeholder="注册邮箱" />
-              <el-button class="verifyBtn" type="primary" @click="getCode">获取验证码</el-button>
+              <el-button class="verifyBtn" :disabled="disabled" type="primary" @click="getCode">{{valiBtn}}</el-button>
             </div>
+            <div v-if="isInputInvalid" class="error-message">{{ inputErrorMessage }}</div>
+            <br/>
             <el-input class="verifyInput" v-model="register.mailVerificationCode" placeholder="请输入验证码" />
             <br/>
             <el-button 
@@ -145,6 +148,12 @@ const register = ref({
   email: '',
   mailVerificationCode: ''
 })
+const valiBtn = ref('获取验证码');
+const disabled = ref(false)
+const isInputInvalid = ref(false);
+const inputErrorMessage = ref('');
+const isInputInvalidPassword = ref(false);
+const inputErrorMessagePassword = ref('');
 onMounted(() => {
   // 发起请求获取当前表格数据
   updateTableData()
@@ -153,6 +162,28 @@ const updateTableData = async () => {
   changeValiCode()
 }
   
+function validateInput() {
+  const regEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 正确的邮箱验证正则表达式
+  if (regEmail.test(register.value.email)) {
+    inputErrorMessage.value = '';
+    isInputInvalid.value = false;
+  } else {
+    console.log("邮箱错了");
+    inputErrorMessage.value = '请输入正确的邮箱！';
+    isInputInvalid.value = true;
+  }
+}
+
+function validatePassword(){
+  const regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/;
+  if(regPassword.test(register.value.password)) {
+    inputErrorMessagePassword.value = '';
+    isInputInvalidPassword.value = false;
+  } else {
+    inputErrorMessagePassword.value = '密码必须由字母、数字组成，区分大小写且密码长度为8-18位';
+    isInputInvalidPassword.value = true;
+  }
+}
   
 async function login(){
   const res2 = await request.post('/auth/testValidateInfo',{
@@ -204,54 +235,81 @@ const forget = () =>{
 }
 
 async function registerUser(){
-  const res = await request.post('/auth/registerUser',{
-    data:{
-      'username': register.value.account,
-      'password': register.value.password,
-      'name' : register.value.name,
-      'email': register.value.email,
-      'role': register.value.role,
-      'mailVerificationCode' : register.value.mailVerificationCode
-    }
-  })
-  if(res.data.code!=200){
-    ElMessage({
-      message: res.data.msg,
-      type: 'error',
-      offset: 150
-    })
-    changeValiCode()
+  validatePassword()
+  if(!isInputInvalidPassword.value){
+    if(register.value.password == register.value.confirmPassword){
+      const res = await request.post('/auth/registerUser',{
+        data:{
+          'username': register.value.account,
+          'password': register.value.password,
+          'name' : register.value.name,
+          'email': register.value.email,
+          'role': register.value.role,
+          'mailVerificationCode' : register.value.mailVerificationCode
+        }
+      })
+      if(res.data.code!=200){
+        ElMessage({
+          message: res.data.msg,
+          type: 'error',
+          offset: 150
+        })
+        changeValiCode()
+      } else {
+        ElMessageBox.alert('注册成功！',{
+          confirmButtonText: 'OK'
+        })
+        showLogin.value = true
+      }
+    } 
   } else {
-    ElMessageBox.alert('注册成功！',{
+    ElMessageBox.alert('两次密码输入不一致！',{
       confirmButtonText: 'OK'
-    })
-    showLogin.value = true
-  }
-} 
-         
-
-async function getCode(){
-  const res = await request.post('/auth/sendEmail',{
-    data:{
-      'email': register.value.email,
-      'subject': "注册账号"
-    }
-  })
-  if(res.data.code==200){
-    ElMessage({
-      message: '验证码发送成功',
-      type: 'success',
-      offset: 150
-    })
-  }else{
-    ElMessage({
-      message: '验证码发送失败',
-      type: 'error',
-      offset: 150
     })
   }
 }
+         
 
+async function getCode(){
+  validateInput()
+  disabled: false
+  if(!isInputInvalid.value){
+    const res = await request.post('/auth/sendEmail',{
+      data:{
+        'email': register.value.email,
+        'subject': "注册账号"
+      }
+    })
+    if(res.data.code==200){
+      ElMessage({
+        message: '验证码发送成功',
+        type: 'success',
+        offset: 150
+      })
+    }else{
+      ElMessage({
+        message: '验证码发送失败',
+        type: 'error',
+        offset: 150
+      })
+    }
+  }
+}
+
+function tackBtn(){       //验证码倒数60秒
+  let time = 60;
+  let timer = setInterval(() => {
+      if(time == 0){
+          clearInterval(timer);
+          valiBtn.value = '获取验证码';
+          disabled.value = false;
+      }else{
+          disabled.value= true;
+          valiBtn.value = time + '秒后重试';
+          time--;
+      }
+  }, 1000);
+}
 
 async function changeValiCode(){
   try {
@@ -424,11 +482,26 @@ function refreshVerification() {
           display: flex;
           justify-content: space-between;
           width: 350px;
-          margin-bottom: 20px;
+          margin-bottom: 0px;
           .verifyBtn{
             width: 100px;
             height: 40px;
           }
+        }
+        .error-message {
+            margin-top: 0px;
+            color: red;
+            font-size: 12px;
+
+          }
+        .is-invalid .el-input__inner {
+          border-color: red;
+        }
+        .error-message-password {
+          margin-top: 0px;
+          color: red;
+          font-size: 12px;
+
         }
         .verifyInput{
             width: 350px;

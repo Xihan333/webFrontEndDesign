@@ -1,6 +1,7 @@
 <template>
     <div class="classmate">
         <div>
+          <div class="className">{{ className }}</div>
             <div class="query">
                 <el-input
                     clearable
@@ -51,7 +52,7 @@ import { storeToRefs } from 'pinia'
 const store = useAppStore()
 
 const { classmate } = storeToRefs(store);
-
+const className = classmate.value.clazzName
 const tableData = ref([])
 onMounted(() => {
   // 发起请求获取当前表格数据
@@ -59,7 +60,7 @@ onMounted(() => {
 })
 
 const updateTableData = async () => {
-  console.log(classmate.value)
+  console.log(classmate.value.clazzName)
   const res = await request.post('/student/getStudentOptionItemListByClazzId',{
     data:{
         clazzId:classmate.value.clazzId
@@ -125,10 +126,18 @@ async function handleDel(rowData)  {
 el-table{
   text-align: center;
 }
-
+.className{
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  float: left;
+  color: rgb(68, 68, 68);
+}
 .query{
   float: right;
   border-right: 0px;
+  margin-bottom: 10px;
   .search{
     border-color: #6FB6C1;
     margin-left: auto;

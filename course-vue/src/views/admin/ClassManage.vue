@@ -3,9 +3,9 @@
     <div class="class-manage">
         <div>
           <el-button class="seeBtn" color="#6FB6C1" @click="seeStudent">查看未分配班级同学</el-button>
+          <el-button size="default" @click="handleAdd()" color="#6FB6C1" class="addBtn" >新 增</el-button>
         </div>
         <div>
-        <el-button size="default" @click="handleAdd()" color="#6FB6C1">新 增</el-button>
         <br/>
         <div class="options">
           <div class="select">
@@ -195,9 +195,10 @@ const searchedTableData = computed(() => filterTableData.value.filter(
 ))
 
 
-const handleClickName = (clazzName) => {
-  console.log(clazzName.row.clazzId)
-  store.classmate = clazzName.row
+const handleClickName = (clazz) => {
+  console.log(clazz.row.clazzName)
+  store.classmate = clazz.row
+  console.log(store.classmate)
   router.push('classmate')
 }
 
@@ -309,9 +310,7 @@ const seeStudent = () =>{
 el-table{
   text-align: center;
 }
-
 .query{
-  margin-top: 10px;
   display: inline-block;
   vertical-align:middle;
   float: right;
@@ -356,6 +355,7 @@ el-table{
     vertical-align:middle;
   }
   .buttonSS{
+    margin-right: 5px;
     display: inline-block;
     vertical-align:middle;
   }
@@ -364,6 +364,10 @@ el-table{
 .seeBtn{
   width: 150px;
   color: white;
-  margin-bottom: 10px;
+
+}
+.addBtn{
+  color: white;
+
 }
 </style>

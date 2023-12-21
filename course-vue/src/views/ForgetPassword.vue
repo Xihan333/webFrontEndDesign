@@ -34,6 +34,7 @@
               placeholder="新密码"
               show-password
             />
+            <div v-if="isInputInvalidPassword" class="error-message-password">{{ inputErrorMessagePassword }}</div>
             <br/>
             <el-input
               class="input"
@@ -78,10 +79,12 @@ const valiBtn = ref('获取验证码');
 const disabled = ref(false)
 const isInputInvalid = ref(false);
 const inputErrorMessage = ref('');
+const isInputInvalidPassword = ref(false);
+const inputErrorMessagePassword = ref('');
 const register = ref({
-  password: '123456',
-  confirmPassword: '123456',
-  account: '202203000222',
+  password: '',
+  confirmPassword: '',
+  account: '',
   email: '',
   mailVerificationCode: ''
 })
@@ -94,26 +97,36 @@ const updateTableData = async () => {
 }
   
 async function resetPassWord(){
-  const res = await request.post('/auth/resetPassWord',{
-    data:{
-      'username': register.value.account,
-      'newPassword': register.value.password,
-      'email': register.value.email,
-      'mailVerificationCode' : register.value.mailVerificationCode
+  validatePassword()
+  if(!isInputInvalidPassword.value){
+    if(register.value.password == register.value.confirmPassword){
+      const res = await request.post('/auth/resetPassWord',{
+        data:{
+          'username': register.value.account,
+          'newPassword': register.value.password,
+          'email': register.value.email,
+          'mailVerificationCode' : register.value.mailVerificationCode
+        }
+      })
+      if(res.data.code!=200){
+        ElMessage({
+          message: '验证码错误',
+          type: 'error',
+          offset: 150
+        })
+      } else {
+        ElMessageBox.alert('密码重置成功！',{
+          confirmButtonText: 'OK'
+        })
+        tologin()
+      }
+    } else {
+      ElMessageBox.alert('两次密码输入不一致！',{
+        confirmButtonText: 'OK'
+      })
     }
-  })
-  if(res.data.code!=200){
-    ElMessage({
-           message: '验证码错误',
-           type: 'error',
-           offset: 150
-         })
-  } else {
-    ElMessageBox.alert('密码重置成功！',{
-      confirmButtonText: 'OK'
-    })
-    tologin()
   }
+  
 } 
          
 function validateInput() {
@@ -130,6 +143,13 @@ function validateInput() {
 
 function validatePassword(){
   const regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/;
+  if(regPassword.test(register.value.password)) {
+    inputErrorMessagePassword.value = '';
+    isInputInvalidPassword.value = false;
+  } else {
+    inputErrorMessagePassword.value = '密码必须由字母、数字组成，区分大小写且密码长度为8-18位';
+    isInputInvalidPassword.value = true;
+  }
 }
 
 async function getCode(){
@@ -281,6 +301,12 @@ const toLogin = () =>{
         .is-invalid .el-input__inner {
           border-color: red;
         }
+        .error-message-password {
+            margin-top: 0px;
+            color: red;
+            font-size: 12px;
+
+          }
         .verifyInput{
             width: 350px;
             height: 42px;

@@ -192,6 +192,7 @@ public class ClazzService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s = sOp.get();
         s.setClazz(a);
+        studentRepository.saveAndFlush(s);
         return CommonMethod.getReturnMessageOK();
     }
 }
