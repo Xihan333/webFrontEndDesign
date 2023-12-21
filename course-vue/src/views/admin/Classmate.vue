@@ -45,6 +45,13 @@ import { ref,computed,onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
 
+import { useAppStore } from '../../stores/app.ts'
+import { storeToRefs } from 'pinia'
+
+const store = useAppStore()
+
+const { classmate } = storeToRefs(store);
+
 const tableData = ref([])
 onMounted(() => {
   // 发起请求获取当前表格数据
@@ -52,11 +59,13 @@ onMounted(() => {
 })
 
 const updateTableData = async () => {
+  console.log(classmate.value)
   const res = await request.post('/student/getStudentOptionItemListByClazzId',{
     data:{
-        clazzId:''
+        clazzId:classmate.value.clazzId
     }
   })
+  console.log(res.data.data)
   tableData.value = res.data.data
 }
 
