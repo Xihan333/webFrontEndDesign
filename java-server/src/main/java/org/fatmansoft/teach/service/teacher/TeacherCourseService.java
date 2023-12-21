@@ -86,6 +86,10 @@ public class TeacherCourseService {
         m.put("courseId", tc.getCourse().getCourseId());
         m.put("courseName", tc.getCourse().getName());
         m.put("courseNum", tc.getCourse().getNum());
+        if (tc.getCourse().getCampus() != null) {
+            m.put("campusId", tc.getCourse().getCampus().getCampusId());
+            m.put("campusName", tc.getCourse().getCampus().getName());
+        }
         if (tc.getCourse().getGrade() != null) {
             m.put("gradeId", tc.getCourse().getGrade().getGradeId());
             m.put("gradeName", tc.getCourse().getGrade().getGradeName());
