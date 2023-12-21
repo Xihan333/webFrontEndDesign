@@ -185,6 +185,8 @@ async function login(){
       store.setUserInfo(res.data.data)
       let role=store.userInfo.roles;
       if(role=='ROLE_ADMIN'){
+        // 管理员端的标签页单独处理
+        store.adminInitTab('课程管理','course-manage')
         router.push('/admin');
       }
       else if(role=='ROLE_STUDENT'){
@@ -214,15 +216,16 @@ async function registerUser(){
   })
   if(res2.data.code!=200){
     ElMessage({
-           message: '验证码错误',
-           type: 'error',
-           offset: 150
-         })
+      message: '验证码错误',
+      type: 'error',
+      offset: 150
+    })
+    changeValiCode()
   } else {
     ElMessageBox.alert('注册成功！',{
       confirmButtonText: 'OK'
     })
-    showLogin = true
+    showLogin.value = true
   }
 } 
          

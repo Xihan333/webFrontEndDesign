@@ -14,6 +14,11 @@ export const filterOption = {
         {id: 2, label: '大二', value : '大二'},
         {id: 3, label: '大三', value : '大三'},
         {id: 4, label: '大四', value : '大四'}
+    ],
+    types:[
+        {id: 0, label: '必修'},
+        {id: 1, label: '限选'},
+        {id: 2, label: '任选'},
     ]
 }
 

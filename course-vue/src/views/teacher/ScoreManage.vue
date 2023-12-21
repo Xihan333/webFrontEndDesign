@@ -60,7 +60,7 @@
   </el-row>
   <el-dialog
     v-model="dialogVisible"
-    title="编辑成绩"
+    title="成绩编辑"
     width="300px"
     :before-close="handleClose"
   >
@@ -170,7 +170,6 @@ async function confirm(){
   form.set('commonMark',commonMark.value);
   form.set('finalMark',finalMark.value);
   const h=Object.fromEntries(form);
-  console.log(scoreId)
   const res = await request.post('/score/scoreSave',{
     data:{
       scoreId:scoreId.value,
@@ -221,7 +220,7 @@ async function confirm(){
       margin-right: 10px;
     }
     .input{
-      width: 100px;
+      width: 180px;
     }
   }
 }

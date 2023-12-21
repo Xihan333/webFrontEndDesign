@@ -21,7 +21,6 @@ instance.interceptors.request.use(function (config) {
   commonStore.updateLoading(true);
   // 在发送请求之前携带token
   config.headers.Authorization = 'Bearer ' + userInfo.accessToken;
-  console.log('请求url: ', config.url, '; 请求信息: ', config)
   return config
 }, function (error) {
   // 处理请求错误

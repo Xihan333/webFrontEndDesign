@@ -169,6 +169,7 @@ public class StudentService {
             m.put("credit", tc.getCourse().getCredit());
             m.put("commonMark",s.getCommonMark());
             m.put("finalMark",s.getFinalMark());
+            m.put("totalMark",s.getCommonMark()+s.getFinalMark());
             m.put("ranking", s.getRanking());
             list.add(m);
         }
@@ -246,7 +247,7 @@ public class StudentService {
     }
 
 
-    public DataResponse getStudentIntroduceData(DataRequest dataRequest) {
+    public DataResponse getStudentIntroduceData() {
         Integer userId = CommonMethod.getUserId();
         Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
         if(!uOp.isPresent())
@@ -258,14 +259,36 @@ public class StudentService {
         Student s= sOp.get();
         Map info = getMapFromStudent(s);  // 查询学生信息Map对象
         info.put("introduce", studentIntroduceService.getIntroduceDataMap(u.getUserId()));
-        List<Score> sList = scoreRepository.findByStudentStudentId(s.getStudentId()); //获得学生成绩对象集合
+        List<Score> sList = scoreRepository.findStudentResultScores(s.getStudentId()); //获得学生成绩对象集合
         Map data = new HashMap();
         data.put("info",info);
         data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
         data.put("acticityList",activityService.getActivityMapListByStudentId(s.getStudentId()));
         data.put("scoreList",getStudentScoreList(sList));
         data.put("markList",getStudentMarkList(sList));
+        Double gpa = getGPA(s);
+        data.put("gpa",gpa);
         return CommonMethod.getReturnData(data);//将前端所需数据保留Map对象里，返还前端
+    }
+
+    private Double getGPA(Student s) {
+        List<Score> scoreList = scoreRepository.findStudentResultScores(s.getStudentId());
+        Double gpa = 0.0;
+        Double gpaTotal = 0.0;
+        Double creditTotal = 0.0;
+        List dataList = new ArrayList();
+        if(scoreList == null || scoreList.size() == 0)
+            return 0.0;
+        for(int i = 0; i < scoreList.size();i++) {
+            Integer credit = scoreList.get(i).getTeacherCourse().getCourse().getCredit();
+            Integer score = scoreList.get(i).getCommonMark() + scoreList.get(i).getFinalMark();
+            creditTotal += credit;
+            gpaTotal += credit * score;
+        }
+        gpa = (gpaTotal/creditTotal-50)/10;
+        String  str = String.format("%.2f",gpa);
+        gpa = Double.parseDouble(str);
+        return gpa;
     }
 
     public DataResponse studentEdit(DataRequest dataRequest) {

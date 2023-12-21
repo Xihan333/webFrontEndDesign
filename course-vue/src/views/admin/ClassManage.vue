@@ -1,10 +1,11 @@
 <!-- 班级管理 -->
 <template>
-    <div class="class-manage">
+    <!-- <div class="class-manage"> -->
         <div>
-        <ClassManageDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
-        <el-button @click="handleAdd" color="#6FB6C1" class="add">新 增</el-button>
-        <div class="select">
+        <el-button size="default" @click="handleAdd()" color="#6FB6C1">新 增</el-button>
+        <br/>
+        <div class="options">
+          <div class="select">
             <el-select v-model="campus" value-key="id"
                        placeholder="请选择学院" clearable @change="changeSelect">
                 <el-option
@@ -14,20 +15,21 @@
                    :value="item.value"
                    />
             </el-select>
+          </div>
+          <div class="select">
+              <el-select v-model="grade" value-key="id"
+                        placeholder="请选择年级" clearable @change="changeSelect">
+                  <el-option
+                    v-for="item in gradeType"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value"
+                    />
+              </el-select>
+          </div>
+          <el-button class="buttonSS" type="primary" size="default" @click="fetchDate(campus,grade)">查 询</el-button>
         </div>
-        <div class="select">
-            <el-select v-model="grade" value-key="id"
-                       placeholder="请选择年级" clearable @change="changeSelect">
-                <el-option
-                   v-for="item in gradeType"
-                   :key="item.id"
-                   :label="item.label"
-                   :value="item.value"
-                   />
-            </el-select>
-        </div>
-        <el-button class="query" type="primary" size="default" @click="fetchDate(campus,grade)">查 询</el-button>
-
+        
         <div class="query">
             <el-input
                 clearable
@@ -39,7 +41,7 @@
             <el-button type="primary" @click="searchFn" color="#6FB6C1" class="searchBtn">查 询</el-button>
         </div>
     </div>
-    <el-table
+    <el-table border
      :data="paginatedTableData"
      style="width: 100%">
         <el-table-column prop="clazzName" label="班级名称" width="350" />
@@ -48,9 +50,6 @@
         <el-table-column label="操作" width="350" >
         <!-- 操作部分，根据需要修改 -->
         <template #default="scope">
-          <el-button size="default" @click="handleEdit(scope.row)">
-            编辑
-          </el-button>
           <el-button size="default" @click="handleDel(scope.row)">
             删除
           </el-button>
@@ -71,20 +70,68 @@
         />
       </el-col>
     </el-row>
-</div>
+    <el-dialog
+      v-model="dialogVisible"
+      title="新增班级"
+      width="500px"
+      :before-close="handleClose"
+    >
+      <div class="dialogContent">
+        <div class="clazzName">
+          <p>班级名称</p>
+          <el-input
+           class="input"
+           v-model="clazzName"
+           />
+        </div>
+        <div class="campus">
+          <p>学院</p>
+          <el-select v-model="rowData.value.campusId" value-key="id"
+            placeholder="请选择学院" clearable @change="changeSelect">
+          >
+          <el-option
+           v-for="item in campusType"
+           :key="item.id"
+           :label="item.label"
+           :value="item.value"
+           />
+          </el-select>
+        </div>
+        <div class="grade">
+          <p>年级</p>
+          <el-select v-model="rowData.value.gradeId" value-key="id"
+            placeholder="请选择年级" clearable @change="changeSelect">
+          >
+          <el-option
+           v-for="item in gradeType"
+           :key="item.id"
+           :label="item.label"
+           :value="item.value"
+           />
+          </el-select>
+        </div>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  <!-- </div> -->
 </template>
 
 
 <script setup>
 import { ref,computed,onMounted } from 'vue'
 //引入弹窗页面
-import ClassManageDialog from '../../components/ClassManageDialog.vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
 import { filterOption } from '../../assets/js/config.js'
 
 const campus = ref('')
 const grade = ref('')
+const clazzId=ref();
 
 const campusType = computed(() => filterOption.allCampuses)
 const gradeType = computed(() => filterOption.allGrades) 
@@ -100,7 +147,7 @@ onMounted(async ()=> {
 const updateTableData = async () => {
   const res = await request.post('/clazz/getClazzOptionItemListByGradeId',{
     data:{
-      gradeId:1
+      gradeId:''
     }
   })
   console.log(res.data.data)
@@ -145,21 +192,25 @@ const handleSizeChange = () => {
   currentPage.value = 1
 }
 
-const currentRowData = ref({})
-const dialogMode = ref('') // 'add' 或 'view'
-const handleAdd = () => {
-  currentRowData.value = {}  // 清空数据
-  dialogMode.value = 'add'
-  show.value = true
+const dialogVisible = ref(false);
+const clazzName=ref();
+
+
+function handleAdd(){
+  dialogVisible.value=true;
+  clazzName.value="";
+  campus.value="";
+  grade.value="";
+  clazzId="";
 }
 
 //查看
-const handleEdit = (rowData) => {
-  console.log(rowData)
-  currentRowData.value = rowData
-  dialogMode.value = 'view'
-  show.value = true
-}
+// const handleEdit = (rowData) => {
+//   console.log(rowData)
+//   currentRowData.value = rowData
+//   dialogMode.value = 'view'
+//   show.value = true
+// }
 
 async function handleDel(rowData)  {
   const res = await request.post('/clazz/clazzDelete',{
@@ -186,14 +237,93 @@ async function handleDel(rowData)  {
   }
 }
 
+async function confirm(){
+  let map=new Map();
+  map.set('clazzName',clazzName.value);
+  map.set('campus',campus.value);
+  map.set('grade',grade.value);
+  const form=Object.fromEntries(map);
+  // console.log(clazzId)
+  const res = await request.post('/clazz/clazzEditSave',{
+    data:{
+      form:form
+    }
+  })
+  console.log('请看请求',res)
+  if(res.data.code==200){
+    dialogVisible.value=false;
+  }
+  else{
+    ElMessage({
+      message: '加载失败，请重试！',
+      type:'error',
+      offset: 150
+    })
+  }
+}
+
+
 const changeSelect = computed(() => {
   console.log(campus.value)
   console.log(grade.value)
 })
 
 // const tableData = computed(() => filiterTableData.value)
-
-
-
-
 </script>
+
+<style lang="scss" scoped>
+el-table{
+  text-align: center;
+}
+
+.query{
+  display: inline-block;
+  vertical-align:middle;
+  float: right;
+  margin-bottom: 10px;
+  border-right: 0px;
+  .search{
+    border-color: #6FB6C1;
+    margin-left: auto;
+    margin-right: 10px;
+    width: 200px;
+  }
+  .searchBtn{
+    width: 70px;
+    margin-right: 10px;
+    color: white;
+  }
+}
+.pagination{
+  margin-top: 10px;
+}
+
+.dialogContent{
+  .clazzName,.campus,.grade{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    p{
+      margin: 1px;
+      margin-right: 30px;
+    }
+    .input{
+      width: 200px;
+    }
+  }
+}
+.options{
+  display: inline-block;
+  vertical-align:middle;
+  margin-bottom: 10px;
+  .select{
+    display: inline-block;
+    vertical-align:middle;
+  }
+  .buttonSS{
+    display: inline-block;
+    vertical-align:middle;
+  }
+}
+
+</style>

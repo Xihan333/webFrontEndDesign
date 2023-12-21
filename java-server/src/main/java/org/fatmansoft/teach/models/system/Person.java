@@ -48,7 +48,7 @@ public class Person {
     private String type;
 
     @Size(max = 50)
-    private String dept;
+    private String dept; //专业
 
     @Size(max = 20)
     private String card;
