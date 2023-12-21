@@ -59,13 +59,12 @@
   <el-table border :data="filterTableData">
     <el-table-column prop="courseNum" label="课序号" width="auto" /> 
     <el-table-column prop="courseName" label="课程名称" width="140px" />
-    <el-table-column :mapatter="typeFormat" label="课程类型" width="auto" /> 
+    <el-table-column :formatter="typeFormat" label="课程类型" width="auto" /> 
     <el-table-column prop="teacherNum" label="教师工号" width="auto" />
     <el-table-column prop="teacherName" label="上课教师" width="auto" />
     <el-table-column prop="courseCapacity" label="课容量" width="auto" />
-    <el-table-column :mapatter="timeFormat" label="上课时间" width="auto" />
+    <el-table-column :formatter="timeFormat" label="上课时间" width="auto" />
     <el-table-column prop="place" label="上课地点" width="auto" />  
-    <el-table-column prop="introduction" label="课程介绍" width="auto" />  
     <el-table-column label="操作" width="170px" >
       <template #default="scope">
         <el-button size="default" @click="edit(scope.row)">
@@ -148,13 +147,6 @@
           v-model="place"
         />
       </div>
-      <div class="item">
-        <p>课程介绍</p>
-        <el-input
-          class="input"
-          v-model="introduction"
-        />
-      </div>
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -170,7 +162,7 @@
         width="30%"
         :before-close="handleClose"
     >
-        <span>确定要删除该学科吗？</span>
+        <span>确定要删除该课程吗？</span>
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="deleteDialogVisible = false">取消</el-button>
@@ -188,9 +180,9 @@ import {filterOption} from '../../assets/js/config.js'
 
 // 筛选
 const courseNumOrName=ref("");
-const teacherNameSelect=ref("");
+const teacherName=ref("");
 const typeSelect=ref();
-const filterTypes=filterOption.filterTypes;
+const optionTypes=filterOption.optionTypes;
 
 let tableData = []
 const filterTableData=ref([]);
@@ -233,7 +225,7 @@ function search(){
   });
 }
 
-function typeFormat(row) {
+function typeFormat(row, column){
   return optionTypes[row.type].label;
 }
 
@@ -282,6 +274,7 @@ async function selectConfirm(){
 console.log("xiala",filterOption)
 const dialogVisible=ref(false)
 const dialogTitle=ref();//弹窗标题兼类型
+const teacherCourseId=ref();
 const courseNum=ref();//课序号
 const teacherNum=ref();//教师工号
 const courseCapacity=ref();//课容量
@@ -301,22 +294,21 @@ function add(){
   timeOrder.value=""
   place.value=""
   courseCapacity.value=""
-  introduction.value=""
 }
 function edit(row){
   dialogVisible.value=true;
   dialogTitle.value='课程编辑'
+  teacherCourseId.value=row.teacherCourseId;
   courseNum.value=row.courseNum
   teacherNum.value=row.teacherNum
   day.value=row.day
   timeOrder.value=row.timeOrder
   place.value=row.place
   courseCapacity.value=row.courseCapacity
-  introduction.value=row.introduction
 }
 
 // 封装用于网络请求的数据
-function getForm(){
+function getMap(){
     let map=new Map();
     map.set('courseNum',courseNum.value);
     map.set('teacherNum',teacherNum.value);
@@ -324,19 +316,24 @@ function getForm(){
     map.set('day',day.value);
     map.set('timeOrder',timeOrder.value);
     map.set('place',place.value);
-    map.set('introduction',introduction.value);
-    return Object.fromEntries(map);
+    return map;
 }
 
 async function addConfirm(){
-  let form=getForm();
-  const res = await request.post('/course/addCourse',{
+  const map=getMap()
+  let form=Object.fromEntries(map);
+  const res = await request.post('/teacherCourse/addCourse',{
       data:{
           form:form
       }
   })
   if(res.data!=undefined && res.data.code==200){
     updateTableData();
+    ElMessage({
+      message: '新增成功！',
+      type: 'success',
+      offset: 150
+    })
   }
   else{
       ElMessage({
@@ -347,8 +344,10 @@ async function addConfirm(){
   }
 }
 async function editConfirm(){
-  let form=getForm();
-  const res = await request.post('/course/editCourse',{
+  const map=getMap();
+  map.set('teacherCourseId',teacherCourseId.value)
+  let form=Object.fromEntries(map);
+  const res = await request.post('/teacherCourse/editCourse',{
       data:{
           form:form
       }
@@ -370,22 +369,45 @@ async function editConfirm(){
   }
 }
 function confirm(){
-  dialogVisible.value = false;
   if(dialogTitle.value=='课程新增'){
     addConfirm();
   }
   else{
     editConfirm();
   }
+  dialogVisible.value = false;
 }
 // 删除对话框
 const deleteDialogVisible=ref(false)
 function remove(row){
     deleteDialogVisible.value=true;
-    deleteConfirm(row);
+    teacherCourseId.value=row.teacherCourseId;
 }
 async function deleteConfirm(){
-    // 在此发送请求
+  let map=new Map();
+  map.set('teacherCourseId',teacherCourseId.value);
+  let form=Object.fromEntries(map);
+  const res = await request.post('/teacherCourse/deleteCourse',{
+    data:{
+      form:form
+    }
+  })
+  if(res.data!=undefined && res.data.code==200){
+    updateTableData();
+    deleteDialogVisible.value=false;
+    ElMessage({
+    message: '删除成功！',
+    type: 'success',
+    offset: 150
+    })
+  }
+  else{
+    ElMessage({
+        message: '操作失败，请重试！',
+        type: 'error',
+        offset: 150
+    })
+  }
 }
 </script>
   
