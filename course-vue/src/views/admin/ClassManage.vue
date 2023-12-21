@@ -85,14 +85,14 @@
     >
       <div class="dialogContent">
         <div class="clazzName">
-          <p>班级名称</p>
+          <p>班级名称: </p>
           <el-input
            class="input"
            v-model="clazzName"
            />
         </div>
         <div class="campus">
-          <p>学院</p>
+          <p>学院: </p>
           <el-select v-model="campusId" value-key="id"
             placeholder="请选择学院" clearable @change="changeSelect">
           >
@@ -105,7 +105,7 @@
           </el-select>
         </div>
         <div class="grade">
-          <p>年级</p>
+          <p>年级: </p>
           <el-select v-model="gradeId" value-key="id"
             placeholder="请选择年级" clearable @change="changeSelect">
           >
