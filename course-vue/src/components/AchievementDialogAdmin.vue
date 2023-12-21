@@ -13,21 +13,21 @@
         <el-form :model="form" size="large">
           <el-form-item label="成果奖励名称">
             <el-input v-model="rowData.achievementName" 
-              maxlength="50"
+              maxlength="50" disabled
               placeholder="请输入成果奖励名称"
               show-word-limit 
             />
           </el-form-item>
           <el-form-item label="级别">
             <el-input v-model="rowData.level"
-              maxlength="20"
+              maxlength="20" disabled
               placeholder="请输入成果奖励级别"
               show-word-limit 
             />
           </el-form-item>
           <el-form-item label="类别">
             <el-input v-model="rowData.type"
-              maxlength="20"
+              maxlength="20" disabled
               placeholder="请输入成果奖励类别"
               show-word-limit 
             />
@@ -36,7 +36,7 @@
             <!-- 禁用时间，复制的时候记得连同script里面的disabledDate方法一起带着 -->
             <el-date-picker
               v-model="rowData.time"
-              type="date"
+              type="date" disabled
               :disabled-date="disabledDate"
               placeholder="请选择时间"
               :size="size"
@@ -47,7 +47,7 @@
           <el-form-item label="内容">
             <el-input
               v-model="rowData.content"
-              maxlength="200"
+              maxlength="200" disabled
               :autosize="{ minRows: 2 }"
               type="textarea"
               placeholder="请输入内容"
@@ -99,18 +99,16 @@
   }
 
   // 监听 dialogMode 的变化
-  watch(() => props.dialogMode, (newMode) => {
-    if (newMode === 'add') {
-      // 如果是新增模式，清空或重置表单数据
-      rowData.value = {achievementId :'',level: '',type: '',time: '',content:''}
-  }
-     else if (newMode === 'view') {
-      // 如果是查看模式，填充数据
-      rowData.value = { ...props.rowData }
-      console.log(rowData.value)
+  watchEffect(() => {
+    if(props.dialogMode ==='add'){
+        //新增则清空或重置表单数据
+        rowData.value = {achievementId :'',level: '',type: '',time: '',content:''}    
+      }
+    else if(props.dialogMode === 'view'){
+        rowData.value = {...props.rowData}
+        console.log(rowData.value)
     }
-  })
-
+})
 
   const emit = defineEmits(['update:show','updateTable'])
   const pass = async () => {

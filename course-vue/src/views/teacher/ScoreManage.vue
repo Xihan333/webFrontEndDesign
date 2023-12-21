@@ -106,10 +106,11 @@ let types=['必修','限选','任选','']
 let tableData = []
 const filterTableData=ref([]);
 onMounted(async() => {
-  const res0 = await request.get('/course/getMyTeacherCourses')
-  console.log('请看请求',res0)
-  if(res0.data.code==200){
-      courses.value=res0.data.data;
+  updateTableData();
+  const res = await request.get('/course/getMyTeacherCourses')
+  console.log('请看请求',res)
+  if(res.data.code==200){
+      courses.value=res.data.data;
   }
   else{
       ElMessage({
@@ -118,9 +119,12 @@ onMounted(async() => {
           offset: 150
       })
   }
-  const res1 = await request.get('/score/getTeacherCourseScores')
-  if(res1.data.code==200){
-    tableData=res1.data.data;
+})
+
+async function updateTableData(){
+  const res = await request.get('/score/getTeacherCourseScores')
+  if(res.data.code==200){
+    tableData=res.data.data;
     filterTableData.value=tableData;
   }
   else{
@@ -130,7 +134,7 @@ onMounted(async() => {
       offset: 150
     })
   }
-})
+}
 
 function reset(){
   studentNum.value="";
@@ -176,9 +180,14 @@ async function confirm(){
       form:h,
     },
   })
-  console.log('请看请求',res)
   if(res.data.code==200){
       dialogVisible.value=false;
+      updateTableData();
+      ElMessage({
+          message: '操作成功！',
+          type: 'success',
+          offset: 150
+      })
   }
   else{
       ElMessage({

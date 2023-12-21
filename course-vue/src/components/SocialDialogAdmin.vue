@@ -13,14 +13,14 @@
         <el-form :model="form" size="large">
           <el-form-item label="实践主题">
             <el-input v-model="rowData.theme" 
-              maxlength="50"
+              maxlength="50" disabled
               placeholder="请输入实践主题"
               show-word-limit 
             />
           </el-form-item>
           <el-form-item label="团队名称">
             <el-input v-model="rowData.groupName"
-              maxlength="20"
+              maxlength="20" disabled
               placeholder="请输入团队名称"
               show-word-limit 
             />
@@ -32,20 +32,20 @@
               type="date"
               :disabled-date="disabledDate"
               placeholder="请选择时间"
-              :size="size"
+              :size="size" disabled
               format="YYYY/MM/DD"
               value-format="YYYY/MM/DD"
             />
           </el-form-item>
           <el-form-item label="实践地点">
-            <el-input v-model="rowData.location" placeholder="请输入实践地点"/>
+            <el-input v-model="rowData.location" disabled placeholder="请输入实践地点"/>
           </el-form-item>
           <el-form-item label="摘要">
             <el-input
               v-model="rowData.digest"
               maxlength="200"
               :autosize="{ minRows: 2 }"
-              type="textarea"
+              type="textarea" disabled
               placeholder="请输入摘要"
               show-word-limit 
             />
@@ -54,7 +54,7 @@
             <el-input
               v-model="rowData.harvest"
               :autosize="{ minRows: 2 }"
-              type="textarea"
+              type="textarea" disabled
               placeholder="请阐述实践成果"
             />
           </el-form-item>
@@ -105,17 +105,16 @@
   }
 
   // 监听
-  watch(() => {
-    if (props.dialogMode === 'add') {
-      // 如果是新增模式，清空或重置表单数据
-      rowData.value = {socialId :'',theme: '',groupName: '',day: '',location:'',digest:'',harvest:''}
-  }
-     else if (props.dialogMode === 'view') {
-      // 如果是查看模式，填充数据
-      rowData.value = { ...props.rowData }
-      console.log(rowData.value)
+  watchEffect(() => {
+    if(props.dialogMode ==='add'){
+        //新增则清空或重置表单数据
+        rowData.value = {socialId :'',theme: '',groupName: '',day: '',location:'',digest:'',harvest:''}
     }
-  })
+    else if(props.dialogMode === 'view'){
+        rowData.value = {...props.rowData}
+        console.log(rowData.value)
+    }
+})
 
 
   const emit = defineEmits(['update:show','updateTable'])

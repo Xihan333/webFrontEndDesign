@@ -156,18 +156,15 @@ public class ScoreService {
             score = scoreOptional.get();
         }
         Integer myScore = score.getCommonMark() + score.getFinalMark();
-        System.out.println(myScore);
         Integer myRank = 1;
         for (int i = 0; i < sList.size(); i++) {
             Integer itemScore = sList.get(i).getCommonMark() + sList.get(i).getFinalMark();
-            System.out.println(itemScore+"======");
             if(sList.get(i).getStudent() != student){
                 if(itemScore > myScore){
                     myRank++;
                 }
             }
         }
-        System.out.println(myRank);
         return CommonMethod.getReturnData(myRank);
     }
 }

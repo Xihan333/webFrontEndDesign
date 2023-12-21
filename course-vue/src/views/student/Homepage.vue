@@ -51,13 +51,21 @@ import * as echarts from 'echarts';
 import request from '../../request/axios_config.js'
 
 const userInfo = ref({
-    name:'杨平',
-    num:'2022030003',
-    clazz:{
-        clazzName:'软工1班',
-        gradeName:'大二',
-        campusName:'软件学院',
-    }
+    studentId:'',
+    name: '',
+    num: '',
+    gender:'',
+    genderName: '',
+    dept: '',
+    birthday: '',
+    card: '',
+    email: '',
+    phone: '',
+    introduce: ''
+    clazzName:'软工1班',
+    gradeName:'大二',
+    campusName:'软件学院',
+    
 })
 const AchievementData = ref([])
 const SocialData = ref([])
@@ -66,8 +74,10 @@ onMounted(() =>{
     updateTableData()
 })
 const updateTableData = async () => {
+    const info = await request.get('/student/getMyInfo')
     const achievement = await request.get('/achievement/getStudentAchievement')
     const social = await request.get('/social/getStudentSocial')
+    userInfo.value = info.data.data
     AchievementData.value = achievement.data.data
     SocialData.value = social.data.data
 }

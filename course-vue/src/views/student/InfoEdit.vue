@@ -2,6 +2,16 @@
   <div class="edit-profile">
     <h1>个人信息修改</h1>
      <el-form :model="form">
+        <el-form-item label="姓名">
+            <el-input v-model="rowData.name"
+            disabled
+            />
+        </el-form-item>
+        <el-form-item label="学号">
+            <el-input v-model="rowData.num"
+            disabled
+            />
+        </el-form-item>
         <el-form-item label="性  别">
           <el-radio-group v-model="rowData.gender">
             <el-radio label="1" border>男</el-radio>
@@ -41,11 +51,12 @@
             />
         </el-form-item>   
         <el-form-item label="个人介绍">
-            <el-input class = "introduce" v-model="rowData.introduce"
-            maxlength="30"
+            <el-input  class="in" v-model="rowData.introduce"
             placeholder="请输入个人介绍"
             show-word-limit
-            type = text-area
+            type = "textarea"
+            maxlength="200"
+            :autosize="{ minRows: 4}"
             />
         </el-form-item>   
       </el-form>
@@ -102,7 +113,7 @@ async function submit(){
   })
   if(res.data.code!=200){
     ElMessage({
-           message: '修改错误',
+           message: res.data.msg,
            type: 'error',
            offset: 150
          })
@@ -127,8 +138,8 @@ async function submit(){
 }
 
 h1 {
-  font-size: xxx-large;
-  margin-bottom: 50px;
+  font-size: xx-large;
+  margin-bottom: 20px;
 }
 
 .el-form {
@@ -153,4 +164,10 @@ h1 {
   height:40px;
   font-size: 16px;
 }
+
+.in{
+  width:50%;
+  font-size: 16px;
+}
+
 </style>
