@@ -41,6 +41,6 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query(value = "from Student where clazz.clazzId=?1")
     List<Student> findStudentListByClazzClazzId(Integer clazzId);
 
-    @Query(value = "from Student where clazz.clazzId=0")
+    @Query(value = "from Student where clazz=null")
     List<Student> findStudentNoClazz();
 }

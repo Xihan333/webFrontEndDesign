@@ -186,7 +186,7 @@ async function login(){
       let role=store.userInfo.roles;
       if(role=='ROLE_ADMIN'){
         // 管理员端的标签页单独处理
-        store.adminInitTab('课程管理','course-manage')
+        store.adminInitTab('学科管理','subject-manage')
         router.push('/admin');
       }
       else if(role=='ROLE_STUDENT'){
@@ -214,9 +214,9 @@ async function registerUser(){
       'mailVerificationCode' : register.value.mailVerificationCode
     }
   })
-  if(res2.data.code!=200){
+  if(res.data.code!=200){
     ElMessage({
-      message: '验证码错误',
+      message: res.data.msg,
       type: 'error',
       offset: 150
     })

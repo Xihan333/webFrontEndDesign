@@ -45,8 +45,10 @@
             <br/>
             <div class="verify">
               <el-input class="email" v-model="register.email" placeholder="注册邮箱" />
-              <el-button class="verifyBtn" type="primary" @click="getCode">获取验证码</el-button>
+              <el-button class="verifyBtn" :disabled="disabled" type="primary" @click="getCode">{{valiBtn}}</el-button>
             </div>
+            <div v-if="isInputInvalid" class="error-message">{{ inputErrorMessage }}</div>
+            <br/>
             <el-input class="verifyInput" v-model="register.mailVerificationCode" placeholder="请输入验证码" />
             <br/>
             <br/>
@@ -72,10 +74,14 @@ import request from '../request/axios_config.js'
 import { useCommonStore } from "~/stores/app"
 
 const store=useCommonStore();
+const valiBtn = ref('获取验证码');
+const disabled = ref(false)
+const isInputInvalid = ref(false);
+const inputErrorMessage = ref('');
 const register = ref({
-  password: '',
-  confirmPassword: '',
-  account: '',
+  password: '123456',
+  confirmPassword: '123456',
+  account: '202203000222',
   email: '',
   mailVerificationCode: ''
 })
@@ -96,7 +102,7 @@ async function resetPassWord(){
       'mailVerificationCode' : register.value.mailVerificationCode
     }
   })
-  if(res2.data.code!=200){
+  if(res.data.code!=200){
     ElMessage({
            message: '验证码错误',
            type: 'error',
@@ -106,31 +112,67 @@ async function resetPassWord(){
     ElMessageBox.alert('密码重置成功！',{
       confirmButtonText: 'OK'
     })
-    showLogin = true
+    tologin()
   }
 } 
          
+function validateInput() {
+  const regEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 正确的邮箱验证正则表达式
+  if (regEmail.test(register.value.email)) {
+    inputErrorMessage.value = '';
+    isInputInvalid.value = false;
+  } else {
+    console.log("邮箱错了");
+    inputErrorMessage.value = '请输入正确的邮箱！';
+    isInputInvalid.value = true;
+  }
+}
+
+function validatePassword(){
+  const regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/;
+}
 
 async function getCode(){
-  const res = await request.post('/auth/sendEmail',{
-    data:{
-      'email': register.value.email,
-      'subject': "注册账号"
+  validateInput()
+  disabled: false
+  if(!isInputInvalid.value){
+    console.log("aaaaaaaaaaaa")
+    const res = await request.post('/auth/sendEmail',{
+      data:{
+        'email': register.value.email,
+        'subject': "忘记密码"
+      }
+    })
+    if(res.data.code==200){
+      ElMessage({
+        message: '验证码发送成功',
+        type: 'success',
+        offset: 150
+      })
+      tackBtn()
+    }else{
+      ElMessage({
+        message: '验证码发送失败',
+        type: 'error',
+        offset: 150
+      })
     }
-  })
-  if(res.data.code==200){
-    ElMessage({
-      message: '验证码发送成功',
-      type: 'success',
-      offset: 150
-    })
-  }else{
-    ElMessage({
-      message: '验证码发送失败',
-      type: 'error',
-      offset: 150
-    })
-  }
+  } 
+}
+
+function tackBtn(){       //验证码倒数60秒
+  let time = 60;
+  let timer = setInterval(() => {
+      if(time == 0){
+          clearInterval(timer);
+          valiBtn.value = '获取验证码';
+          disabled.value = false;
+      }else{
+          disabled.value= true;
+          valiBtn.value = time + '秒后重试';
+          time--;
+      }
+  }, 1000);
 }
 
 const toLogin = () =>{
@@ -214,13 +256,13 @@ const toLogin = () =>{
         .input{
           width: 350px;
           height: 42px;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
         }
         .verify{
           display: flex;
           justify-content: space-between;
           width: 350px;
-          margin-bottom: 20px;
+          margin-bottom: 0px;
           .email{
             width: 250px;
             height: 42px;
@@ -229,6 +271,15 @@ const toLogin = () =>{
             width: 150px;
             height: 42px;
           }
+        }
+        .error-message {
+            margin-top: 0px;
+            color: red;
+            font-size: 12px;
+
+          }
+        .is-invalid .el-input__inner {
+          border-color: red;
         }
         .verifyInput{
             width: 350px;

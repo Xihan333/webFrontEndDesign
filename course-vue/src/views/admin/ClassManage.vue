@@ -2,6 +2,9 @@
 <template>
     <div class="class-manage">
         <div>
+          <el-button class="seeBtn" color="#6FB6C1" @click="seeStudent">查看未分配班级同学</el-button>
+        </div>
+        <div>
         <el-button size="default" @click="handleAdd()" color="#6FB6C1">新 增</el-button>
         <br/>
         <div class="options">
@@ -82,14 +85,14 @@
     >
       <div class="dialogContent">
         <div class="clazzName">
-          <p>班级名称</p>
+          <p>班级名称: </p>
           <el-input
            class="input"
            v-model="clazzName"
            />
         </div>
         <div class="campus">
-          <p>学院</p>
+          <p>学院: </p>
           <el-select v-model="campusId" value-key="id"
             placeholder="请选择学院" clearable @change="changeSelect">
           >
@@ -102,7 +105,7 @@
           </el-select>
         </div>
         <div class="grade">
-          <p>年级</p>
+          <p>年级: </p>
           <el-select v-model="gradeId" value-key="id"
             placeholder="请选择年级" clearable @change="changeSelect">
           >
@@ -294,6 +297,12 @@ const changeSelect = computed(() => {
 })
 
 // const tableData = computed(() => filiterTableData.value)
+
+// 切换页面
+const seeStudent = () =>{
+    router.push('without-class')
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -302,6 +311,7 @@ el-table{
 }
 
 .query{
+  margin-top: 10px;
   display: inline-block;
   vertical-align:middle;
   float: right;
@@ -351,4 +361,9 @@ el-table{
   }
 }
 
+.seeBtn{
+  width: 150px;
+  color: white;
+  margin-bottom: 10px;
+}
 </style>

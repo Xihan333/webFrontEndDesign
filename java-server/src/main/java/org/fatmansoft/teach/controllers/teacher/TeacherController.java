@@ -288,7 +288,6 @@ public class TeacherController {
         info.put("introduce", teacherIntroduceService.getIntroduceDataMap(u.getUserId()));
         Map data = new HashMap();
         data.put("info",info);
-        data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
         data.put("scientificPayoffsList",scientificPayoffsService.getScientificPayoffsMapList(s.getPerson().getNum()));
         List<TeacherCourse> tcList = teacherCourseRepository.findCourseListByTeacherId(teacherId);  //数据库查询操作
         data.put("coursesList",teacherCourseService.TeacherCourseList(tcList));

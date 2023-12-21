@@ -111,7 +111,10 @@ public class StudentService {
             if(s.getClazz().getGrade()!=null){
                 m.put("gradeName",s.getClazz().getGrade().getGradeName());
             }
-            m.put("campusName",s.getClazz().getCampus().getName());
+
+            if(s.getClazz().getCampus()!=null){
+                m.put("campusName",s.getClazz().getCampus().getName());
+            }
             m.put("className", s.getClazz().getClazzName());
         }
         p = s.getPerson();
@@ -399,35 +402,36 @@ public class StudentService {
         p.setPhone(CommonMethod.getString(form,"phone"));
         p.setAddress(CommonMethod.getString(form,"address"));
         personRepository.save(p);  // 修改保存人员信息
-        String campusName = CommonMethod.getString(form,"campusName");
-        String gradeName=CommonMethod.getString(form,"gradeName");
-        String className=CommonMethod.getString(form,"className");
-        Optional<Clazz> opC=clazzRepository.findByGradeNameAndClassNameAndCampusName(gradeName,className,campusName);
-        Clazz c;
-        if(opC.isPresent()){
-            c=opC.get();
-        }
-        else {
-            Optional<Grade> opG=gradeRepository.findByGradeName(gradeName);
-            Grade g;
-            if(opG.isPresent()){
-                g=opG.get();
-            }
-            else {
-                Integer gradeId=gradeService.getNewGradeId();
-                g=new Grade();
-                g.setGradeId(gradeId);
-                g.setGradeName(gradeName);
-                gradeRepository.saveAndFlush(g);
-            }
-            Integer classId=clazzService.getNewClazzId();
-            c=new Clazz();
-            c.setClazzId(classId);
-            c.setGrade(g);
-            c.setClazzName(className);
-            clazzRepository.saveAndFlush(c);
-        }
-        s.setClazz(c);
+        s.setClazz(null);
+//        String campusName = CommonMethod.getString(form,"campusName");
+//        String gradeName=CommonMethod.getString(form,"gradeName");
+//        String className=CommonMethod.getString(form,"className");
+//        Optional<Clazz> opC=clazzRepository.findByGradeNameAndClassNameAndCampusName(gradeName,className,campusName);
+//        Clazz c;
+//        if(opC.isPresent()){
+//            c=opC.get();
+//        }
+//        else {
+//            Optional<Grade> opG=gradeRepository.findByGradeName(gradeName);
+//            Grade g;
+//            if(opG.isPresent()){
+//                g=opG.get();
+//            }
+//            else {
+//                Integer gradeId=gradeService.getNewGradeId();
+//                g=new Grade();
+//                g.setGradeId(gradeId);
+//                g.setGradeName(gradeName);
+//                gradeRepository.saveAndFlush(g);
+//            }
+//            Integer classId=clazzService.getNewClazzId();
+//            c=new Clazz();
+//            c.setClazzId(classId);
+//            c.setGrade(g);
+//            c.setClazzName(className);
+//            clazzRepository.saveAndFlush(c);
+//        }
+//        s.setClazz(c);
         studentRepository.save(s);  //修改保存学生信息
         return CommonMethod.getReturnData(s.getStudentId());  // 将studentId返回前端
     }

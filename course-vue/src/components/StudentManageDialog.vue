@@ -80,7 +80,7 @@
 
 <script setup>
 import {defineProps, defineEmits, ref, watchEffect} from 'vue'
-import {ElMessageBox} from 'element-plus'
+import {ElMessageBox,ElMessage} from 'element-plus'
 import request from '../request/axios_config.js'
 
 const radio2 = ref('1')
@@ -130,7 +130,7 @@ const submit = async () => {
         console.log(props.rowData.studentId)
         res.value = await request.post('/student/studentEditSave',{
             data:{
-                studentId:props.rowData,studentId,
+                studentId:props.rowData.studentId,
                 form:{
                     name:rowData.value.name,
                     num:rowData.value.num,

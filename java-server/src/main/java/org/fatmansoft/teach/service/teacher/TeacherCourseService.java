@@ -179,139 +179,6 @@ public class TeacherCourseService {
         return CommonMethod.getReturnData(dataList);  //按照测试框架规范会送Map的list
     }
 
-
-    public DataResponse addCourse(DataRequest dataRequest){
-        Map map = dataRequest.getMap("form");
-        String courseNum = CommonMethod.getString(map,"courseNum"); //课序号
-
-        Course course = new Course();
-        Integer courseId = courseService.getNewCourseId();
-        course.setCourseId(courseId);
-        course.setNum(courseNum);
-
-        Grade grade;
-        Optional<Grade> opGrade;
-        Integer gradeId = CommonMethod.getInteger(map,"gradeId");
-        opGrade = gradeRepository.findByGradeId(gradeId);
-        if(opGrade.isEmpty()){
-            return CommonMethod.getReturnMessageError("年级不存在！");
-        }else{
-            grade = opGrade.get();
-        }
-        course.setGrade(grade);
-
-        Campus campus;
-        Optional<Campus> opCampus;
-        Integer campusId = CommonMethod.getInteger(map,"campusId");
-        opCampus = campusRepository.findByCampusId(campusId);
-        if(opCampus.isPresent()){
-            campus = opCampus.get();
-        }else{
-            return CommonMethod.getReturnMessageError("学院不存在！");
-        }
-        course.setCampus(campus);
-
-        Teacher teacher;
-        String teacherNum = CommonMethod.getString(map,"teacherNum");
-        Optional<Teacher> opTeacher = teacherRepository.findByPersonNum(teacherNum);
-        if(opTeacher.isEmpty()){
-            return CommonMethod.getReturnMessageError("教师不存在！请检查工号是否正确！");
-        }else{
-            teacher = opTeacher.get();
-        }
-
-        TeacherCourse teacherCourse = new TeacherCourse();
-        teacherCourse.setId(teacherCourseService.getNewTeacherCourseId());
-        teacherCourse.setCourse(course);
-        teacherCourse.setTeacher(teacher);
-        teacherCourse.setDay(CommonMethod.getInteger(map,"day"));
-        teacherCourse.setTimeOrder(CommonMethod.getInteger(map,"timeOrder"));
-        teacherCourse.setPlace(CommonMethod.getString(map,"place"));
-        teacherCourse.setSelectedCount(CommonMethod.getInteger(map,"selectedCount"));
-        teacherCourse.setCourseCapacity(CommonMethod.getInteger(map,"courseCapacity"));
-        teacherCourseRepository.saveAndFlush(teacherCourse);
-
-        course.setNum(CommonMethod.getString(map,"courseNum"));
-        course.setName(CommonMethod.getString(map,"courseName"));
-        course.setHour(CommonMethod.getInteger(map,"hour"));
-        course.setCredit(CommonMethod.getInteger(map,"credit"));
-        course.setType(CommonMethod.getInteger(map,"courseType"));
-        course.setIntroduction(CommonMethod.getString(map,"introduction"));
-        courseRepository.save(course);
-
-        return CommonMethod.getReturnData(teacherCourseService.getMapFromTeacherCourse(teacherCourse));
-
-    }
-
-    public DataResponse editCourse(DataRequest dataRequest) {
-        Map map = dataRequest.getMap("form");
-        String courseNum = CommonMethod.getString(map,"courseNum"); //课序号
-
-        Course course = new Course();
-        Integer courseId = courseService.getNewCourseId();
-        course.setCourseId(courseId);
-        course.setNum(courseNum);
-
-        Grade grade;
-        Optional<Grade> opGrade;
-        Integer gradeId = CommonMethod.getInteger(map,"gradeId");
-        opGrade = gradeRepository.findByGradeId(gradeId);
-        if(opGrade.isEmpty()){
-            return CommonMethod.getReturnMessageError("年级不存在！");
-        }else{
-            grade = opGrade.get();
-        }
-        course.setGrade(grade);
-
-        Campus campus;
-        Optional<Campus> opCampus;
-        Integer campusId = CommonMethod.getInteger(map,"campusId");
-        opCampus = campusRepository.findByCampusId(campusId);
-        if(opCampus.isPresent()){
-            campus = opCampus.get();
-        }else{
-            return CommonMethod.getReturnMessageError("学院不存在！");
-        }
-        course.setCampus(campus);
-
-        Teacher teacher;
-        String teacherNum = CommonMethod.getString(map,"teacherNum");
-        Optional<Teacher> opTeacher = teacherRepository.findByPersonNum(teacherNum);
-        if(opTeacher.isEmpty()){
-            return CommonMethod.getReturnMessageError("教师不存在！请检查名字是否正确！");
-        }else{
-            teacher = opTeacher.get();
-        }
-        Integer teacherId = teacher.getTeacherId();
-        TeacherCourse teacherCourse = null;
-        Optional<TeacherCourse> opTeacherCourse = teacherCourseRepository.findByTeacherIdAndCourseId(teacherId, courseId);
-        if(opTeacherCourse.isPresent()){
-            teacherCourse = opTeacherCourse.get();
-        }else{
-            teacherCourse = new TeacherCourse();
-            teacherCourse.setId(teacherCourseService.getNewTeacherCourseId());
-            teacherCourse.setCourse(course);
-            teacherCourse.setTeacher(teacher);
-        }
-        teacherCourse.setDay(CommonMethod.getInteger(map,"day"));
-        teacherCourse.setTimeOrder(CommonMethod.getInteger(map,"timeOrder"));
-        teacherCourse.setPlace(CommonMethod.getString(map,"place"));
-        teacherCourse.setSelectedCount(CommonMethod.getInteger(map,"selectedCount"));
-        teacherCourse.setCourseCapacity(CommonMethod.getInteger(map,"courseCapacity"));
-        teacherCourseRepository.saveAndFlush(teacherCourse);
-
-        course.setNum(CommonMethod.getString(map,"courseNum"));
-        course.setName(CommonMethod.getString(map,"courseName"));
-        course.setHour(CommonMethod.getInteger(map,"hour"));
-        course.setCredit(CommonMethod.getInteger(map,"credit"));
-        course.setType(CommonMethod.getInteger(map,"courseType"));
-        course.setIntroduction(CommonMethod.getString(map,"introduction"));
-        courseRepository.save(course);
-
-        return CommonMethod.getReturnData(teacherCourseService.getMapFromTeacherCourse(teacherCourse));
-    }
-
-
     public DataResponse getCoursesByType(DataRequest dataRequest) {
         Integer courseType = dataRequest.getInteger("courseType");
         List dataList = new ArrayList();
@@ -508,5 +375,93 @@ public class TeacherCourseService {
             dataList.add(getMapFromTeacherCourse(cList.get(i)));
         }
         return CommonMethod.getReturnData(dataList);
+    }
+
+    //增加TeacherCourse
+    public DataResponse addTeacherCourse(DataRequest dataRequest){
+        Map map = dataRequest.getMap("form");
+        String courseNum = CommonMethod.getString(map,"courseNum"); //课序号
+        Optional<Course> courseOptional = courseRepository.findByNum(courseNum);
+        Course course = null;
+        if(courseOptional.isPresent()){
+            course = courseOptional.get();
+        }else{
+            return CommonMethod.getReturnMessageError("无该学科！");
+        }
+
+        Teacher teacher;
+        String teacherNum = CommonMethod.getString(map,"teacherNum");
+        Optional<Teacher> opTeacher = teacherRepository.findByPersonNum(teacherNum);
+        if(opTeacher.isEmpty()){
+            return CommonMethod.getReturnMessageError("教师不存在！请检查工号是否正确！");
+        }else{
+            teacher = opTeacher.get();
+        }
+
+        TeacherCourse teacherCourse = new TeacherCourse();
+        teacherCourse.setId(teacherCourseService.getNewTeacherCourseId());
+        teacherCourse.setCourse(course);
+        teacherCourse.setTeacher(teacher);
+        teacherCourse.setDay(CommonMethod.getInteger(map,"day"));
+        teacherCourse.setTimeOrder(CommonMethod.getInteger(map,"timeOrder"));
+        teacherCourse.setPlace(CommonMethod.getString(map,"place"));
+        teacherCourse.setCourseCapacity(CommonMethod.getInteger(map,"courseCapacity"));
+        teacherCourseRepository.saveAndFlush(teacherCourse);
+
+        return CommonMethod.getReturnData(teacherCourseService.getMapFromTeacherCourse(teacherCourse));
+
+    }
+
+    //编辑TeacherCourse
+    public DataResponse editTeacherCourse(DataRequest dataRequest) {
+        Map map = dataRequest.getMap("form");
+        Integer teacherCourseId = CommonMethod.getInteger(map,"teacherCourseId");
+
+        Teacher teacher;
+        String teacherNum = CommonMethod.getString(map,"teacherNum");
+        Optional<Teacher> opTeacher = teacherRepository.findByPersonNum(teacherNum);
+        if(opTeacher.isEmpty()){
+            return CommonMethod.getReturnMessageError("教师不存在！请检查名字是否正确！");
+        }else{
+            teacher = opTeacher.get();
+        }
+        Integer teacherId = teacher.getTeacherId();
+
+        TeacherCourse teacherCourse = null;
+        Optional<TeacherCourse> opTeacherCourse = teacherCourseRepository.findByTeacherCourseId(teacherCourseId);
+        if(opTeacherCourse.isPresent()){
+            teacherCourse = opTeacherCourse.get();
+        }else{
+            return CommonMethod.getReturnMessageError("无该课程！");
+        }
+        teacherCourse.setDay(CommonMethod.getInteger(map,"day"));
+        teacherCourse.setTimeOrder(CommonMethod.getInteger(map,"timeOrder"));
+        teacherCourse.setPlace(CommonMethod.getString(map,"place"));
+        teacherCourse.setCourseCapacity(CommonMethod.getInteger(map,"courseCapacity"));
+        teacherCourseRepository.saveAndFlush(teacherCourse);
+
+        return CommonMethod.getReturnData(teacherCourseService.getMapFromTeacherCourse(teacherCourse));
+    }
+
+    //删除TeacherCourse
+    public DataResponse deleteTeacherCourse(DataRequest dataRequest) {
+        Map map = dataRequest.getMap("form");
+        Integer teacherCourseId = CommonMethod.getInteger(map,"teacherCourseId");
+        TeacherCourse teacherCourse = null;
+        Optional<TeacherCourse> opTeacherCourse = teacherCourseRepository.findById(teacherCourseId);
+        if(opTeacherCourse.isPresent()){
+            teacherCourse = opTeacherCourse.get();
+        }else{
+            return CommonMethod.getReturnMessageError("无该课程！");
+        }
+
+        Optional<List<Score>> optionalScores = Optional.ofNullable(scoreRepository.findScoreListByTeacherCourseId(teacherCourseId));
+        if(optionalScores.isPresent() && !optionalScores.get().isEmpty()){
+            List<Score> list = optionalScores.get();
+            scoreRepository.deleteAll(list);
+        }
+
+        teacherCourseRepository.delete(teacherCourse);
+        return CommonMethod.getReturnMessageOK();
     }
 }

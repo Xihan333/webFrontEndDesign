@@ -55,9 +55,23 @@ function markFormat(row){
 }
 
 //查看排名
-function checkRank(row){
-    row.showRank=true;
-    row.rank=10;
+async function checkRank(row){
+    const res = await request.post('/score/getRank',{
+        data:{
+            teacherCourseId:row.teacherCourseId
+        }
+    })
+    if(res.data.code==200){
+        row.showRank=true;
+        row.rank=res.data.data;
+    }
+    else{
+        ElMessage({
+            message: res.data.msg,
+            type: 'error',
+            offset: 150
+        })
+    }
 }
 </script>
 
