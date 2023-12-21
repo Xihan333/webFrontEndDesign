@@ -115,6 +115,8 @@ public class ClazzService {
         }else{
             return CommonMethod.getReturnMessageError("年级不存在！");
         }
+        a.setGrade(grade);
+        a.setClazzName(clazzName);
         Optional<Campus> oc = campusRepository.findByCampusId(campusId);
         Campus campus;
         if(oc.isPresent()){
@@ -122,6 +124,7 @@ public class ClazzService {
         }else{
             return CommonMethod.getReturnMessageError("学院不存在！");
         }
+        a.setCampus(campus);
         clazzRepository.saveAndFlush(a);//插入新的Clazz记录
         return CommonMethod.getReturnData(a.getClazzId(),"修改或新增成功");  // 将ClazzId返回前端
     }
@@ -167,6 +170,27 @@ public class ClazzService {
         Student s = sOp.get();
         s.setClazz(null);
         studentRepository.save(s);
+        return CommonMethod.getReturnMessageOK();
+    }
+
+    public DataResponse setClass(DataRequest dataRequest) {
+        Integer clazzId = dataRequest.getInteger("clazzId");  //获取clazz_id值
+        Clazz a = null;
+        Optional<Clazz> op;
+        if(clazzId != null) {
+            op= clazzRepository.findByClazzId(clazzId);  //查询对应数据库中主键为id的值的实体对象
+            if(op.isPresent()) {
+                a = op.get();
+            }else{
+                return CommonMethod.getReturnMessageError("班级不存在！");
+            }
+        }
+        Integer studentId = dataRequest.getInteger("studentId");
+        Optional<Student> sOp= studentRepository.findByStudentId(studentId);
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student s = sOp.get();
+        s.setClazz(a);
         return CommonMethod.getReturnMessageOK();
     }
 }

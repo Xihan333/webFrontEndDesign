@@ -1,149 +1,201 @@
 <template>
-  <div class="base_form">
-    <div class="base_header">
-      <div class="blue_column"></div>
-      <div class="base_title">教师信息</div>
-    </div>
-    <div class="form-div" style="margin-top: 5px">
-      <table class="content">
-        <tr>
-          <td colspan="1" style="text-align: right">工号</td>
-          <td colspan="1">
-            <el-input v-model="form.num" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">姓名</td>
-          <td colspan="1">
-            <el-input v-model="form.name" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">学院</td>
-          <td colspan="1">
-            <el-input v-model="form.dept" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">职称</td>
-          <td colspan="1">
-            <el-input v-model="form.title" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">学位</td>
-          <td colspan="1">
-            <el-input v-model="form.degree" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">证件号码</td>
-          <td colspan="1">
-            <el-input v-model="form.card" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">性别</td>
-          <td colspan="1">
-            <el-select
-              v-model="form.gender"
-              placeholder="请选择性别"
-              style="width: 97%"
-            >
-              <el-option
-                v-for="item in genderList"
-                :key="item.value"
-                :label="item.title"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">出生日期</td>
-          <td colspan="1">
-            <el-date-picker
-              v-model="form.birthday"
-              type="date"
-              style="width: 97%"
-              value-format="yyyy-MM-dd"
-              placeholder="选择出生日期"
+  <div class="edit-profile">
+    <h1>个人信息修改</h1>
+     <el-form :model="form">
+        <el-form-item label="姓名">
+            <el-input v-model="rowData.name"
+            disabled
             />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">邮箱</td>
-          <td colspan="1">
-            <el-input v-model="form.email" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">电话</td>
-          <td colspan="1">
-            <el-input v-model="form.phone" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="1" style="text-align: right">地址</td>
-          <td colspan="1">
-            <el-input v-model="form.address" style="width: 97%" />
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <button class="commButton" @click="submit">提交</button>
-          </td>
-        </tr>
-      </table>
-    </div>
+        </el-form-item>
+        <el-form-item label="学号">
+            <el-input v-model="rowData.num"
+            disabled
+            />
+        </el-form-item>
+        <el-form-item label="性  别">
+          <el-radio-group v-model="rowData.gender">
+            <el-radio label="1" border>男</el-radio>
+            <el-radio label="2" border>女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="出生日期">                
+            <el-date-picker
+              v-model="rowData.birthday"
+              type="date"
+              :disabled-date="disabledDate"
+              palceholder="请选择时间"
+              :size="size"
+              format="YYYY/MM/DD"
+              value-format="YYYY/MM/DD"
+              />
+        </el-form-item>
+        <el-form-item label="身份证号">
+            <el-input v-model="rowData.card"
+            maxlength="18"
+            placeholder="请输入身份证号"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item label="电话号码">
+            <el-input v-model="rowData.phone"
+            maxlength="11"
+            placeholder="请输入电话号码"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item label="电子邮箱">
+            <el-input v-model="rowData.email"
+            maxlength="30"
+            placeholder="请输入电子邮箱"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item label="学位">
+            <el-input v-model="rowData.degree"
+            maxlength="30"
+            placeholder="请输入学位"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item label="职称">
+            <el-input v-model="rowData.title"
+            maxlength="20"
+            placeholder="请输入职称"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item  label="研究方向">
+            <el-input class="in" v-model="rowData.direction"
+            placeholder="请输入个研究方向"
+            show-word-limit
+            type = "textarea"
+            maxlength="150"
+            :autosize="{ minRows: 2}"
+            />
+        </el-form-item>    
+        <el-form-item label="个人介绍">
+            <el-input class="in" v-model="rowData.introduce"
+            placeholder="请输入个人介绍"
+            show-word-limit
+            type = "textarea"
+            maxlength="200"
+            :autosize="{ minRows: 2}"
+            />
+        </el-form-item>   
+      </el-form>
+    <div class="form-group">
+        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="submit">提交</el-button>
+      </div>
   </div>
 </template>
-<script lang="ts">
-import { getTeacherInfo, teacherEditSave } from "~/services/personServ";
-import { defineComponent } from "vue";
-import router from "~/router";
-import { type OptionItem, type TeacherItem } from "~/models/general";
 
-export default defineComponent({
-  // 双向绑定数据
-  data: () => ({
-    teacherId: 0 as number,
-    form: {} as TeacherItem,
-    gender: {} as OptionItem,
-    genderList: [
-      {
-        value: "1",
-        title: "男",
-      },
-      {
-        value: "2",
-        title: "女",
-      },
-    ] as OptionItem[],
-  }),
-  // 页面加载函数
-  async created() {
-    // 获取路由参数
-    const res = this.$route.query.teacherId;
-    if (res != null) {
-      this.teacherId = parseInt(res.toString());
-    }
-    // 获取教师信息
-    if (this.teacherId != null) {
-      this.form = await getTeacherInfo(this.teacherId);
-    }
-  },
-  methods: {
-    // 提交表单
-    async submit() {
-      const res = await teacherEditSave(this.teacherId, this.form);
-      if (res.code == 0) {
-        router.push("teacher-panel");
-      } else {
-        alert(res.msg);
+<script setup>
+import { defineEmits, ref, watchEffect, onMounted } from 'vue'
+import {ElMessageBox,ElMessage} from 'element-plus'
+import request from '../../request/axios_config.js'
+
+onMounted(() => {
+  // 发起请求获取当前表格数据
+  updateData()
+})
+const updateData = async () => {
+  const res = await request.get('/teacher/getMyInfo')
+  rowData.value = res.data.data
+}
+
+const radio2 = ref('1')
+const rowData= ref({
+    studentId:'',
+    name: '',
+    num: '',
+    gender:'',
+    genderName: '',
+    dept: '',
+    birthday: '',
+    card: '',
+    email: '',
+    phone: '',
+    introduce: '',
+    degree: '',
+    title: '',
+    direction:''
+})
+
+
+  
+async function submit(){
+  const res = await request.post('/teacher/teacherEdit',{
+    data:{
+      form:{
+          gender:rowData.value.gender,
+          birthday:rowData.value.birthday,
+          card:rowData.value.card,
+          phone:rowData.value.phone,
+          email:rowData.value.email,
+          introduce:rowData.value.introduce,
+          title:rowData.value.title,
+          degree:rowData.value.degree,
+          direction:rowData.value.direction
       }
-    },
-  },
-});
+    }
+  })
+  if(res.data.code!=200){
+    ElMessage({
+           message: res.data.msg,
+           type: 'error',
+           offset: 150
+         })
+  } else {
+    ElMessageBox.alert('修改成功！',{
+      confirmButtonText: 'OK'
+    })
+    updateData()
+  }
+} 
+
 </script>
+
+<style>
+.edit-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 700px; /* Adjust this height based on your layout */
+}
+
+h1 {
+  font-size: xx-large;
+  margin-bottom: 10px;
+}
+
+.el-form {
+  margin-top: 15px;
+  width: 70%; /* Adjust the width as needed */
+  margin-left: auto; /* 将左侧外边距设置为自动，使表单向右对齐 */
+
+  .el-radio-group{
+    font-size: 16px;
+  }
+}
+
+
+
+.el-form-item {
+  margin-bottom: 15px; /* Increase space between form items */
+  
+}
+
+.in{
+  width:50%;
+  font-size: 16px;
+}
+
+.el-form-item .el-input {
+  width: 50%; /* Adjust the width of the input fields */
+  height:40px;
+  font-size: 16px;
+}
+</style>

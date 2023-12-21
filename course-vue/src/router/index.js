@@ -156,6 +156,14 @@ const routes = [
         path: ('peer-audit'),
         component: () => import('../views/admin/PeerAudit.vue') 
       },
+      { 
+        path: ('classmate'),
+        component: () => import('../views/admin/Classmate.vue') 
+      },
+      { 
+        path: ('without-class'),
+        component: () => import('../views/admin/WithoutClass.vue') 
+      },
     ]
   },
   { 

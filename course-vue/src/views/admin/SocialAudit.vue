@@ -22,21 +22,21 @@
         :data="paginatedTableData" 
         style="width: 100%">
           <!-- 实践主题 -->
-          <el-table-column prop="theme" label="实践主题" width="180" />   
+          <el-table-column prop="theme" label="实践主题" width="auto" />   
           <!-- 团队名称 -->
-          <el-table-column prop="groupName" label="团队名称" width="150" />   
+          <el-table-column prop="groupName" label="团队名称" width="auto" />   
           <!-- 时间 -->
-          <el-table-column sortable prop="day" label="时间" width="120" />   
+          <el-table-column sortable prop="day" label="时间" width="auto" />   
           <!-- 地点 -->
-          <el-table-column prop="location" label="实践地点" width="150" />   
-          <el-table-column prop="digest" label="摘要" width="180"/>
+          <el-table-column prop="location" label="实践地点" width="auto" />   
+          <el-table-column prop="digest" label="摘要" width="auto"/>
           <!-- 实践成果 -->
-          <el-table-column prop="harvest" label="实践成果" width="180" />   
+          <el-table-column prop="harvest" label="实践成果" width="auto" />   
           <!-- 审核状态，做了筛选 -->
           <el-table-column
             prop="statusName"
             label="审核状态"
-            width="100"
+            width="auto"
             :filters="[
               { text: '已通过', value: '已通过' },
               { text: '待审核', value: '待审核' },

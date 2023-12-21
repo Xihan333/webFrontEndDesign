@@ -106,7 +106,7 @@ public class ScoreService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student student= sOp.get();
@@ -124,7 +124,7 @@ public class ScoreService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Teacher> sOp= teacherRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Teacher> sOp= teacherRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("教师不存在！");
         Teacher teacher= sOp.get();
@@ -132,5 +132,39 @@ public class ScoreService {
         List<Score> sList = scoreRepository.findScoreListByTeachertId(teacherId);
         List dataList = getScoreMapList(sList);
         return CommonMethod.getReturnData(dataList);
+    }
+
+    public DataResponse getRank(DataRequest dataRequest) {
+        Integer teacherCourseId = dataRequest.getInteger("teacherCourseId");
+        //获取当前用户（学生）的信息
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student student= sOp.get();
+        Integer studentId = student.getStudentId();
+        List<Score> sList = scoreRepository.findScoreListByTeacherCourseId(teacherCourseId);
+        Optional<Score> scoreOptional = scoreRepository.findByStudentIdAndTeacherCourseId(studentId,teacherCourseId);
+        Score score = null;
+        if(scoreOptional == null){
+            return CommonMethod.getReturnMessageError("无成绩!");
+        }else{
+            score = scoreOptional.get();
+        }
+        Integer myScore = score.getCommonMark() + score.getFinalMark();
+        Integer myRank = 1;
+        for (int i = 0; i < sList.size(); i++) {
+            Integer itemScore = sList.get(i).getCommonMark() + sList.get(i).getFinalMark();
+            if(sList.get(i).getStudent() != student){
+                if(itemScore > myScore){
+                    myRank++;
+                }
+            }
+        }
+        return CommonMethod.getReturnData(myRank);
     }
 }

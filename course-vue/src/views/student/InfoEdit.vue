@@ -2,7 +2,17 @@
   <div class="edit-profile">
     <h1>个人信息修改</h1>
      <el-form :model="form">
-        <el-form-item label="性别">
+        <el-form-item label="姓名">
+            <el-input v-model="rowData.name"
+            disabled
+            />
+        </el-form-item>
+        <el-form-item label="学号">
+            <el-input v-model="rowData.num"
+            disabled
+            />
+        </el-form-item>
+        <el-form-item label="性  别">
           <el-radio-group v-model="rowData.gender">
             <el-radio label="1" border>男</el-radio>
             <el-radio label="2" border>女</el-radio>
@@ -40,6 +50,15 @@
             show-word-limit
             />
         </el-form-item>   
+        <el-form-item label="个人介绍">
+            <el-input  class="in" v-model="rowData.introduce"
+            placeholder="请输入个人介绍"
+            show-word-limit
+            type = "textarea"
+            maxlength="200"
+            :autosize="{ minRows: 4}"
+            />
+        </el-form-item>   
       </el-form>
     <div class="form-group">
         <el-button @click="cancel">取消</el-button>
@@ -49,9 +68,18 @@
 </template>
 
 <script setup>
-import {defineProps, defineEmits, ref, watchEffect} from 'vue'
-import {ElMessageBox} from 'element-plus'
+import { defineEmits, ref, watchEffect, onMounted } from 'vue'
+import {ElMessageBox,ElMessage} from 'element-plus'
 import request from '../../request/axios_config.js'
+
+onMounted(() => {
+  // 发起请求获取当前表格数据
+  updateData()
+})
+const updateData = async () => {
+  const res = await request.get('/student/getMyInfo')
+  rowData.value = res.data.data
+}
 
 const radio2 = ref('1')
 const rowData= ref({
@@ -64,8 +92,10 @@ const rowData= ref({
     birthday: '',
     card: '',
     email: '',
-    phone: ''
+    phone: '',
+    introduce: ''
 })
+
 
   
 async function submit(){
@@ -76,13 +106,14 @@ async function submit(){
           birthday:rowData.value.birthday,
           card:rowData.value.card,
           phone:rowData.value.phone,
-          email:rowData.value.email
+          email:rowData.value.email,
+          introduce:rowData.value.introduce
       }
     }
   })
-  if(res2.data.code!=200){
+  if(res.data.code!=200){
     ElMessage({
-           message: '修改错误',
+           message: res.data.msg,
            type: 'error',
            offset: 150
          })
@@ -90,6 +121,7 @@ async function submit(){
     ElMessageBox.alert('修改成功！',{
       confirmButtonText: 'OK'
     })
+    updateData()
   }
 } 
 
@@ -106,8 +138,8 @@ async function submit(){
 }
 
 h1 {
-  font-size: xxx-large;
-  margin-bottom: 50px;
+  font-size: xx-large;
+  margin-bottom: 20px;
 }
 
 .el-form {
@@ -132,4 +164,10 @@ h1 {
   height:40px;
   font-size: 16px;
 }
+
+.in{
+  width:50%;
+  font-size: 16px;
+}
+
 </style>

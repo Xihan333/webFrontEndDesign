@@ -169,6 +169,7 @@ public class StudentService {
             m.put("credit", tc.getCourse().getCredit());
             m.put("commonMark",s.getCommonMark());
             m.put("finalMark",s.getFinalMark());
+            m.put("totalMark",s.getCommonMark()+s.getFinalMark());
             m.put("ranking", s.getRanking());
             list.add(m);
         }
@@ -252,7 +253,7 @@ public class StudentService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
@@ -296,7 +297,7 @@ public class StudentService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s = sOp.get();
@@ -318,6 +319,7 @@ public class StudentService {
         p.setEmail(CommonMethod.getString(form,"email"));
         p.setPhone(CommonMethod.getString(form,"phone"));
         p.setAddress(CommonMethod.getString(form,"address"));
+        p.setIntroduce(CommonMethod.getString(form,"introduce"));
         personRepository.save(p);  // 修改保存人员信息
         studentRepository.save(s);  //修改保存学生信息
         return CommonMethod.getReturnData(s.getStudentId(),"修改成功！");  // 将studentId返回前端
@@ -376,7 +378,7 @@ public class StudentService {
             personId = p.getPersonId();
         }
         if(!num.equals(p.getNum())) {   //如果人员编号变化，修改人员编号和登录账号
-            Optional<User>uOp = userRepository.findByPersonPersonId(personId);
+            Optional<User>uOp = userRepository.findByUserId(personId);
             if(uOp.isPresent()) {
                 u = uOp.get();
                 u.setUserName(num);
@@ -432,7 +434,7 @@ public class StudentService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
@@ -448,5 +450,18 @@ public class StudentService {
             }
         }
         return CommonMethod.getReturnData(dataList);
+    }
+
+    public DataResponse getMyInfo() {
+        Integer userId = CommonMethod.getUserId();
+        Optional<User> uOp = userRepository.findByUserId(userId);  // 查询获得 user对象
+        if(!uOp.isPresent())
+            return CommonMethod.getReturnMessageError("用户不存在！");
+        User u = uOp.get();
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student s= sOp.get();
+        return CommonMethod.getReturnData(getMapFromStudent(s));
     }
 }

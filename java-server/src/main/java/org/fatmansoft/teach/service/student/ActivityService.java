@@ -96,7 +96,7 @@ public class ActivityService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("该用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp = studentRepository.findByPersonPersonId(u.getUserId());
+        Optional<Student> sOp = studentRepository.findByUserId(u.getUserId());
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s = sOp.get();
