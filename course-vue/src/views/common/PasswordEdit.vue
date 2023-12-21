@@ -23,6 +23,7 @@
               placeholder="新密码"
               show-password
             />
+            <div v-if="isInputInvalidPassword" class="error-message-password">{{ inputErrorMessagePassword }}</div>
             <br/>
             <el-input
               class="input"
@@ -53,6 +54,8 @@ import { updatePassword } from "~/services/infoServ";
 import { ElMessage,ElMessageBox } from 'element-plus'
 import { useCommonStore } from "~/stores/app"
 
+const isInputInvalidPassword = ref(false);
+const inputErrorMessagePassword = ref('');
 const store=useCommonStore();
 const register = ref({
   password: '',
@@ -60,32 +63,52 @@ const register = ref({
   oldPassword: '',
 })
 
-async function resetPassWord(){
-  const res = await request.post('/auth/changePassword',{
-    data:{
-      'oldPassword': register.value.oldPassword,
-      'newPassword': register.value.password
-    }
-  })
-  console.log(res.data)
-  if(res.data == undefined){
-    ElMessage({
-      message: '账号或密码错误',
-      type: 'error',
-      offset: 200
-    })
-    store.updateLoading(false);
-  } else if(res.data.code!=200){
-    ElMessage({
-      message: '修改密码错误',
-      type: 'error',
-      offset: 150
-    })
-    store.updateLoading(false);
+function validatePassword(){
+  const regPassword = /^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/;
+  if(regPassword.test(register.value.password)) {
+    inputErrorMessagePassword.value = '';
+    isInputInvalidPassword.value = false;
   } else {
-      ElMessageBox.alert('密码修改成功！',{
-      confirmButtonText: 'OK'
-    })
+    inputErrorMessagePassword.value = '密码必须由字母、数字组成，区分大小写且密码长度为8-18位';
+    isInputInvalidPassword.value = true;
+  }
+}
+
+async function resetPassWord(){
+  validatePassword()
+  if(!isInputInvalidPassword.value){
+    if(register.value.password == register.value.confirmPassword){
+      const res = await request.post('/auth/changePassword',{
+        data:{
+          'oldPassword': register.value.oldPassword,
+          'newPassword': register.value.password
+        }
+      })
+      console.log(res.data)
+      if(res.data == undefined){
+        ElMessage({
+          message: '账号或密码错误',
+          type: 'error',
+          offset: 200
+        })
+        store.updateLoading(false);
+      } else if(res.data.code!=200){
+        ElMessage({
+          message: '修改密码错误',
+          type: 'error',
+          offset: 150
+        })
+        store.updateLoading(false);
+      } else {
+          ElMessageBox.alert('密码修改成功！',{
+          confirmButtonText: 'OK'
+        })
+      }
+    } else {
+      ElMessageBox.alert('两次密码输入不一致！',{
+        confirmButtonText: 'OK'
+      })
+    }
   }
 } 
 
@@ -195,6 +218,15 @@ async function resetPassWord(){
           height: 52px;
           margin-bottom: 20px;
         }
+        .is-invalid .el-input__inner {
+          border-color: red;
+        }
+        .error-message-password {
+            margin-top: 0px;
+            color: red;
+            font-size: 12px;
+
+          }
         .loginBtn{
           margin: auto;
           width: 450px;
