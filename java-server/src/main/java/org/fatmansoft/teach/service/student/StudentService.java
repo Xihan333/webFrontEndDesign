@@ -111,6 +111,7 @@ public class StudentService {
             if(s.getClazz().getGrade()!=null){
                 m.put("gradeName",s.getClazz().getGrade().getGradeName());
             }
+            m.put("campusName",s.getClazz().getCampus().getName());
             m.put("className", s.getClazz().getClazzName());
         }
         p = s.getPerson();
@@ -131,7 +132,6 @@ public class StudentService {
         m.put("phone",p.getPhone());
         m.put("address",p.getAddress());
         m.put("introduce",p.getIntroduce());
-        m.put("campusName",s.getClazz().getCampus().getName());
         return m;
     }
 
