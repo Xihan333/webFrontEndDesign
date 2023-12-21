@@ -180,6 +180,7 @@
     .query{
       float: right;
       border-right: 0px;
+      margin-bottom: 10px;
       .search{
         border-color: #6FB6C1;
         margin-left: auto;
