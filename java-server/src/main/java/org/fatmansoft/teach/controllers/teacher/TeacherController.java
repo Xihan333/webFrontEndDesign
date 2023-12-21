@@ -156,6 +156,12 @@ public class TeacherController {
     }
 
 
+    @PostMapping("/teacherEdit")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public DataResponse teacherEdit(@Valid @RequestBody DataRequest dataRequest) {
+        return teacherService.teacherEdit(dataRequest);
+    }
+
     @PostMapping("/teacherEditSave")
     @PreAuthorize(" hasRole('ADMIN')")
     public DataResponse teacherEditSave(@Valid @RequestBody DataRequest dataRequest) {
@@ -373,5 +379,9 @@ public class TeacherController {
         return baseService.getPdfDataFromHtml(content); //生成教师简历PDF二进制数据
     }
 
+    @GetMapping("/getMyInfo")
+    public DataResponse getMyInfo() {
+        return teacherService.getMyInfo();
+    }
 
 }

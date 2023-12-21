@@ -319,6 +319,7 @@ public class StudentService {
         p.setEmail(CommonMethod.getString(form,"email"));
         p.setPhone(CommonMethod.getString(form,"phone"));
         p.setAddress(CommonMethod.getString(form,"address"));
+        p.setIntroduce(CommonMethod.getString(form,"introduce"));
         personRepository.save(p);  // 修改保存人员信息
         studentRepository.save(s);  //修改保存学生信息
         return CommonMethod.getReturnData(s.getStudentId(),"修改成功！");  // 将studentId返回前端

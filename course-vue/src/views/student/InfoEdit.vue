@@ -40,6 +40,13 @@
             show-word-limit
             />
         </el-form-item>   
+        <el-form-item label="个人介绍">
+            <el-input v-model="rowData.introduce"
+            maxlength="30"
+            placeholder="请输入个人介绍"
+            show-word-limit
+            />
+        </el-form-item>   
       </el-form>
     <div class="form-group">
         <el-button @click="cancel">取消</el-button>
@@ -73,7 +80,8 @@ const rowData= ref({
     birthday: '',
     card: '',
     email: '',
-    phone: ''
+    phone: '',
+    introduce: ''
 })
 
 
@@ -86,7 +94,8 @@ async function submit(){
           birthday:rowData.value.birthday,
           card:rowData.value.card,
           phone:rowData.value.phone,
-          email:rowData.value.email
+          email:rowData.value.email,
+          introduce:rowData.value.introduce
       }
     }
   })
