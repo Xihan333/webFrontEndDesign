@@ -25,17 +25,18 @@
             </div>
         </div>
         <div class="GPA">
-            <!-- <div id="gpachart" ref="gpa" class="gpaChart" ></div> -->
-            <div id="myChart" ref="EChart" style="width: 300px; height: 300px;"></div>
+            <p class="title">学期绩点</p>
+            <div id="myChart" ref="EChart" style="width: 400px; height: 300px;" class="gpaChart"></div>
         </div>
         <div class="score">
-            这里放最高分的科目分数的树状图（拟五门）
+            <p class="title">分数区间</p>
+            <div id="scoreChart" ref="SChart" style="width: 400px; height: 250px;" class="scoreChart"></div>
         </div>
         <div class="achievement">
             <p class="title">成果奖励</p>
             <el-table border
                 :data="AchievementTable" 
-                style="width: 80%" class="achievementTable">
+                style="width: 90%" class="achievementTable">
                 <el-table-column prop="achievementName" label="成就名称" width="auto" align="center" />   
                 <el-table-column prop="type" label="成就类别" width="auto" align="center"/> 
                 <el-table-column prop="level" label="成就级别" width="auto" align="center"/> 
@@ -48,7 +49,7 @@
             <p class="title">社会实践</p>
             <el-table border
                 :data="SocialTable" 
-                style="width: 80%" class="socialTable">
+                style="width: 90%" class="socialTable">
                 <el-table-column prop="theme" label="实践主题" width="auto" />   
                 <el-table-column prop="groupName" label="团队名称" width="auto" />   
                 <el-table-column sortable prop="day" label="时间" width="auto" />   
@@ -70,6 +71,7 @@ const store = useAppStore()
 const userInfo = ref({
     studentId:'',
     name: '',
+    gpa:'',
     num: '',
     gender:'',
     genderName: '',
@@ -87,20 +89,22 @@ const userInfo = ref({
 })
 const AchievementData = ref([])
 const SocialData = ref([])
+const mark = ref([])
 
 onMounted(() =>{
     updateTableData()
-    getRenderer()
 })
 const updateTableData = async () => {
-    const info = await request.get('/student/getMyInfo')
-    const achievement = await request.get('/achievement/getStudentAchievement')
-    const social = await request.get('/social/getStudentSocial')
-    userInfo.value = info.data.data
+    const info = await request.get('/student/getStudentIntroduceData')
+    console.log(info.data.data)
+    userInfo.value = info.data.data.info
     store.nameInfo = info.data.data
     console.log(store.nameInfo)
-    AchievementData.value = achievement.data.data
-    SocialData.value = social.data.data
+    userInfo.value.gpa = info.data.data.gpa
+    AchievementData.value = info.data.data.achievementList
+    SocialData.value = info.data.data.socialList
+    mark.value = info.data.data.markList
+    getRenderer()
 }
 const AchievementTable = computed(() => AchievementData.value.filter(
     item =>
@@ -110,31 +114,66 @@ const SocialTable = computed(() => SocialData.value.filter(
     item =>
         item.auditStatus===1
 ))
+const markList = computed(() => mark.value.filter(
+    item =>
+        item.value!=0
+))
 
 const gpa = ref()
 const getRenderer = async () => {
-    const dom = document.getElementById('myChart');
-      const myChart = echarts.init(dom); // 初始化echarts实例
-      const option = {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line',
-            smooth: true
-          }
-        ]
-      };
-      // 设置实例参数
-      myChart.setOption(option);
-    }
+    console.log(userInfo.value.gpa)
+    const dom1 = document.getElementById('myChart');
+    const dom2 = document.getElementById('scoreChart');
+      const myChart = echarts.init(dom1); // 初始化echarts实例
+      const scoreChart = echarts.init(dom2);
+      const option1 = {
+        series: [{
+            color:["#6FB6C1","#e6e6e6"],
+            type: 'pie',
+            data: [
+                {
+                value: userInfo.value.gpa,
+                name: 'GPA:'+ userInfo.value.gpa
+                },
+                {
+                value: 5-userInfo.value.gpa,
+                name: '满分5'
+                },
+            ],
+            radius: '50%'
+        }]
+    };
+    const option2 = {
+        series: [{
+        color:["#6FB6C1","#e6e6e6"],
+        type: 'pie',
+        data: markList.value,
+        roseType: 'area'
+        }
+    ]};
+    // 设置实例参数
+    myChart.setOption(option1);
+    scoreChart.setOption(option2);
+}
 
+ // 上传图片
+const uploadFile = async () => {
+    const file = document.querySelector("#file");
+    if (file.files == null || file.files.length == 0) {
+        message(this, "请选择文件！");
+        return;
+    }
+    const res = await uploadPhoto(
+        "photo/" + this.info.personId + ".jpg",
+        file.files[0]
+    )
+
+    if (res.code === 0) {
+        message(this, "上传成功");
+    } else {
+        message(this, "上传失败");
+    }
+}
 </script>
 
 <style scoped lang="scss">
@@ -167,7 +206,7 @@ const getRenderer = async () => {
             .time{
                 font-size: 14px;
                 padding-top: 25px;
-                color: rgb(141, 141, 141);   
+                color: #8d8d8d;   
             }
         }
         
@@ -211,6 +250,27 @@ const getRenderer = async () => {
         width: 70%;
         margin-left: 20px;
         padding-bottom: 20px;
+    }
+}
+.GPA{
+    .title{
+        padding-top: 10px;
+        margin-left: 20px;
+        font-weight: bold;
+    }
+    .gpaChart{
+        margin-top: -75px;
+    }
+}
+.score{
+    .title{
+        padding-top: 10px;
+        margin-left: 20px;
+        font-weight: bold;
+    }
+    .scoreChart{
+        margin-top: -60px;
+        margin-left: 20px;
     }
 }
 </style>

@@ -71,6 +71,13 @@ public class StudentService {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private SocialService socialService;
+
+    @Autowired
+    private SocialRepository socialRepository;
+
+
     public synchronized Integer getNewPersonId(){  //synchronized 同步方法
         Integer  id = personRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -208,7 +215,7 @@ public class StudentService {
         }
         for(int i = 0; i < 5;i++) {
             m = new HashMap();
-            m.put("title", title[i]);
+            m.put("name", title[i]+"："+count[i]);
             m.put("value", count[i]);
             list.add(m);
         }
@@ -269,6 +276,7 @@ public class StudentService {
         data.put("info",info);
         data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
         data.put("acticityList",activityService.getActivityMapListByStudentId(s.getStudentId()));
+        data.put("socialList",socialService.getSocialMapList(s.getPerson().getNum()));
         data.put("scoreList",getStudentScoreList(sList));
         data.put("markList",getStudentMarkList(sList));
         Double gpa = getGPA(s);
