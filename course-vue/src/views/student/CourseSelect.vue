@@ -56,14 +56,16 @@
         <el-table-column :formatter="typeFormat" label="课程类型" width="auto" />
         <el-table-column :formatter="timeFormat" label="上课时间" width="auto" />
         <el-table-column prop="place" label="上课地点" width="auto" />  
+        <el-table-column prop="courseCapacity" label="课容量" width="auto" />  
+        <el-table-column prop="selectedCount" label="选课人数" width="auto" />  
         <el-table-column label="操作" width="auto" >
             <template #default="scope">
-                <el-button size="default" @click="select(scope.row)">
+                <el-button v-if="isSelected(scope.row)" size="default" @click="select(scope.row)">
                     选课
                 </el-button>
-                <!-- <el-button size="default" @click="drop(scope.row)">
+                <el-button v-else size="default" type="danger" plain @click="drop(scope.row)">
                     退课
-                </el-button> -->
+                </el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -97,15 +99,29 @@ const type=ref(3);
 let types=['必修','限选','任选','全部']
 let tableData = []
 const filterTableData=ref([]);
+let selectedCourses=ref([]);//获取我已选的课程
+const days=['请选择','星期一','星期二','星期三','星期四','星期五','星期六','星期日']
+
 onMounted(async() => {
-    const res = await request.post('/course/getCoursesByGradeId',{
-        data:{
-            gradeId:1
-        }
-    })
+    updateAllData();
+})
+
+async function updateAllData(){
+    let res = await request.get('/course/getMyCourses')
     if(res.data.code==200){
-        tableData=res.data.data;
-        filterTableData.value=tableData;
+        selectedCourses.value=res.data.data;
+        res = await request.get('/course/getMyAccessCourses')
+        if(res.data.code==200){
+            tableData=res.data.data;
+            filterTableData.value=tableData;
+        }
+        else{
+            ElMessage({
+                message: '加载失败，请重试！',
+                type: 'error',
+                offset: 150
+            })
+        }
     }
     else{
         ElMessage({
@@ -114,7 +130,7 @@ onMounted(async() => {
             offset: 150
         })
     }
-})
+}
 
 function reset(){
     courseNameOrNum.value="";
@@ -137,8 +153,67 @@ function typeFormat(row, column) {
     return types[row.type];
 }
 
-function timeFormat(row, column) {
-    return timeOrders[row.type];
+function timeFormat(row, column){
+  return days[row.day]+timeOrders[row.timeOrder];
+}
+
+function isSelected(row){
+    let x=true;
+    for(let i=0;i<selectedCourses.value.length;i++){
+        if(row.teacherCourseId==selectedCourses.value[i].teacherCourseId){
+            x=false;
+            break;
+        }
+    }
+    return x;
+}
+
+async function select(row){
+    const res = await request.post('/course/selectCourse',{
+        data:{
+            teacherId:row.teacherId,
+            courseId:row.courseId
+        }
+    })
+    if(res.data.code==200){
+        ElMessage({
+            message: '选课成功！',
+            type: 'success',
+            offset: 150
+        })    
+        updateAllData();
+    }
+    else{
+        ElMessage({
+            message: res.data.msg,
+            type: 'error',
+            offset: 150
+        })
+    }
+}
+
+async function drop(row){
+    const res = await request.post('/course/cancelCourse',{
+        data:{
+            teacherId:row.teacherId,
+            courseId:row.courseId
+        }
+    })
+    if(res.data.code==200){
+        ElMessage({
+            message: '退课成功！',
+            type: 'success',
+            offset: 150
+        })   
+        updateAllData(); 
+    }
+    else{
+        ElMessage({
+            message: res.data.msg,
+            type: 'error',
+            offset: 150
+        })
+    }
 }
 
 // 分页相关,不需要修改,直接复制

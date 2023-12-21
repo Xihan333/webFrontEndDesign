@@ -8,18 +8,18 @@ const instance = axios.create({
   timeout: 5000
 })
 
-let userInfo={
-  'accessToken':''
-}
-if(localStorage.getItem('KEY_COMMON')){
-  userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
-}
 const commonStore=useCommonStore();
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   commonStore.updateLoading(true);
   // 在发送请求之前携带token
+  let userInfo={
+    'accessToken':''
+  }
+  if(localStorage.getItem('KEY_COMMON')){
+    userInfo=window.JSON.parse(localStorage.getItem('KEY_COMMON')).userInfo;
+  }
   config.headers.Authorization = 'Bearer ' + userInfo.accessToken;
   return config
 }, function (error) {

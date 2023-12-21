@@ -2,6 +2,16 @@
   <div class="edit-profile">
     <h1>个人信息修改</h1>
      <el-form :model="form">
+        <el-form-item label="姓名">
+            <el-input v-model="rowData.name"
+            disabled
+            />
+        </el-form-item>
+        <el-form-item label="学号">
+            <el-input v-model="rowData.num"
+            disabled
+            />
+        </el-form-item>
         <el-form-item label="性  别">
           <el-radio-group v-model="rowData.gender">
             <el-radio label="1" border>男</el-radio>
@@ -39,12 +49,37 @@
             placeholder="请输入电子邮箱"
             show-word-limit
             />
-        </el-form-item>   
-        <el-form-item label="个人介绍">
-            <el-input v-model="rowData.introduce"
+        </el-form-item>
+        <el-form-item label="学位">
+            <el-input v-model="rowData.degree"
             maxlength="30"
+            placeholder="请输入学位"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item label="职称">
+            <el-input v-model="rowData.title"
+            maxlength="20"
+            placeholder="请输入职称"
+            show-word-limit
+            />
+        </el-form-item>
+        <el-form-item  label="研究方向">
+            <el-input class="in" v-model="rowData.direction"
+            placeholder="请输入个研究方向"
+            show-word-limit
+            type = "textarea"
+            maxlength="150"
+            :autosize="{ minRows: 2}"
+            />
+        </el-form-item>    
+        <el-form-item label="个人介绍">
+            <el-input class="in" v-model="rowData.introduce"
             placeholder="请输入个人介绍"
             show-word-limit
+            type = "textarea"
+            maxlength="200"
+            :autosize="{ minRows: 2}"
             />
         </el-form-item>   
       </el-form>
@@ -81,7 +116,10 @@ const rowData= ref({
     card: '',
     email: '',
     phone: '',
-    introduce: ''
+    introduce: '',
+    degree: '',
+    title: '',
+    direction:''
 })
 
 
@@ -95,13 +133,16 @@ async function submit(){
           card:rowData.value.card,
           phone:rowData.value.phone,
           email:rowData.value.email,
-          introduce:rowData.value.introduce
+          introduce:rowData.value.introduce,
+          title:rowData.value.title,
+          degree:rowData.value.degree,
+          direction:rowData.value.direction
       }
     }
   })
   if(res.data.code!=200){
     ElMessage({
-           message: '修改错误',
+           message: res.data.msg,
            type: 'error',
            offset: 150
          })
@@ -126,12 +167,12 @@ async function submit(){
 }
 
 h1 {
-  font-size: xxx-large;
-  margin-bottom: 50px;
+  font-size: xx-large;
+  margin-bottom: 10px;
 }
 
 .el-form {
-  margin-top: 30px;
+  margin-top: 15px;
   width: 70%; /* Adjust the width as needed */
   margin-left: auto; /* 将左侧外边距设置为自动，使表单向右对齐 */
 
@@ -143,8 +184,13 @@ h1 {
 
 
 .el-form-item {
-  margin-bottom: 30px; /* Increase space between form items */
+  margin-bottom: 15px; /* Increase space between form items */
   
+}
+
+.in{
+  width:50%;
+  font-size: 16px;
 }
 
 .el-form-item .el-input {
