@@ -133,7 +133,7 @@ public class TeacherCourseService {
         return CommonMethod.getReturnData(dataList);
     }
 
-    private List TeacherCourseList(List<TeacherCourse> sList) {
+    public List TeacherCourseList(List<TeacherCourse> sList) {
         List dataList = new ArrayList();
         if (sList == null || sList.size() == 0)
             return dataList;
@@ -359,7 +359,6 @@ public class TeacherCourseService {
 
     public DataResponse selectCourse(DataRequest dataRequest) {
         StaticValue available = staticValueRepository.findById(Const.COURSE_SELECT_AVAILABLE).orElse(null);
-
         if(available.getValue().equals("1")){
             return CommonMethod.getReturnMessageError("选课未开启！");
         }
@@ -411,10 +410,10 @@ public class TeacherCourseService {
     }
 
     public DataResponse cancelCourse(DataRequest dataRequest) {
-        if(Const.COURSE_SELECT_AVAILABLE.equals("1")){
+        StaticValue available = staticValueRepository.findById(Const.COURSE_SELECT_AVAILABLE).orElse(null);
+        if(available.getValue().equals("1")){
             return CommonMethod.getReturnMessageError("选课未开启！");
         }
-
         Integer courseId = dataRequest.getInteger("courseId");
         Integer teacherId = dataRequest.getInteger("teacherId");
         TeacherCourse teacherCourse = null;
