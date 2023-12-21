@@ -25,7 +25,6 @@
             </div>
         </div>
         <div class="GPA">
-            这里放绩点的饼状图
             <!-- <div id="gpachart" ref="gpa" class="gpaChart" ></div> -->
             <div id="myChart" ref="EChart" style="width: 300px; height: 300px;"></div>
         </div>
