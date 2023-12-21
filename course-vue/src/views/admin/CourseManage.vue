@@ -36,7 +36,7 @@
         上课教师
         <el-input
           class="secondInput"
-          v-model="teacherNameSelect"
+          v-model="teacherName"
           placeholder="请输入"
         />
       </div>
@@ -44,7 +44,7 @@
         课程类型
         <el-select class="thirdInput" v-model="typeSelect" placeholder="请选择">
         <el-option
-          v-for="item in types"
+          v-for="item in filterTypes"
           :key="item"
           :label="item.label"
           :value="item.id"
@@ -57,15 +57,11 @@
   </div>
   <!-- 表格 -->
   <el-table border :data="filterTableData">
-    <el-table-column prop="campusName" label="开设单位" width="auto" /> 
-    <el-table-column prop="gradeName" label="开设年级" width="auto" />     
-    <el-table-column prop="courseName" label="课程名称" width="140px" /> 
     <el-table-column prop="courseNum" label="课序号" width="auto" /> 
-    <el-table-column prop="teacherName" label="上课教师" width="auto" />
+    <el-table-column prop="courseName" label="课程名称" width="140px" />
+    <el-table-column :mapatter="typeFormat" label="课程类型" width="auto" /> 
     <el-table-column prop="teacherNum" label="教师工号" width="auto" />
-    <el-table-column prop="hour" label="学时" width="auto" />  
-    <el-table-column prop="credit" label="学分" width="auto" /> 
-    <el-table-column :mapatter="typeFormat" label="课程类型" width="auto" />
+    <el-table-column prop="teacherName" label="上课教师" width="auto" />
     <el-table-column prop="courseCapacity" label="课容量" width="auto" />
     <el-table-column :mapatter="timeFormat" label="上课时间" width="auto" />
     <el-table-column prop="place" label="上课地点" width="auto" />  
@@ -99,33 +95,11 @@
   <!-- 课程编辑弹窗 -->
   <el-dialog
     v-model="dialogVisible"
-    title="课程编辑"
+    :title="dialogTitle"
     width="350px"
     :before-close="handleClose"
   >
-    <div class="dialogContent">
-      <div class="item">
-        <p>开设单位</p>
-        <el-select class="input" v-model="campusId" placeholder="请选择">
-        <el-option
-          v-for="item in campuses"
-          :key="item"
-          :label="item.label"
-          :value="item.id"
-        />
-        </el-select>
-      </div>
-      <div class="item">
-        <p>开设年级</p>
-        <el-select class="input" v-model="gradeId" placeholder="请选择">
-        <el-option
-          v-for="item in grades"
-          :key="item"
-          :label="item.label"
-          :value="item.id"
-        />
-        </el-select>
-      </div>
+    <div class="dialogContent">        
       <div class="item">
         <p>课序号</p>
         <el-input
@@ -139,31 +113,6 @@
           class="input"
           v-model="teacherNum"
         />
-      </div>
-      <div class="item">
-        <p>学时</p>
-        <el-input
-          class="input"
-          v-model="hour"
-        />
-      </div>
-      <div class="item">
-        <p>学分</p>
-        <el-input
-          class="input"
-          v-model="credit"
-        />
-      </div>
-      <div class="item">
-        <p>课程类型</p>
-        <el-select class="input" v-model="type" placeholder="请选择">
-        <el-option
-          v-for="item in types"
-          :key="item"
-          :label="item.label"
-          :value="item.id"
-        />
-        </el-select>
       </div>
       <div class="item">
         <p>课容量</p>
@@ -214,6 +163,21 @@
       </span>
     </template>
   </el-dialog>
+  <!-- 删除对话框 -->
+  <el-dialog
+        v-model="deleteDialogVisible"
+        title="删除提示"
+        width="30%"
+        :before-close="handleClose"
+    >
+        <span>确定要删除该学科吗？</span>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="deleteDialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="deleteConfirm">确定</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
   
 <script setup>
@@ -222,10 +186,11 @@ import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
 import {filterOption} from '../../assets/js/config.js'
 
+// 筛选
 const courseNumOrName=ref("");
 const teacherNameSelect=ref("");
 const typeSelect=ref();
-const types=filterOption.types;
+const filterTypes=filterOption.filterTypes;
 
 let tableData = []
 const filterTableData=ref([]);
@@ -268,8 +233,8 @@ function search(){
   });
 }
 
-function typeFormat(row, column) {
-  return types[row.type];
+function typeFormat(row) {
+  return optionTypes[row.type].label;
 }
 
 function timeFormat(row, column){
@@ -316,34 +281,22 @@ async function selectConfirm(){
 //弹窗相关
 console.log("xiala",filterOption)
 const dialogVisible=ref(false)
-const mode=ref();//弹窗类型
-const campusId=ref();//开设单位
-const campuses=filterOption.allCampuses;
-const gradeId=ref();//开设年级
-const grades=filterOption.allGrades;
+const dialogTitle=ref();//弹窗标题兼类型
 const courseNum=ref();//课序号
 const teacherNum=ref();//教师工号
-const hour=ref();//学时
-const credit=ref();//学分
-const type=ref();//课程类型
+const courseCapacity=ref();//课容量
 const day=ref();//上课星期
 const days=['请选择','星期一','星期二','星期三','星期四','星期五','星期六','星期日']
 const timeOrder=ref();//上课节次
 const timeOrders=['请选择','第一节','第二节','第三节','第四节','第五节']
 const place=ref();//上课地点
-const courseCapacity=ref();//课容量
 const introduction=ref();//课程介绍
 //为新增和编辑初始化弹窗
 function add(){
   dialogVisible.value=true;
-  mode.value='add'
-  campusId.value="";
-  gradeId.value=""
+  dialogTitle.value='课程新增'
   courseNum.value=""
   teacherNum.value=""
-  hour.value=""
-  credit.value=""
-  type.value=""
   day.value=""
   timeOrder.value=""
   place.value=""
@@ -352,35 +305,31 @@ function add(){
 }
 function edit(row){
   dialogVisible.value=true;
-  mode.value='edit'
-  //type day timeorder grade campus 下拉
-  campusId.value=row.campusId;
-  gradeId.value=row.gradeId
+  dialogTitle.value='课程编辑'
   courseNum.value=row.courseNum
   teacherNum.value=row.teacherNum
-  hour.value=row.hour
-  credit.value=row.credit
-  type.value=row.type
   day.value=row.day
   timeOrder.value=row.timeOrder
   place.value=row.place
   courseCapacity.value=row.courseCapacity
   introduction.value=row.introduction
 }
+
+// 封装用于网络请求的数据
+function getForm(){
+    let map=new Map();
+    map.set('courseNum',courseNum.value);
+    map.set('teacherNum',teacherNum.value);
+    map.set('courseCapacity',courseCapacity.value);
+    map.set('day',day.value);
+    map.set('timeOrder',timeOrder.value);
+    map.set('place',place.value);
+    map.set('introduction',introduction.value);
+    return Object.fromEntries(map);
+}
+
 async function addConfirm(){
-  let map=new Map();
-  map.set('campusId',campusId.value);
-  map.set('gradeId',gradeId.value);
-  map.set('courseNum',courseNum.value);
-  map.set('teacherNum',teacherNum.value);
-  map.set('hour',hour.value);
-  map.set('type',type.value);
-  map.set('day',day.value);
-  map.set('timeOrder',timeOrder.value);
-  map.set('place',place.value);
-  map.set('courseCapacity',courseCapacity.value);
-  map.set('introduction',introduction.value);
-  const form=Object.fromEntries(map);
+  let form=getForm();
   const res = await request.post('/course/addCourse',{
       data:{
           form:form
@@ -398,34 +347,45 @@ async function addConfirm(){
   }
 }
 async function editConfirm(){
-  const res = await request.post('/course/getByCourseNumName',{
+  let form=getForm();
+  const res = await request.post('/course/editCourse',{
       data:{
-          numName:''
+          form:form
       }
   })
   if(res.data!=undefined && res.data.code==200){
-      tableData=res.data.data;
-      filterTableData.value=tableData;
+    updateTableData();
+    ElMessage({
+      message: '编辑成功！',
+      type: 'success',
+      offset: 150
+    })
   }
   else{
-      ElMessage({
-          message: '加载失败，请重试！',
-          type: 'error',
-          offset: 150
-      })
+    ElMessage({
+        message: '操作失败，请重试！',
+        type: 'error',
+        offset: 150
+    })
   }
 }
 function confirm(){
   dialogVisible.value = false;
-  if(mode.value=='add'){
+  if(dialogTitle.value=='课程新增'){
     addConfirm();
   }
   else{
     editConfirm();
   }
 }
-function remove(){
-
+// 删除对话框
+const deleteDialogVisible=ref(false)
+function remove(row){
+    deleteDialogVisible.value=true;
+    deleteConfirm(row);
+}
+async function deleteConfirm(){
+    // 在此发送请求
 }
 </script>
   
