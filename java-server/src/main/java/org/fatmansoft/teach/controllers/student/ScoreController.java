@@ -91,7 +91,10 @@ public class ScoreController {
 
 
     //TODO: 排名问题（留一留）
-
+    @PostMapping("/getRank")
+    public DataResponse getRank(@Valid @RequestBody DataRequest dataRequest){
+        return scoreService.getRank(dataRequest);
+    }
 
 
     @PostMapping("/getScoreListByCourseId")

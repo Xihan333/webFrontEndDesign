@@ -65,7 +65,7 @@ public class ScientificPayoffsController {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Teacher> sOp= teacherRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Teacher> sOp= teacherRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("教师不存在！");
         Teacher s= sOp.get();
@@ -127,7 +127,7 @@ public class ScientificPayoffsController {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Teacher> sOp= teacherRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Teacher> sOp= teacherRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("教师不存在！");
         Teacher s= sOp.get();

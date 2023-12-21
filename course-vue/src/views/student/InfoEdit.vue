@@ -41,10 +41,11 @@
             />
         </el-form-item>   
         <el-form-item label="个人介绍">
-            <el-input v-model="rowData.introduce"
+            <el-input class = "introduce" v-model="rowData.introduce"
             maxlength="30"
             placeholder="请输入个人介绍"
             show-word-limit
+            type = text-area
             />
         </el-form-item>   
       </el-form>

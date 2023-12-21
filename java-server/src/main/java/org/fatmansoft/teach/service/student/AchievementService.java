@@ -168,7 +168,7 @@ public class AchievementService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
@@ -222,7 +222,7 @@ public class AchievementService {
         if(!uOp.isPresent())
             return CommonMethod.getReturnMessageError("用户不存在！");
         User u = uOp.get();
-        Optional<Student> sOp= studentRepository.findByPersonPersonId(u.getUserId());  // 查询获得 Student对象
+        Optional<Student> sOp= studentRepository.findByUserId(u.getUserId());  // 查询获得 Student对象
         if(!sOp.isPresent())
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
