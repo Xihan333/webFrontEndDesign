@@ -58,7 +58,7 @@
           <el-option
           v-for="item in clazzData"
             :key="item.clazzId"
-            :label="item.clazzName"
+            :label="item.gradeName+' '+item.clazzName"
             :value="item.clazzId"
           />    
         </el-select>

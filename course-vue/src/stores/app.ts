@@ -30,6 +30,7 @@ export const useAppStore = defineStore('app', () => {
   })
   const classmate = ref({
     clazzId:"",
+    clazzName:""
   })
   return {
     tabPaneList,userInfo,blogInfo,classmate,nameInfo
