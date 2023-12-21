@@ -214,9 +214,9 @@ async function registerUser(){
       'mailVerificationCode' : register.value.mailVerificationCode
     }
   })
-  if(res2.data.code!=200){
+  if(res.data.code!=200){
     ElMessage({
-      message: '验证码错误',
+      message: res.data.msg,
       type: 'error',
       offset: 150
     })

@@ -33,13 +33,10 @@ public class Course {
     @Size(max = 20)
     private String num; //课序号
 
-    @NotBlank
     private Integer hour; //总课时
 
-    @NotBlank
     private Integer credit; //学分
 
-    @NotBlank
     private Integer type; //必修 限选 任选  0 1 2 type
 
     @OneToOne

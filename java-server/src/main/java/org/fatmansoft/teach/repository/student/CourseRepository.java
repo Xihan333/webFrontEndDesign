@@ -17,8 +17,10 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
     @Query(value = "select max(courseId) from Course")
     Integer getMaxId();
 
+    @Query(value = "from Course where courseId=?1")
     Optional<Course> findByCourseId(Integer courseId);
 
+    @Query(value = "from Course where num=?1")
     Optional<Course> findByNum(String courseNum);
 
     @Query(value = "select tc.course from TeacherCourse tc where tc.teacher.teacherId=?1")

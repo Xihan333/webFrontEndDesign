@@ -78,6 +78,12 @@ public class CourseController {
     @Autowired
     private StaticValueRepository staticValueRepository;
 
+    //注意！！这个才是获取学科！
+    @GetMapping("/getAllCourses")
+    public DataResponse getAllCourses() {
+        return courseService.getAllCourses();
+    }
+
     //根据年级GradeId获取课程列表
     @PostMapping("/getCoursesByGradeId")
     public DataResponse getCoursesByGradeId(@Valid @RequestBody DataRequest dataRequest) {
@@ -116,21 +122,21 @@ public class CourseController {
     }
 
 
-    //添加课程
+    //添加学科
     @PostMapping("/addCourse")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse addCourse(@Valid @RequestBody DataRequest dataRequest) {
-        return  teacherCourseService.addCourse(dataRequest);
+        return  courseService.addCourse(dataRequest);
     }
 
-    //编辑课程
+    //编辑学科
     @PostMapping("/editCourse")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse editCourse(@Valid @RequestBody DataRequest dataRequest) {
-        return  teacherCourseService.editCourse(dataRequest);
+        return  courseService.editCourse(dataRequest);
     }
 
-    //删除课程 courseId
+    //删除学科 courseId
     @PostMapping("/deleteCourse")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse deleteCourse(@Valid @RequestBody DataRequest dataRequest) {
