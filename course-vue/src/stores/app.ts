@@ -300,6 +300,14 @@ export const useCommonStore = defineStore('common', () => {
   function setUserInfo(newValue:any){
     userInfo.value=newValue;
   }
+  function otherInitTab(title:string,name:string){
+    selectedTab.value=name;
+    tabPaneList.value=[{
+      'title':title,
+      'name':name,
+      'close':false
+    }]
+  }
   function adminInitTab(title:string,name:string){
     selectedTab.value=name;
     tabPaneList.value=[{
@@ -310,7 +318,7 @@ export const useCommonStore = defineStore('common', () => {
   }
   return {
     tabPaneList,itemList,menuList,selectedTab,addTab,changeTab,updateSelectedTab,updateTabList,
-    loading,updateLoading,userInfo,setUserInfo,adminInitTab
+    loading,updateLoading,userInfo,setUserInfo,adminInitTab,otherInitTab
   }
 }, {
   persist: {

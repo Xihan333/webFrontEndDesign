@@ -17,7 +17,7 @@
             @click="toLogin"
           >
             <el-icon size="large"><ArrowLeft /></el-icon> 
-            <p class="registerText" >返回登陆</p>  
+            <p class="registerText" >返回登录</p>  
           </el-button>
         </div>
         <div class="main">
@@ -27,13 +27,16 @@
             <br/>
             <el-input class="input" v-model="register.account" placeholder="用户名" />
             <br/>
-            <el-input
-              class="input"
-              v-model="register.password"
-              type="password"
-              placeholder="新密码"
-              show-password
-            />
+            <div>
+              <el-input
+                class="input"
+                style="margin-bottom: 0px;"
+                v-model="register.password"
+                type="password"
+                placeholder="新密码"
+                show-password
+              />
+            </div>
             <div v-if="isInputInvalidPassword" class="error-message-password">{{ inputErrorMessagePassword }}</div>
             <br/>
             <el-input
@@ -196,7 +199,7 @@ function tackBtn(){       //验证码倒数60秒
 }
 
 const toLogin = () =>{
-    router.push('login')
+    router.push('/login')
 }
 
 </script>
@@ -276,7 +279,7 @@ const toLogin = () =>{
         .input{
           width: 350px;
           height: 42px;
-          margin-bottom: 10px;
+          margin-bottom: 20px;
         }
         .verify{
           display: flex;

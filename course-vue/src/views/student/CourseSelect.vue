@@ -22,10 +22,10 @@
                 课程类型
                 <el-select class="thirdInput" v-model="type" placeholder="请选择">
                 <el-option
-                    v-for="(item,index) in types"
+                    v-for="item in filterTypes"
                     :key="item"
-                    :label="item"
-                    :value="index"
+                    :label="item.label"
+                    :value="item.id"
                 />
                 </el-select>
             </div>
@@ -90,13 +90,14 @@
 import { ref,computed,onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
+import { filterOption } from '../../assets/js/config.js'
 
 const courseNameOrNum=ref("");
 const teacherName=ref("");
 const timeOrder=ref(0);
 let timeOrders=['全部','第一节','第二节','第三节','第四节','第五节']
 const type=ref(3);
-let types=['必修','限选','任选','全部']
+const filterTypes=filterOption.filterTypes;
 let tableData = []
 const filterTableData=ref([]);
 let selectedCourses=ref([]);//获取我已选的课程
@@ -150,7 +151,7 @@ function search(){
 }
 
 function typeFormat(row, column) {
-    return types[row.type];
+    return filterTypes[row.type+1].label;
 }
 
 function timeFormat(row, column){

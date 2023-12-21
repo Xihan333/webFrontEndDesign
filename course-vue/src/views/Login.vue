@@ -66,13 +66,16 @@
             <br/>
             <el-input class="input" v-model="register.name" placeholder="姓名" />
             <br/>
-            <el-input
-              class="input"
-              v-model="register.password"
-              type="password"
-              placeholder="密码"
-              show-password
-            />
+            <div>
+              <el-input
+                class="input"
+                style="margin-bottom: 0px;"
+                v-model="register.password"
+                type="password"
+                placeholder="密码"
+                show-password
+              />
+            </div>
             <div v-if="isInputInvalidPassword" class="error-message-password">{{ inputErrorMessagePassword }}</div>
             <br/>
             <el-input
