@@ -160,10 +160,12 @@ public class ScoreService {
         Integer myScore = score.getCommonMark() + score.getFinalMark();
         Integer myRank = 1;
         for (int i = 0; i < sList.size(); i++) {
-            Integer itemScore = sList.get(i).getCommonMark() + sList.get(i).getFinalMark();
-            if(sList.get(i).getStudent() != student){
-                if(itemScore > myScore){
-                    myRank++;
+            if(sList.get(i).getCommonMark()!= null && sList.get(i).getFinalMark() != null) {
+                Integer itemScore = sList.get(i).getCommonMark() + sList.get(i).getFinalMark();
+                if (sList.get(i).getStudent() != student) {
+                    if (itemScore > myScore) {
+                        myRank++;
+                    }
                 }
             }
         }

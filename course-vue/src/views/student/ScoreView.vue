@@ -49,7 +49,7 @@ onMounted(async()=>{
 })
 
 function markFormat(row){
-    if(row.isResult==0)
+    if(row.isResult!=1)
         return '暂无成绩';
     return row.commonMark+row.finalMark;
 }
