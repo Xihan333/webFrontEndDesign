@@ -1,6 +1,7 @@
 package org.fatmansoft.teach.service.teacher;
 
 import org.fatmansoft.teach.models.student.*;
+import org.fatmansoft.teach.models.system.StaticValue;
 import org.fatmansoft.teach.models.system.User;
 import org.fatmansoft.teach.models.teacher.Teacher;
 import org.fatmansoft.teach.models.teacher.TeacherCourse;
@@ -10,6 +11,7 @@ import org.fatmansoft.teach.payload.response.OptionItem;
 import org.fatmansoft.teach.payload.response.OptionItemList;
 import org.fatmansoft.teach.repository.student.*;
 import org.fatmansoft.teach.repository.system.PersonRepository;
+import org.fatmansoft.teach.repository.system.StaticValueRepository;
 import org.fatmansoft.teach.repository.system.UserRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherCourseRepository;
 import org.fatmansoft.teach.repository.teacher.TeacherRepository;
@@ -66,6 +68,9 @@ public class TeacherCourseService {
     @Autowired
     private CampusRepository campusRepository;
 
+    @Autowired
+    private StaticValueRepository staticValueRepository;
+
     public synchronized Integer getNewTeacherCourseId() {  //synchronized 同步方法
         Integer id = teacherCourseRepository.getMaxId();  // 查询最大的id
         if (id == null)
@@ -83,6 +88,9 @@ public class TeacherCourseService {
         if (tc == null) {
             return m;
         }
+        StaticValue available = staticValueRepository.findById(Const.COURSE_SELECT_AVAILABLE).orElse(null);
+        m.put("selectAvailable", available);
+        m.put("teacherCourseId", tc.getId());
         m.put("courseId", tc.getCourse().getCourseId());
         m.put("courseName", tc.getCourse().getName());
         m.put("courseNum", tc.getCourse().getNum());
@@ -490,6 +498,7 @@ public class TeacherCourseService {
             return CommonMethod.getReturnMessageError("学生无班级！");
         }
         Integer gradeId = student.getClazz().getGrade().getGradeId();
+        System.out.println(gradeId);
         List<TeacherCourse> cList = teacherCourseRepository.findTeacherCourseListByGradeGradeId(gradeId);  //数据库查询操作
         List dataList = new ArrayList();
         if(cList == null || cList.size() == 0)
