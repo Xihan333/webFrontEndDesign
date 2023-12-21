@@ -120,7 +120,6 @@ public class StudentService {
         p = s.getPerson();
         if(p == null)
             return m;
-        m.put("gpa", s.getGpa());
         m.put("studentId", s.getStudentId());
         m.put("personId", p.getPersonId());
         m.put("num",p.getNum());
@@ -177,7 +176,6 @@ public class StudentService {
             m.put("commonMark",s.getCommonMark());
             m.put("finalMark",s.getFinalMark());
             m.put("totalMark",s.getCommonMark()+s.getFinalMark());
-            m.put("ranking", s.getRanking());
             list.add(m);
         }
         return list;
@@ -199,11 +197,11 @@ public class StudentService {
             Integer mark = s.getCommonMark() + s.getFinalMark();
             if(mark >= 90)
                 count[0]++;
-            if(mark >= 80)
+            else if(mark >= 80)
                 count[1]++;
-            if(mark >= 70)
+            else if(mark >= 70)
                 count[2]++;
-            if(mark >= 60)
+            else if(mark >= 60)
                 count[3]++;
             else
                 count[4]++;

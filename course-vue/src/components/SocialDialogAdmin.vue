@@ -75,7 +75,7 @@
   </template>
   
   <script setup>
-  import { defineProps, defineEmits, ref, watch} from 'vue'
+  import { defineProps, defineEmits, ref, watchEffect} from 'vue'
   import { ElMessageBox, ElMessage } from 'element-plus'
   import request from '../request/axios_config.js'
 

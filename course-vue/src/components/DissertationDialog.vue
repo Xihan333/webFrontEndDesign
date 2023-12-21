@@ -19,7 +19,7 @@
             <el-form-item label="论文作者">
                 <el-input v-model="rowData.authors"
                 maxlength="50"
-                placeholder="请输入论文名称"
+                placeholder="请输入论文作者"
                 show-word-limit
                 />
             </el-form-item>

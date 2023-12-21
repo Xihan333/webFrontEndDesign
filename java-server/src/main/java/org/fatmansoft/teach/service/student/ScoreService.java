@@ -85,7 +85,6 @@ public class ScoreService {
         m.put("commonMark",s.getCommonMark());
         m.put("finalMark",s.getFinalMark());
         m.put("isResult",s.getIsResult());
-        m.put("ranking",s.getRanking());
         return m;
     }
 

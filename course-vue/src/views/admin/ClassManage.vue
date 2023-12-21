@@ -38,7 +38,7 @@
                 clearable
                 class="search"
                 v-model="inputSearch"
-                placeholder="搜索主题和团队名称..."
+                placeholder="搜索班级名称..."
                 @keyup.enter="searchFn"
             />
             <el-button type="primary" @click="searchFn" color="#6FB6C1" class="searchBtn">查 询</el-button>
