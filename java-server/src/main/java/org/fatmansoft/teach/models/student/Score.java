@@ -35,8 +35,6 @@ public class Score {
     @JoinColumn(name = "teacher_course_id")
     private TeacherCourse teacherCourse;
 
-    private Integer ranking;
-
     //平时分+期末考试分 = 总成绩（前端计算求和）
 
     private Integer commonMark; //平时成绩
