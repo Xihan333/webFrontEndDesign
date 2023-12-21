@@ -135,6 +135,9 @@ public class StudentService {
         m.put("phone",p.getPhone());
         m.put("address",p.getAddress());
         m.put("introduce",p.getIntroduce());
+        Optional<User> uOp = userRepository.findByUserId(p.getPersonId());  // 查询获得 user对象
+        User u = uOp.get();
+        m.put("lastLoginTime",u.getLastLoginTime());
         return m;
     }
 

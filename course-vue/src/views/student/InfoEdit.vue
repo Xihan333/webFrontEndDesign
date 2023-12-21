@@ -12,7 +12,7 @@
             disabled
             />
         </el-form-item>
-        <el-form-item label="性  别">
+        <el-form-item label="性别">
           <el-radio-group v-model="rowData.gender">
             <el-radio label="1" border>男</el-radio>
             <el-radio label="2" border>女</el-radio>

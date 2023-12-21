@@ -62,6 +62,7 @@
 import {ref,onMounted,computed} from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import { useAppStore } from '../../stores/app.ts'
+import { storeToRefs } from 'pinia'
 import router from "~/router";
 import request from '../../request/axios_config.js'
 
@@ -69,7 +70,8 @@ const store = useAppStore()
 const blogs = ref([])
 const evals = ref([])
 const blogNum = ref()
-const name = ref('小明同学')
+const { nameInfo } = storeToRefs(store);
+const name = nameInfo.value.name
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()

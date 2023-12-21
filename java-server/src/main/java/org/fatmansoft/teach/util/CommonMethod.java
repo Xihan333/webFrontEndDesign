@@ -21,7 +21,7 @@ import java.util.*;
 public class CommonMethod {
     public static final MediaType exelType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     public static DataResponse getReturnData(Object obj, String msg){
-        return new   DataResponse(200,obj,msg);
+        return new DataResponse(200,obj,msg);
     }
     public static DataResponse getReturnMessage(Integer code, String msg){
         return new   DataResponse(code,null,msg);
