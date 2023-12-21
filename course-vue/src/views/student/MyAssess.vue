@@ -9,7 +9,7 @@
             <el-button class="seeBtn" color="#6FB6C1" @click="seeHistory">查看历史评论</el-button>
         </div>
         </div>
-        <!-- 表格部分 -->
+        <!-- 表格部(分 -->
         <el-table border
             :data="paginatedTableData"
             style="width: 100%;">
