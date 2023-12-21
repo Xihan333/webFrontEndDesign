@@ -2,7 +2,7 @@
   <div class="edit-profile">
     <h1>个人信息修改</h1>
      <el-form :model="form">
-        <el-form-item label="性别">
+        <el-form-item label="性  别">
           <el-radio-group v-model="rowData.gender">
             <el-radio label="1" border>男</el-radio>
             <el-radio label="2" border>女</el-radio>
@@ -49,9 +49,19 @@
 </template>
 
 <script setup>
-import {defineProps, defineEmits, ref, watchEffect} from 'vue'
-import {ElMessageBox} from 'element-plus'
+import { defineEmits, ref, watchEffect, onMounted } from 'vue'
+import {ElMessageBox,ElMessage} from 'element-plus'
 import request from '../../request/axios_config.js'
+
+const data = ref([])
+onMounted(() => {
+  // 发起请求获取当前表格数据
+  updateData()
+})
+const updateData = async () => {
+  const res = await request.get('/student/getMyInfo')
+  data.value = res.data.data
+}
 
 const radio2 = ref('1')
 const rowData= ref({
@@ -67,6 +77,7 @@ const rowData= ref({
     phone: ''
 })
 
+
   
 async function submit(){
   const res = await request.post('/student/studentEdit',{
@@ -80,7 +91,7 @@ async function submit(){
       }
     }
   })
-  if(res2.data.code!=200){
+  if(res.data.code!=200){
     ElMessage({
            message: '修改错误',
            type: 'error',
@@ -90,6 +101,7 @@ async function submit(){
     ElMessageBox.alert('修改成功！',{
       confirmButtonText: 'OK'
     })
+    updateData()
   }
 } 
 

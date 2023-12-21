@@ -58,7 +58,7 @@
           </div>
         </div>
       </div>
-      <div v-else class="register">
+      <div v-else class="register" :rules="registerRules">
         <div class="main2">
           <div class="content">
             <h1>Register</h1>

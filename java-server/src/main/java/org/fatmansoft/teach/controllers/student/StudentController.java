@@ -215,6 +215,12 @@ public class StudentController {
         return CommonMethod.getReturnData(studentService.getMapFromStudent(s)); //这里回传包含学生信息的Map对象
     }
 
+    @GetMapping("/getMyInfo")
+    public DataResponse getMyInfo() {
+        return studentService.getMyInfo();
+    }
+
+
     /**
      * studentEditSave 前端学生信息提交服务
      * 前端把所有数据打包成一个Json对象作为参数传回后端，后端直接可以获得对应的Map对象form, 再从form里取出所有属性，复制到
