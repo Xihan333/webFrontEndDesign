@@ -20,7 +20,7 @@
             <el-table-column prop="name" label="姓名" width="auto"/>
             <el-table-column prop="genderName" label="性别" width="auto"/>
             <el-table-column prop="card" label="身份证号" width="auto"/>
-            <el-table-column prop="borthday" label="出生日期" width="auto"/>
+            <el-table-column prop="birthday" label="出生日期" width="auto"/>
             <el-table-column prop="phone" label="电话号码" width="auto"/>
             <el-table-column label="操作" width="auto">
               <template #default="scope">
@@ -44,7 +44,34 @@
             />
         </el-col>
     </el-row>
-    </div>
+    <el-dialog
+      v-model="dialogVisible"
+      title="添加班级"
+      width="600px"
+      :before-close="handleClose"
+      >
+      <div class="dialogContent">
+        <div class="clazzName">
+          <p>选择班级</p>
+          <el-select v-model="clazzId" value-key="id"
+          placeholder="请选择班级" clearable @change="changeSelect">
+          <el-option
+          v-for="item in clazzData"
+            :key="item.clazzId"
+            :label="item.clazzName"
+            :value="item.clazzId"
+          />    
+        </el-select>
+        </div>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
@@ -53,16 +80,52 @@ import { ElMessage } from 'element-plus'
 import request from '../../request/axios_config.js'
 
 const tableData = ref([])
+const clazzData = ref([])
 onMounted(() => {
   // 发起请求获取当前表格数据
   updateTableData()
 })
 
 const updateTableData = async () => {
-  console.log("hhhhhhhhhhhhhhhhhh")
   const res = await request.get('/clazz/getNoClazzStudents')
-  console.log("hhhhhhhhhhh",res.data.data)
   tableData.value = res.data.data
+  const res1 = await request.post('/clazz/getClazzOptionItemListByGradeId',{
+    data:{
+      gradeId:''
+    }
+  })
+  clazzData.value = res1.data.data
+}
+
+const dialogVisible = ref(false);
+const clazzId=ref();
+const studentId=ref();
+function handleEdit(row){
+  dialogVisible.value=true;
+  studentId.value=row.studentId;
+  console.log(row.studentId)
+}
+
+async function confirm(){
+  const res = await request.post('/clazz/setClass',{
+    data:{
+      clazzId:clazzId.value,
+      studentId:studentId.value,
+    }
+  })
+  console.log('请看请求',res.data)
+  if(res.data.code==200){
+    dialogVisible.value=false;
+    updateTableData()
+  }
+  else{
+    ElMessage({
+      message: '加载失败，请重试！',
+      type:'error',
+      offset: 150
+    })
+  }
+  console.log('hhhhhhhhh',clazzId.value)
 }
 
 // 右上角搜索框查询后的数据内容
@@ -100,6 +163,7 @@ el-table{
 .query{
   float: right;
   border-right: 0px;
+  margin-bottom: 10px;
   .search{
     border-color: #6FB6C1;
     margin-left: auto;
