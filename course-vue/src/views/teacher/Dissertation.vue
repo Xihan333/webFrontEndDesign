@@ -19,7 +19,7 @@
             :data="paginatedTableData"
             style="width: 100%">
                 <el-table-column prop="paperName" label="论文名称" width="400" />
-                <el-table-column prop="author" label="论文作者" width="300" />
+                <el-table-column prop="authors" label="论文作者" width="300" />
                 <el-table-column prop="day" label="发表时间" width="300" />
                 <el-table-column label="操作" width="200" >
                     <template #default="scope">
@@ -31,30 +31,30 @@
                         </el-button>
                     </template>
                 </el-table-column>
-        </el-table>
-        <el-row class="pagination">
-        <el-col>
-            <el-pagination
-                background
-                v-model:current-page="currentPage"
-                v-model:page-size="pageSize"
-                :page-sizes="[15, 25, 35, 50]"
-                :pager-count="7"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="searchedTableData.length"
-                @size-change="handleSizeChange"
-            />
-        </el-col>
-    </el-row>
+              </el-table>
+            <el-row class="pagination">
+              <el-col>
+                <el-pagination
+                  background
+                  v-model:current-page="currentPage"
+                  v-model:page-size="pageSize"
+                  :page-sizes="[15, 25, 35, 50]"
+                  :pager-count="7"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="searchedTableData.length"
+                  @size-change="handleSizeChange"
+              />
+          </el-col>
+      </el-row>
     </div>
 </template>
 
 <script setup>
 import { ref,computed,onMounted } from 'vue'
 //引入弹窗页面
-import DissertationDialog from '../../components/Dissertation.vue'
+import DissertationDialog from '../../components/DissertationDialog.vue'
 import { ElMessage } from 'element-plus'
-import request from '../../request/axios_config.ts'
+import request from '../../request/axios_config.js'
 
 const tableData = ref([])
 onMounted(() => {
@@ -113,7 +113,7 @@ const handleEdit = (rowData) => {
 async function handleDel(rowData)  {
   const res = await request.post('/scientificPayoffs/scientificPayoffsDelete',{
     data:{
-      socialId: rowData.socialId
+      scientificPayoffsId: rowData.scientificPayoffsId
     } 
   })
   console.log(res.code)
