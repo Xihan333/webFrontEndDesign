@@ -59,7 +59,7 @@ public class AchievementService {
             return m;
         m.put("achievementId",achievement.getAchievementId());
         m.put("achievementName", achievement.getName());
-        m.put("achievementLevel", achievement.getLevel());
+        m.put("level", achievement.getLevel());
         m.put("time", achievement.getTime());
         m.put("type", achievement.getType());
         m.put("content", achievement.getContent());

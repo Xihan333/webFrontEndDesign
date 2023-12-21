@@ -16,13 +16,13 @@
           :data="paginatedTableData"
           style="width: 100%"
         >
-            <el-table-column prop="num" label="学号" width="auto"/>
-            <el-table-column prop="name" label="姓名" width="auto"/>
-            <el-table-column prop="genderName" label="性别" width="auto"/>
-            <el-table-column prop="card" label="身份证号" width="auto"/>
-            <el-table-column prop="birthday" label="出生日期" width="auto"/>
-            <el-table-column prop="phone" label="电话号码" width="auto"/>
-            <el-table-column label="操作" width="auto">
+            <el-table-column prop="num" label="学号" width="auto" align="center"/>
+            <el-table-column prop="name" label="姓名" width="auto" align="center"/>
+            <el-table-column prop="genderName" label="性别" width="auto" align="center"/>
+            <el-table-column prop="card" label="身份证号" width="auto" align="center"/>
+            <el-table-column prop="birthday" label="出生日期" width="auto" align="center"/>
+            <el-table-column prop="phone" label="电话号码" width="auto" align="center"/>
+            <el-table-column label="操作" width="auto" align="center">
               <template #default="scope">
                 <el-button size="default" @click="handleEdit(scope.row)">
                   编辑

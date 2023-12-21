@@ -18,10 +18,10 @@
         <el-table border
             :data="paginatedTableData"
             style="width: 100%">
-                <el-table-column prop="paperName" label="论文名称" width="400" />
-                <el-table-column prop="authors" label="论文作者" width="300" />
-                <el-table-column prop="day" label="发表时间" width="300" />
-                <el-table-column label="操作" width="200" >
+                <el-table-column prop="paperName" label="论文名称" width="auto" align="center"/>
+                <el-table-column prop="authors" label="论文作者" width="auto" align="center"/>
+                <el-table-column prop="day" label="发表时间" width="auto" align="center"/>
+                <el-table-column label="操作" width="auto" align="center">
                     <template #default="scope">
                         <el-button size="default" @click="handleEdit(scope.row)">
                             查看

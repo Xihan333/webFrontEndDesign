@@ -18,11 +18,11 @@
     <el-table border
        :data="paginatedTableData"
        style="width: 100%">
-       <el-table-column prop="title" label="活动主题" width="300" />
-       <el-table-column prop="day" label="活动日期" width="280" />
-       <el-table-column prop="location" label="活动地点" width="280"/>
-       <el-table-column prop="introduction" label="活动介绍" width="320" />
-       <el-table-column label="操作" width="280" >
+       <el-table-column prop="title" label="活动主题" width="auto" align="center"/>
+       <el-table-column prop="day" label="活动日期" width="auto" align="center"/>
+       <el-table-column prop="location" label="活动地点" width="auto" align="center"/>
+       <el-table-column prop="introduction" label="活动介绍" width="auto" align="center"/>
+       <el-table-column label="操作" width="auto" align="center">
             <template #default="scope">
                 <el-button size="default" @click="handleEdit(scope.row)">
                  查看

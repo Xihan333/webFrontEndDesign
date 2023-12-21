@@ -24,11 +24,11 @@
         <el-table border
             :data="paginatedTableData"
             style="width: 100%">
-            <el-table-column prop="name" label="姓名" width="280" />
-            <el-table-column prop="num" label="学号" width="320" />
-            <el-table-column prop="genderName" label="性别" width="200"/>
-            <el-table-column prop="phone" label="电话号码" width="370" />
-            <el-table-column label="操作" width="300" >
+            <el-table-column prop="name" label="姓名" width="auto" align="center"/>
+            <el-table-column prop="num" label="学号" width="auto" align="center"/>
+            <el-table-column prop="genderName" label="性别" width="auto" align="center"/>
+            <el-table-column prop="phone" label="电话号码" width="auto" align="center"/>
+            <el-table-column label="操作" width="auto" align="center">
             <template #default="scope">
                 <el-button size="default" @click="handleEdit(scope.row)">
                 评价

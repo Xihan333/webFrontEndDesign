@@ -18,13 +18,13 @@
     <el-table border
         :data="paginatedTableData"
         style="width: 100%">
-            <el-table-column prop="evaluator.person.num" label="评价人学号" width="auto" />
-            <el-table-column prop="evaluator.person.name" label="评价人姓名" width="auto" />
-            <el-table-column prop="student.person.num" label="被评价人学号" width="auto"/>
-            <el-table-column prop="student.person.name" label="被评价者" width="auto" />
-            <el-table-column prop="eval" label="评价内容" width="auto" />
-            <el-table-column prop="evalTime" label="评价时间" width="auto" />
-            <el-table-column label="操作" width="auto" >
+            <el-table-column prop="evaluator.person.num" label="评价人学号" width="auto" align="center"/>
+            <el-table-column prop="evaluator.person.name" label="评价人姓名" width="auto" align="center"/>
+            <el-table-column prop="student.person.num" label="被评价人学号" width="auto" align="center"/>
+            <el-table-column prop="student.person.name" label="被评价者" width="auto" align="center"/>
+            <el-table-column prop="eval" label="评价内容" width="auto" align="center"/>
+            <el-table-column prop="evalTime" label="评价时间" width="auto" align="center"/>
+            <el-table-column label="操作" width="auto" align="center">
                 <template #default="scope">
                     <el-button size="default" @click="handleEdit(scope.row)">
                         查看
