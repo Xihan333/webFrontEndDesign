@@ -113,6 +113,7 @@ public class TeacherCourseService {
         m.put("introduction", tc.getCourse().getIntroduction());
         m.put("teacherId", tc.getTeacher().getTeacherId());
         m.put("teacherName", tc.getTeacher().getPerson().getName());
+        m.put("teacherNum", tc.getTeacher().getPerson().getNum());
         return m;
     }
 

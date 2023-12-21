@@ -36,6 +36,7 @@
       <el-table-column prop="hour" label="学时" width="auto" />  
       <el-table-column prop="credit" label="学分" width="auto" /> 
       <el-table-column :formatter="typeFormat" label="课程类型" width="auto" />
+      <el-table-column prop="introduction" label="课程介绍" width="auto" />
       <el-table-column label="操作" width="170px" >
         <template #default="scope">
           <el-button size="default" @click="edit(scope.row)">
@@ -131,6 +132,13 @@
           />
           </el-select>
         </div>
+        <div class="item">
+          <p>课程介绍</p>
+          <el-input
+            class="input"
+            v-model="introduction"
+          />
+        </div>
       </div>
       <template #footer>
         <span class="dialog-footer">
@@ -175,11 +183,7 @@
   })
   
   async function updateTableData(){
-    const res = await request.post('/course/getByCourseNumName',{
-        data:{
-            numName:''
-        }
-    })
+    const res = await request.get('/course/getAllCourses')
     if(res.data!=undefined && res.data.code==200){
         tableData=res.data.data;
         filterTableData.value=tableData;
@@ -229,11 +233,13 @@ const campusId=ref();//开设单位
 const campuses=filterOption.allCampuses;
 const gradeId=ref();//开设年级
 const grades=filterOption.allGrades;
+const courseId=ref();//课程id
 const courseNum=ref();//课序号
 const courseName=ref();//课程名称
 const hour=ref();//学时
 const credit=ref();//学分
 const type=ref();//课程类型
+const introduction=ref();//课程介绍
 //为新增和编辑初始化弹窗
 function add(){
     dialogVisible.value=true;
@@ -245,10 +251,12 @@ function add(){
     hour.value=""
     credit.value=""
     type.value=""
+    introduction.value=""
 }
 function edit(row){
     dialogVisible.value=true;
     dialogTitle.value='学科编辑'
+    courseId.value=row.courseId;
     campusId.value=row.campusId;
     gradeId.value=row.gradeId
     courseNum.value=row.courseNum
@@ -256,22 +264,26 @@ function edit(row){
     hour.value=row.hour
     credit.value=row.credit
     type.value=row.type
+    introduction.value=row.introduction
 }
 
 // 封装用于网络请求的数据
-function getForm(){
+function getMap(){
     let map=new Map();
     map.set('campusId',campusId.value);
     map.set('gradeId',gradeId.value);
     map.set('courseNum',courseNum.value);
     map.set('courseName',courseName.value);
     map.set('hour',hour.value);
-    map.set('type',type.value);
-    return Object.fromEntries(map);
+    map.set('credit',credit.value);
+    map.set('courseType',type.value);
+    map.set('introduction',introduction.value);
+    return map;
 }
 
 async function addConfirm(){
-    const form=getForm();
+    let map=getMap();
+    const form=Object.fromEntries(map);
     const res = await request.post('/course/addCourse',{
         data:{
             form:form
@@ -294,7 +306,9 @@ async function addConfirm(){
     }
 }
 async function editConfirm(){
-    const form=getForm();
+    let map=getMap();
+    map.set('courseId',courseId.value)
+    const form=Object.fromEntries(map);
     const res = await request.post('/course/editCourse',{
         data:{
             form:form
@@ -330,10 +344,30 @@ function confirm(){
 const deleteDialogVisible=ref(false)
 function remove(row){
     deleteDialogVisible.value=true;
-    deleteConfirm(row);
+    courseId.value=row.courseId;
 }
-async function deleteConfirm(){
-    // 在此发送请求
+async function deleteConfirm(row){
+    const res = await request.post('/course/deleteCourse',{
+        data:{
+            courseId:courseId.value
+        }
+    })
+    if(res.data!=undefined && res.data.code==200){
+        updateTableData();
+        deleteDialogVisible.value=false;
+        ElMessage({
+        message: '删除成功！',
+        type: 'success',
+        offset: 150
+        })
+    }
+    else{
+        ElMessage({
+            message: '操作失败，请重试！',
+            type: 'error',
+            offset: 150
+        })
+    }
 }
 </script>
     
