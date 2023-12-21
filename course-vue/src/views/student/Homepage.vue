@@ -61,7 +61,7 @@ const userInfo = ref({
     card: '',
     email: '',
     phone: '',
-    introduce: ''
+    introduce: '',
     clazzName:'软工1班',
     gradeName:'大二',
     campusName:'软件学院',

@@ -147,10 +147,12 @@ public class ScoreService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student student= sOp.get();
         Integer studentId = student.getStudentId();
+        System.out.println(studentId);
+        System.out.println(teacherCourseId);
         List<Score> sList = scoreRepository.findScoreListByTeacherCourseId(teacherCourseId);
         Optional<Score> scoreOptional = scoreRepository.findByStudentIdAndTeacherCourseId(studentId,teacherCourseId);
         Score score = null;
-        if(scoreOptional == null){
+        if(scoreOptional.isEmpty()){
             return CommonMethod.getReturnMessageError("无成绩!");
         }else{
             score = scoreOptional.get();

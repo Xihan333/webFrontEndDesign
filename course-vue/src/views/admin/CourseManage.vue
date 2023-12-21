@@ -20,7 +20,7 @@
       </span>
     </template>
   </el-dialog>
-  <!--  -->
+  <!-- 操作栏 -->
   <div class="search">
     <el-button type="primary" @click="add">新增</el-button>
     <div class="select">
@@ -55,6 +55,7 @@
       <el-button type="primary" @click="search">查询</el-button>
     </div>
   </div>
+  <!-- 表格 -->
   <el-table border :data="filterTableData">
     <el-table-column prop="campusName" label="开设单位" width="auto" /> 
     <el-table-column prop="gradeName" label="开设年级" width="auto" />     
@@ -95,6 +96,7 @@
     />
     </el-col>
   </el-row>
+  <!-- 课程编辑弹窗 -->
   <el-dialog
     v-model="dialogVisible"
     title="课程编辑"
@@ -104,7 +106,7 @@
     <div class="dialogContent">
       <div class="item">
         <p>开设单位</p>
-        <el-select class="input" v-model="campus" placeholder="请选择">
+        <el-select class="input" v-model="campusId" placeholder="请选择">
         <el-option
           v-for="item in campuses"
           :key="item"
@@ -115,7 +117,7 @@
       </div>
       <div class="item">
         <p>开设年级</p>
-        <el-select class="input" v-model="grade" placeholder="请选择">
+        <el-select class="input" v-model="gradeId" placeholder="请选择">
         <el-option
           v-for="item in grades"
           :key="item"
@@ -228,6 +230,10 @@ const types=filterOption.types;
 let tableData = []
 const filterTableData=ref([]);
 onMounted(async() => {
+  updateTableData();
+})
+
+async function updateTableData(){
   const res = await request.post('/course/getByCourseNumName',{
       data:{
           numName:''
@@ -245,7 +251,7 @@ onMounted(async() => {
           offset: 150
       })
   }
-})
+}
 
 function reset(){
   courseNumOrName.value="";
@@ -311,9 +317,9 @@ async function selectConfirm(){
 console.log("xiala",filterOption)
 const dialogVisible=ref(false)
 const mode=ref();//弹窗类型
-const campus=ref();//开设单位
+const campusId=ref();//开设单位
 const campuses=filterOption.allCampuses;
-const grade=ref();//开设年级
+const gradeId=ref();//开设年级
 const grades=filterOption.allGrades;
 const courseNum=ref();//课序号
 const teacherNum=ref();//教师工号
@@ -331,8 +337,8 @@ const introduction=ref();//课程介绍
 function add(){
   dialogVisible.value=true;
   mode.value='add'
-  campus.value="";
-  grade.value=""
+  campusId.value="";
+  gradeId.value=""
   courseNum.value=""
   teacherNum.value=""
   hour.value=""
@@ -348,8 +354,8 @@ function edit(row){
   dialogVisible.value=true;
   mode.value='edit'
   //type day timeorder grade campus 下拉
-  campus.value=row.campusId;
-  grade.value=row.gradeId
+  campusId.value=row.campusId;
+  gradeId.value=row.gradeId
   courseNum.value=row.courseNum
   teacherNum.value=row.teacherNum
   hour.value=row.hour
@@ -363,8 +369,8 @@ function edit(row){
 }
 async function addConfirm(){
   let map=new Map();
-  map.set('campusId',campus.value);
-  map.set('gradeId',grade.value);
+  map.set('campusId',campusId.value);
+  map.set('gradeId',gradeId.value);
   map.set('courseNum',courseNum.value);
   map.set('teacherNum',teacherNum.value);
   map.set('hour',hour.value);
@@ -381,11 +387,11 @@ async function addConfirm(){
       }
   })
   if(res.data!=undefined && res.data.code==200){
-      //📌要不要更新呢
+    updateTableData();
   }
   else{
       ElMessage({
-          message: '加载失败，请重试！',
+          message: res.data.msg,
           type: 'error',
           offset: 150
       })

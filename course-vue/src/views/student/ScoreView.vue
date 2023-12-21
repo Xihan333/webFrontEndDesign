@@ -58,7 +58,7 @@ function markFormat(row){
 async function checkRank(row){
     const res = await request.post('/score/getRank',{
         data:{
-            teacherCourseTd:row.teacherCourseId
+            teacherCourseId:row.teacherCourseId
         }
     })
     if(res.data.code==200){
@@ -67,7 +67,7 @@ async function checkRank(row){
     }
     else{
         ElMessage({
-            message: '加载失败，请重试！',
+            message: res.data.msg,
             type: 'error',
             offset: 150
         })
