@@ -1,5 +1,26 @@
 <!-- 课程管理 -->
 <template>
+  <!-- 开启选课 -->
+  <div class="selectCourse">
+    <el-button v-if="selectCourseBtn" type="warning" @click="selectDialogVisible=true" plain>开启选课</el-button>
+    <el-button v-else type="warning" @click="selectDialogVisible=true" plain>关闭选课</el-button>
+  </div>
+  <el-dialog
+    v-model="selectDialogVisible"
+    title="提示"
+    width="30%"
+    :before-close="handleClose"
+  >
+    <span v-if="selectCourseBtn">确定要开启选课吗？</span>
+    <span v-else>确定要关闭选课吗？</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="selectDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="selectConfirm">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <!--  -->
   <div class="search">
     <el-button type="primary" @click="add">新增</el-button>
     <div class="select">
@@ -43,9 +64,9 @@
     <el-table-column prop="teacherNum" label="教师工号" width="auto" />
     <el-table-column prop="hour" label="学时" width="auto" />  
     <el-table-column prop="credit" label="学分" width="auto" /> 
-    <el-table-column :mapatter="typemapat" label="课程类型" width="auto" />
+    <el-table-column :mapatter="typeFormat" label="课程类型" width="auto" />
     <el-table-column prop="courseCapacity" label="课容量" width="auto" />
-    <el-table-column :mapatter="timemapat" label="上课时间" width="auto" />
+    <el-table-column :mapatter="timeFormat" label="上课时间" width="auto" />
     <el-table-column prop="place" label="上课地点" width="auto" />  
     <el-table-column prop="introduction" label="课程介绍" width="auto" />  
     <el-table-column label="操作" width="170px" >
@@ -82,7 +103,6 @@
   >
     <div class="dialogContent">
       <div class="item">
-        <!-- 📌获取学院 -->
         <p>开设单位</p>
         <el-select class="input" v-model="campus" placeholder="请选择">
         <el-option
@@ -94,7 +114,6 @@
         </el-select>
       </div>
       <div class="item">
-        <!-- 📌获取年级 -->
         <p>开设年级</p>
         <el-select class="input" v-model="grade" placeholder="请选择">
         <el-option
@@ -217,6 +236,7 @@ onMounted(async() => {
   if(res.data!=undefined && res.data.code==200){
       tableData=res.data.data;
       filterTableData.value=tableData;
+      selectCourseBtn.value=(res.data.data[0].selectAvailable.value==1);
   }
   else{
       ElMessage({
@@ -242,11 +262,11 @@ function search(){
   });
 }
 
-function typemapat(row, column) {
+function typeFormat(row, column) {
   return types[row.type];
 }
 
-function timemapat(row, column){
+function timeFormat(row, column){
   return days[row.day]+timeOrders[row.timeOrder];
 }
 
@@ -257,6 +277,34 @@ const pageSize = ref(15)
 const paginatedTableData = computed(() => searchedTableData.value.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value))
 const handleSizeChange = () => {
   currentPage.value = 1
+}
+
+//开启选课相关
+const selectDialogVisible=ref(false);
+const selectCourseBtn=ref();
+async function selectConfirm(){
+  let selectAvailable=!(selectCourseBtn.value);
+  const res = await request.post('/course/changeCourseSelectAvailable',{
+      data:{
+        selectAvailable: (+selectAvailable).toString() //转成数字
+      }
+  })
+  if(res.data!=undefined && res.data.code==200){
+    ElMessage({
+        message: '操作成功！',
+        type: 'success',
+        offset: 150
+    })
+    selectCourseBtn.value=!(selectCourseBtn.value)
+  }
+  else{
+      ElMessage({
+          message: '操作失败，请重试！',
+          type: 'error',
+          offset: 150
+      })
+  }
+  selectDialogVisible.value=false;
 }
 
 //弹窗相关
@@ -376,6 +424,10 @@ function remove(){
 </script>
   
 <style lang="scss" scoped>
+.selectCourse{
+  float: right;
+  margin-bottom: 10px;
+}
 .search{
   display: flex;
   justify-content: space-between;

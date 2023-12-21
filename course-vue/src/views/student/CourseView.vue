@@ -70,14 +70,14 @@ import request from '../../request/axios_config.js'
 const commonStore=useCommonStore();
 let courseList=ref([
     {
-        'courseName':'数学',
-        'teacherName':'皮卡丘',
-        'courseNum':'001',
-        'type':1,
-        'credit':4,
-        'place':'四区102',
-        'day':1,
-        'timeOrder':2
+        'courseName':'',
+        'teacherName':'',
+        'courseNum':'',
+        'type':3,
+        'credit':0,
+        'place':'',
+        'day':0,
+        'timeOrder':0
     }
 ])
 onMounted(async()=>{
