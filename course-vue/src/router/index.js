@@ -21,6 +21,7 @@ const routes = [
     name: "forget-password",
     component: () => import("~/views/forgetPassword.vue"),
   },
+  //学生端
   {
     path: ('/student'),
     component: () => import('../views/Layout.vue'),
@@ -126,8 +127,12 @@ const routes = [
   {
     path: ('/admin'),
     component: () => import('../views/Layout.vue'),
-    redirect: ('/admin/course-manage'),
+    redirect: ('/admin/subject-manage'),
     children: [
+      { 
+        path: ('subject-manage'),
+        component: () => import('../views/admin/SubjectManage.vue') 
+      },
       { 
         path: ('course-manage'),
         component: () => import('../views/admin/CourseManage.vue') 
@@ -163,6 +168,10 @@ const routes = [
       { 
         path: ('without-class'),
         component: () => import('../views/admin/WithoutClass.vue') 
+      },
+      { 
+        path: ('password-edit'),
+        component: () => import('../views/common/PasswordEdit.vue'),
       },
     ]
   },

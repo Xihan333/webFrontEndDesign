@@ -77,6 +77,7 @@ export const useCommonStore = defineStore('common', () => {
       close:false
     }
   ])
+  //没有子菜单的菜单
   const itemList = ref([
     {
       name:'个人主页',
@@ -89,27 +90,17 @@ export const useCommonStore = defineStore('common', () => {
       role:'ROLE_TEACHER'
     },
     {
+      name:'学科管理',
+      path:'subject-manage',
+      role:'ROLE_ADMIN'
+    },
+    {
       name:'课程管理',
       path:'course-manage',
       role:'ROLE_ADMIN'
-    }
+    },
   ])
   const menuList = ref([
-    {
-      name:'课程中心',
-      index:'0',
-      role:'ROLE_TEACHER',
-      item:[
-        {
-          name:'查看课程',
-          path:'course-view',
-        },
-        {
-          name:'成绩管理',
-          path:'score-manage',
-        },
-      ]
-    }, 
     {
       name:'课程中心',
       index:'0',
@@ -130,36 +121,6 @@ export const useCommonStore = defineStore('common', () => {
       ]
     },
     {
-      name:'人员管理',
-      index:'1',
-      role:'ROLE_ADMIN',
-      item:[
-        {
-          name:'学生管理',
-          path:'student-manage',
-        },
-        {
-          name:'教师管理',
-          path:'teacher-manage',
-        },
-        {
-          name:'班级管理',
-          path:'class-manage',
-        },
-      ]
-    },
-    {
-      name:'论文管理',
-      index:'1',
-      role:'ROLE_TEACHER',
-      item:[
-        {
-          name:'我的论文',
-          path:'dissertation',
-        },
-      ]
-    }, 
-    {
       name:'学工管理',
       index:'1',
       role:'ROLE_STUDENT',
@@ -179,25 +140,6 @@ export const useCommonStore = defineStore('common', () => {
         {
           name:'学生互评',
           path:'peer-class',
-        },
-      ]
-    },
-    {
-      name:'学工管理',
-      index:'2',
-      role:'ROLE_ADMIN',
-      item:[
-        {
-          name:'社会实践',
-          path:'social-audit',
-        },
-        {
-          name:'成果奖励',
-          path:'achievement-audit',
-        },
-        {
-          name:'互评管理',
-          path:'peer-audit',
         },
       ]
     },
@@ -223,12 +165,102 @@ export const useCommonStore = defineStore('common', () => {
     {
       name:'账号安全',
       index:'3',
-      role:'ALL',
+      role:'ROLE_STUDENT',
       item:[
         {
           name:'修改个人信息',
           path:'info-edit',
         },
+        {
+          name:'修改密码',
+          path:'password-edit',
+        },
+      ]
+    },
+    {
+      name:'课程中心',
+      index:'0',
+      role:'ROLE_TEACHER',
+      item:[
+        {
+          name:'查看课程',
+          path:'course-view',
+        },
+        {
+          name:'成绩管理',
+          path:'score-manage',
+        },
+      ]
+    }, 
+    {
+      name:'论文管理',
+      index:'1',
+      role:'ROLE_TEACHER',
+      item:[
+        {
+          name:'我的论文',
+          path:'dissertation',
+        },
+      ]
+    }, 
+    {
+      name:'账号安全',
+      index:'2',
+      role:'ROLE_TEACHER',
+      item:[
+        {
+          name:'修改个人信息',
+          path:'info-edit',
+        },
+        {
+          name:'修改密码',
+          path:'password-edit',
+        },
+      ]
+    },
+    {
+      name:'人员管理',
+      index:'0',
+      role:'ROLE_ADMIN',
+      item:[
+        {
+          name:'学生管理',
+          path:'student-manage',
+        },
+        {
+          name:'教师管理',
+          path:'teacher-manage',
+        },
+        {
+          name:'班级管理',
+          path:'class-manage',
+        },
+      ]
+    },
+    {
+      name:'学工管理',
+      index:'1',
+      role:'ROLE_ADMIN',
+      item:[
+        {
+          name:'社会实践',
+          path:'social-audit',
+        },
+        {
+          name:'成果奖励',
+          path:'achievement-audit',
+        },
+        {
+          name:'互评管理',
+          path:'peer-audit',
+        },
+      ]
+    },
+    {
+      name:'账号安全',
+      index:'2',
+      role:'ROLE_ADMIN',
+      item:[
         {
           name:'修改密码',
           path:'password-edit',
