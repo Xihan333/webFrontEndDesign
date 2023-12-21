@@ -1,5 +1,20 @@
 <template>
     <el-container>
+        <!-- 退出登录对话框 -->
+        <el-dialog
+            v-model="logoutDialogVisible"
+            title="提示"
+            width="30%"
+            :before-close="handleClose"
+        >
+            <span>确定要退出登录吗？</span>
+            <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="logoutDialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="logoutConfirm">确定</el-button>
+            </span>
+            </template>
+        </el-dialog>
         <el-header class="header">
             <img src="../assets/img/logo.png" alt="校徽">
             <div class="logout">
@@ -166,7 +181,14 @@ function removeTab(name) {
     }
     router.push(name)//路由跳转以实现切换界面
 }
+//退出登录
+const logoutDialogVisible=ref(false);
 function logout(){
+    logoutDialogVisible.value=true;
+}
+function logoutConfirm(){
+    logoutDialogVisible.value=false;
+    store.otherInitTab('个人中心','homepage');
     localStorage.clear();
     router.push('/login');
 }
