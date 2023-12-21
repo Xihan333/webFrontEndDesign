@@ -86,7 +86,7 @@
         </div>
         <div class="campus">
           <p>学院</p>
-          <el-select v-mode="rowData.value.campusId" value-key="id"
+          <el-select v-model="rowData.value.campusId" value-key="id"
             placeholder="请选择学院" clearable @change="changeSelect">
           >
           <el-option
@@ -99,7 +99,7 @@
         </div>
         <div class="grade">
           <p>年级</p>
-          <el-select v-mode="rowData.value.gradeId" value-key="id"
+          <el-select v-model="rowData.value.gradeId" value-key="id"
             placeholder="请选择年级" clearable @change="changeSelect">
           >
           <el-option
@@ -193,15 +193,15 @@ const handleSizeChange = () => {
 }
 
 const dialogVisible = ref(false);
-const clazzName=ref('');
+const clazzName=ref();
 
 
 function handleAdd(){
   dialogVisible.value=true;
-  clazzName.value='';
-  campus.value='';
-  grade.value='';
-  clazzId='';
+  clazzName.value="";
+  campus.value="";
+  grade.value="";
+  clazzId="";
 }
 
 //查看
@@ -238,17 +238,16 @@ async function handleDel(rowData)  {
 }
 
 async function confirm(){
-  let form=new Map();
-  form.set('clazzName',clazzName.value);
-  form.set('campus',campus.value);
-  form.set('grade',grade.value);
-  const h=Object.fromEntries(form);
+  let map=new Map();
+  map.set('clazzName',clazzName.value);
+  map.set('campus',campus.value);
+  map.set('grade',grade.value);
+  const form=Object.fromEntries(map);
   // console.log(clazzId)
   const res = await request.post('/clazz/clazzEditSave',{
     data:{
-      clazzId:clazzId.value,
-      form:h,
-    },
+      form:form
+    }
   })
   console.log('请看请求',res)
   if(res.data.code==200){
