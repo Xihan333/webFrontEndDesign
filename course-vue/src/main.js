@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import App from "./App.vue";
 //echart
 import * as echarts from 'echarts';
+// Vue.prototype.$echarts = echarts
 
 // 全部引入element-plus, 非按需引入
 import ElementPlus from "element-plus";
@@ -47,7 +48,7 @@ app.use(ElementPlus);
 app.use(router);
 app.use(VMdEditor);
 app.use(VMdPreview);
-app.config.globalProperties.echarts = echarts;
+app.config.globalProperties.$echarts = echarts;
 // app.component('EditorMarkdown',EditorMarkdown)
 app.mount("#app");
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
