@@ -3,8 +3,9 @@
     <!-- <div class="class-manage"> -->
         <div>
         <el-button size="default" @click="handleAdd()" color="#6FB6C1">新 增</el-button>
-        
-        <div class="select">
+        <br/>
+        <div class="options">
+          <div class="select">
             <el-select v-model="campus" value-key="id"
                        placeholder="请选择学院" clearable @change="changeSelect">
                 <el-option
@@ -14,19 +15,21 @@
                    :value="item.value"
                    />
             </el-select>
+          </div>
+          <div class="select">
+              <el-select v-model="grade" value-key="id"
+                        placeholder="请选择年级" clearable @change="changeSelect">
+                  <el-option
+                    v-for="item in gradeType"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value"
+                    />
+              </el-select>
+          </div>
+          <el-button class="buttonSS" type="primary" size="default" @click="fetchDate(campus,grade)">查 询</el-button>
         </div>
-        <div class="select">
-            <el-select v-model="grade" value-key="id"
-                       placeholder="请选择年级" clearable @change="changeSelect">
-                <el-option
-                   v-for="item in gradeType"
-                   :key="item.id"
-                   :label="item.label"
-                   :value="item.value"
-                   />
-            </el-select>
-        </div>
-        <el-button class="query" type="primary" size="default" @click="fetchDate(campus,grade)">查 询</el-button>
+        
         <div class="query">
             <el-input
                 clearable
@@ -83,17 +86,29 @@
         </div>
         <div class="campus">
           <p>学院</p>
-          <el-input
-           class="input"
-           v-model="campus"
+          <el-select v-mode="rowData.value.campusId" value-key="id"
+            placeholder="请选择学院" clearable @change="changeSelect">
+          >
+          <el-option
+           v-for="item in campusType"
+           :key="item.id"
+           :label="item.label"
+           :value="item.value"
            />
+          </el-select>
         </div>
         <div class="grade">
           <p>年级</p>
-          <el-input
-           class="input"
-           v-model="grade"
+          <el-select v-mode="rowData.value.gradeId" value-key="id"
+            placeholder="请选择年级" clearable @change="changeSelect">
+          >
+          <el-option
+           v-for="item in gradeType"
+           :key="item.id"
+           :label="item.label"
+           :value="item.value"
            />
+          </el-select>
         </div>
       </div>
       <template #footer>
@@ -132,7 +147,7 @@ onMounted(async ()=> {
 const updateTableData = async () => {
   const res = await request.post('/clazz/getClazzOptionItemListByGradeId',{
     data:{
-      gradeId:1
+      gradeId:''
     }
   })
   console.log(res.data.data)
@@ -249,10 +264,10 @@ async function confirm(){
 }
 
 
-// const changeSelect = computed(() => {
-//   console.log(campus.value)
-//   console.log(grade.value)
-// })
+const changeSelect = computed(() => {
+  console.log(campus.value)
+  console.log(grade.value)
+})
 
 // const tableData = computed(() => filiterTableData.value)
 </script>
@@ -263,7 +278,10 @@ el-table{
 }
 
 .query{
+  display: inline-block;
+  vertical-align:middle;
   float: right;
+  margin-bottom: 10px;
   border-right: 0px;
   .search{
     border-color: #6FB6C1;
@@ -293,6 +311,19 @@ el-table{
     .input{
       width: 200px;
     }
+  }
+}
+.options{
+  display: inline-block;
+  vertical-align:middle;
+  margin-bottom: 10px;
+  .select{
+    display: inline-block;
+    vertical-align:middle;
+  }
+  .buttonSS{
+    display: inline-block;
+    vertical-align:middle;
   }
 }
 
