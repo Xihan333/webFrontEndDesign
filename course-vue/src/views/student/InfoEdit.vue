@@ -53,14 +53,13 @@ import { defineEmits, ref, watchEffect, onMounted } from 'vue'
 import {ElMessageBox,ElMessage} from 'element-plus'
 import request from '../../request/axios_config.js'
 
-const data = ref([])
 onMounted(() => {
   // 发起请求获取当前表格数据
   updateData()
 })
 const updateData = async () => {
   const res = await request.get('/student/getMyInfo')
-  data.value = res.data.data
+  rowData.value = res.data.data
 }
 
 const radio2 = ref('1')
