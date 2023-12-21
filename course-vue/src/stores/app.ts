@@ -5,6 +5,10 @@ export const useAppStore = defineStore('app', () => {
   const userInfo={
     jwtToken:''
   }
+  const nameInfo=ref({
+    name: '',
+    num: '',
+  })
   const tabPaneList = ref([
     {
       title:'个人主页',
@@ -26,9 +30,10 @@ export const useAppStore = defineStore('app', () => {
   })
   const classmate = ref({
     clazzId:"",
+    clazzName:""
   })
   return {
-    tabPaneList,userInfo,blogInfo,classmate
+    tabPaneList,userInfo,blogInfo,classmate,nameInfo
   }
 })
 
