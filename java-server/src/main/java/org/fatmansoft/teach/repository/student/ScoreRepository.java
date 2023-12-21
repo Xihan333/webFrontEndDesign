@@ -42,4 +42,10 @@ public interface ScoreRepository extends JpaRepository<Score,Integer> {
 
     @Query(value = "from Score where student.studentId=?1 and isResult=1")
     List<Score> findStudentResultScores(Integer studentId);
+
+    @Query(value = "from Score where teacherCourse.id=?1")
+    List<Score> findScoreListByTeacherCourseId(Integer teacherCourseId);
+
+    @Query(value = "from Score where student.studentId=?1 and teacherCourse.id=?2")
+    Optional<Score> findByStudentIdAndTeacherCourseId(Integer studentId, Integer teacherCourseId);
 }
