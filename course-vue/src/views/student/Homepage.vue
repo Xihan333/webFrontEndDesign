@@ -2,14 +2,10 @@
     <div class="homepage">
         <div class="head">
             <!-- <el-image style="width: 120px; height: 160px" src="url" fit="cover" class="photo" /> -->
-            <el-upload
-                class="photo-upload"
-                action="domain"
-                :show-file-list="false"
-            >
-                <img v-if="imageUrl" :src="imageUrl" class="photo" />
-                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-            </el-upload>
+            <input class="photo-upload" type="file" id="file" accept=".jpg" style="display:hidden;"/>
+            <input type="button" value="图片上传" @click="uploadFile()" class="photo-upload" />
+            <img v-if="imageUrl" :src="imageUrl" class="photo" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
             <div class="base-info">
                 <div class="firstLine">
                     <h2 class="name">{{ userInfo.name }}</h2>
@@ -74,6 +70,7 @@ import { useAppStore } from '../../stores/app.ts'
 import { Plus } from '@element-plus/icons-vue'
 import * as echarts from 'echarts';
 import router from "~/router";       
+import {getPhotoImageStr,uploadPhoto} from "~/services/infoServ";
 import request from '../../request/axios_config.js'
 
 const store = useAppStore()
@@ -164,14 +161,24 @@ const getRenderer = async () => {
     myChart.setOption(option1);
     scoreChart.setOption(option2);
 }
+// 上传图片
+const uploadFile = async() => {
+      const file = document.querySelector("#file");
+      if (file.files == null || file.files.length == 0) {
+        message(this, "请选择文件！");
+        return;
+      }
+      const res = await uploadPhoto(
+        "photo/" + userInfo.value.studentId + ".jpg",
+        file.files[0]
+      );
 
- // 上传图片
-const imageUrl = ref('') 
-const token = ref('')
-// 七牛云的上传地址，根据自己所在地区选择，我这里是华南区
-const domain = ref('https://upload-z2.qiniup.com')
-// 这是七牛云空间的外链默认域名
-const qiniuaddr = ref('p3z6q1uw1.bkt.clouddn.com')
+      if (res.code === 200) {
+        message(this, "上传成功");
+      } else {
+        message(this, "上传失败");
+      }
+}
 
 </script>
 
