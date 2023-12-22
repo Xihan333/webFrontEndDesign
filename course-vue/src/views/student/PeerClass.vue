@@ -30,6 +30,9 @@
             <el-table-column prop="phone" label="电话号码" width="auto" align="center"/>
             <el-table-column label="操作" width="auto" align="center">
             <template #default="scope">
+                <el-button size="default" @click="toOtherHome(scope.row)">
+                查看主页
+                </el-button>
                 <el-button size="default" @click="handleEdit(scope.row)">
                 评价
                 </el-button>
@@ -103,6 +106,11 @@ const handleEdit = (rowData) => {
 console.log(rowData)
   currentRowData.value = rowData
   show.value = true
+}
+
+const toOtherHome = (rowData) => {
+    console.log(rowData.studentId)
+    router.push({name:'other-homepage', query: { studentId: rowData.studentId }})
 }
 
 // 切换页面
