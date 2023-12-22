@@ -128,9 +128,15 @@ public class ScoreService {
             return CommonMethod.getReturnMessageError("教师不存在！");
         Teacher teacher= sOp.get();
         Integer teacherId = teacher.getTeacherId();
-        List<Score> sList = scoreRepository.findScoreListByTeachertId(teacherId);
-        List dataList = getScoreMapList(sList);
-        return CommonMethod.getReturnData(dataList);
+        Optional<List<Score>> optionalScores = Optional.ofNullable(scoreRepository.findScoreListByTeachertId(teacherId));
+        if(optionalScores.isPresent() && !optionalScores.get().isEmpty()){
+            List<Score> list = optionalScores.get();
+            List dataList = getScoreMapList(list);
+            return CommonMethod.getReturnData(dataList);
+        }else{
+            return CommonMethod.getReturnMessageError("无成绩！");
+        }
+
     }
 
     public DataResponse getRank(DataRequest dataRequest) {

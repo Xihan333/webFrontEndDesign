@@ -96,9 +96,70 @@ const rowData= ref({
     introduce: ''
 })
 
-
+const nameInvalid = ref(false);
+const emailInvalid = ref(false);
+const phoneInvalid = ref(false);
   
+function validateEmail() {
+  const regEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 正确的邮箱验证正则表达式
+  if (regEmail.test(rowData.value.email)) {
+    emailInvalid.value = false;
+  } else {
+    console.log("邮箱错了");
+    emailInvalid.value = true;
+  }
+}
+function validatePhone(){
+    const regPhone = /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/;
+    if(regPhone.test(rowData.value.phone)){
+      phoneInvalid.value = false;
+    }
+    else{
+      console.log("电话号码错了");
+      phoneInvalid.value = true;
+    }
+}
+
+function validateName(){
+    const regName = /^[\u4e00-\u9fa5]{2,4}$/;
+    if(regName.test(rowData.value.name)){
+      nameInvalid.value = false;
+    }
+    else{
+      console.log("名字输的不对");
+      nameInvalid.value = true;
+    }
+}
+
+
 async function submit(){
+  validateName()
+  if(nameInvalid.value){
+      ElMessage({
+          message: "请输入正确的姓名格式！",
+          type:'error',
+          offset: 150
+      })
+      return;
+  }
+  validatePhone()
+  if(phoneInvalid.value){
+      ElMessage({
+          message: "请输入正确的电话号码！",
+          type:'error',
+          offset: 150
+      })
+      return;
+  }
+  validateEmail()
+  if(emailInvalid.value){
+      ElMessage({
+          message: "邮箱格式错误！",
+          type:'error',
+          offset: 150
+      })
+      return;
+  }
   const res = await request.post('/student/studentEdit',{
     data:{
       form:{

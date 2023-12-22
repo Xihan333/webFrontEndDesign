@@ -71,6 +71,13 @@ public class StudentService {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private SocialService socialService;
+
+    @Autowired
+    private SocialRepository socialRepository;
+
+
     public synchronized Integer getNewPersonId(){  //synchronized 同步方法
         Integer  id = personRepository.getMaxId();  // 查询最大的id
         if(id == null)
@@ -208,7 +215,7 @@ public class StudentService {
         }
         for(int i = 0; i < 5;i++) {
             m = new HashMap();
-            m.put("title", title[i]);
+            m.put("name", title[i]+"："+count[i]);
             m.put("value", count[i]);
             list.add(m);
         }
@@ -263,12 +270,13 @@ public class StudentService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
         Map info = getMapFromStudent(s);  // 查询学生信息Map对象
-        info.put("introduce", studentIntroduceService.getIntroduceDataMap(u.getUserId()));
+        info.put("introduce", studentIntroduceService.getIntroduceDataMap(u.getPerson().getPersonId()));
         List<Score> sList = scoreRepository.findStudentResultScores(s.getStudentId()); //获得学生成绩对象集合
         Map data = new HashMap();
         data.put("info",info);
         data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
         data.put("acticityList",activityService.getActivityMapListByStudentId(s.getStudentId()));
+        data.put("socialList",socialService.getSocialMapList(s.getPerson().getNum()));
         data.put("scoreList",getStudentScoreList(sList));
         data.put("markList",getStudentMarkList(sList));
         Double gpa = getGPA(s);
@@ -291,6 +299,9 @@ public class StudentService {
             gpaTotal += credit * score;
         }
         gpa = (gpaTotal/creditTotal-50)/10;
+        if(gpa < 0){
+            gpa = 0.0;
+        }
         String  str = String.format("%.2f",gpa);
         gpa = Double.parseDouble(str);
         return gpa;
@@ -469,5 +480,26 @@ public class StudentService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
         return CommonMethod.getReturnData(getMapFromStudent(s));
+    }
+
+    public DataResponse getStudentIntroduceDataByStudentId(DataRequest dataRequest) {
+        Integer studentId = dataRequest.getInteger("studentId");
+        Optional<Student> sOp= studentRepository.findByStudentId(studentId); // 查询获得 Student对象
+        if(!sOp.isPresent())
+            return CommonMethod.getReturnMessageError("学生不存在！");
+        Student s= sOp.get();
+        Map info = getMapFromStudent(s);  // 查询学生信息Map对象
+        info.put("introduce", studentIntroduceService.getIntroduceDataMap(s.getPerson().getPersonId()));
+        List<Score> sList = scoreRepository.findStudentResultScores(s.getStudentId()); //获得学生成绩对象集合
+        Map data = new HashMap();
+        data.put("info",info);
+        data.put("achievementList",achievementService.getPassedAchievementMapList(s.getPerson().getNum()));
+        data.put("acticityList",activityService.getActivityMapListByStudentId(s.getStudentId()));
+        data.put("socialList",socialService.getSocialMapList(s.getPerson().getNum()));
+        data.put("scoreList",getStudentScoreList(sList));
+        data.put("markList",getStudentMarkList(sList));
+        Double gpa = getGPA(s);
+        data.put("gpa",gpa);
+        return CommonMethod.getReturnData(data);//将前端所需数据保留Map对象里，返还前端
     }
 }

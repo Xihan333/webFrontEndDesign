@@ -22,17 +22,18 @@
         :data="paginatedTableData" 
         style="width: 100%">
   
-          <el-table-column prop="achievementName" label="成就名称" width="200" align="center" />   
-          <el-table-column prop="type" label="成就类别" width="150" align="center"/> 
-          <el-table-column prop="level" label="成就级别" width="120" align="center"/> 
+          <el-table-column prop="achievementName" label="成就名称" width="auto" align="center" />   
+          <el-table-column prop="type" label="成就类别" width="auto" align="center"/> 
+          <el-table-column prop="level" label="成就级别" width="auto" align="center"/> 
           <!-- 时间 -->
-          <el-table-column sortable prop="time" label="时间" width="120" align="center"/>   
-          <el-table-column prop="content" label="内容" width="300" align="center"/>   
+          <el-table-column sortable prop="time" label="时间" width="auto" align="center"/>   
+          <el-table-column prop="content" label="内容" width="auto" align="center"/>   
           <!-- 审核状态，做了筛选 -->
           <el-table-column
             prop="statusName"
             label="审核状态"
-            width="100"
+            width="auto"
+            align="center"
             :filters="[
               { text: '已通过', value: '已通过' },
               { text: '待审核', value: '待审核' },
@@ -40,7 +41,7 @@
             ]"
             :filter-method="filterStatus"
           />
-          <el-table-column label="操作" width="220" text-align="center">
+          <el-table-column label="操作" width="auto" align="center">
             <!-- 操作部分，根据需要修改 -->
             <template #default="scope">
               <el-button size="default" @click="handleEdit(scope.row)">

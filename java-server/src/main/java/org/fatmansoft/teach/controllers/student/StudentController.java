@@ -252,6 +252,14 @@ public class StudentController {
     }
 
     /**
+     * getStudentIntroduceData 前端获取学生个人简历数据请求服务
+     */
+    @PostMapping("/getStudentIntroduceDataByStudentId")
+    public DataResponse getStudentIntroduceDataByStudentId(@Valid @RequestBody DataRequest dataRequest) {
+        return studentService.getStudentIntroduceDataByStudentId(dataRequest);
+    }
+
+    /**
      * saveStudentIntroduce 前端学生个人简介信息introduce提交服务
      * @param dataRequest 从前端获取 studentId student表 student_id introduce 学生个人简介信息
      * @return  操作正常

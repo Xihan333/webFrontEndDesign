@@ -47,14 +47,14 @@
     <el-table border
      :data="paginatedTableData"
      style="width: 100%">
-        <el-table-column prop="clazzName" label="班级名称" width="auto">
+        <el-table-column prop="clazzName" label="班级名称" width="auto" align="center">
           <template #default="scope">
             <a href="javascript:" @click="handleClickName(scope)">{{ scope.row.clazzName }}</a>
           </template>
         </el-table-column>
-        <el-table-column prop="gradeName" label="年级" width="auto" />
-        <el-table-column prop="campusName" label="学院" width="auto" />
-        <el-table-column label="操作" width="auto" >
+        <el-table-column prop="gradeName" label="年级" width="auto" align="center"/>
+        <el-table-column prop="campusName" label="学院" width="auto" align="center"/>
+        <el-table-column label="操作" width="auto" align="center">
         <!-- 操作部分，根据需要修改 -->
         <template #default="scope">
           <el-button size="default" @click="handleDel(scope.row)">
