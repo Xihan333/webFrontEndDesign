@@ -3,7 +3,7 @@
         <h1 class="title">{{ blogInfo.BlogTitle }}</h1>
         <hr/><br/>
         <div class="authorBox">
-            <p class="authorInfo">{{ blogInfo.name }} 于 {{ blogInfo.createTime }} 发布</p>
+            <p class="authorInfo">{{ blogInfo.name }} 于  {{ blogInfo.createTime }} 发布  <el-tag>{{ blogInfo.BlogTag }}</el-tag> </p>
         </div>
         <!-- 使用 v-html 指令安全地输出解析后的 HTML -->
         <v-md-preview :text="text" class="content"></v-md-preview>
@@ -51,7 +51,7 @@ const text = blogInfo.value.content
     }
     .authorBox{
         width: 70%;
-        height: 35px;
+        height: 38px;
         margin-left: 2%;
         border-radius: 5px;
         margin-top: -30px;
@@ -62,6 +62,10 @@ const text = blogInfo.value.content
             padding-left: 10px;
             color: rgb(122, 122, 122);
             font-size: 14px;
+
+            el-tag{
+                margin-left: 10px;
+            }
         }
     }
     .content{

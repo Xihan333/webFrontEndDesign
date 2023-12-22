@@ -81,10 +81,8 @@ const updateTableData = async () => {
     const res = await request.get('/blog/getBlogList')
     const res1 = await request.get('/blog/getMyBlogNumber')
     const res2 = await request.get('/evaluation/getMyEvaluationList',)
-    console.log(res2.data.data)
-    console.log(res.data.data)
     evals.value = res2.data.data
-    blogs.value = res.data.data
+    blogs.value = res.data.data.reverse()
     blogNum.value = res1.data.data
 }
 

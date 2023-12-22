@@ -63,7 +63,7 @@ const updateTableData = async () => {
     const res = await request.get('/blog/getMyBlogList')
     const res1 = await request.get('/blog/getMyBlogNumber')
     console.log(res.data.data)
-    blogs.value = res.data.data
+    blogs.value = res.data.data.reverse()
     blogNum.value = res1.data.data
 }
 
