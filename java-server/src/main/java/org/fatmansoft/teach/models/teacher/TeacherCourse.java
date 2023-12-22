@@ -37,6 +37,5 @@ public class TeacherCourse {
 
     private Integer timeOrder; //第x节 1 2 3 4 5
 
-    @NotBlank
     private String place; //上课地点
 }

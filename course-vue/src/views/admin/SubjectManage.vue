@@ -337,7 +337,23 @@ async function editConfirm(){
 }
 function confirm(){
   // 校验
-  if(isNaN(courseNum.value)){
+  if(campusId.value==''){
+    ElMessage({
+      message: '请选择开设学院！',
+      type: 'error',
+      offset: 150
+    })
+    return;
+  }
+  if(gradeId.value==''){
+    ElMessage({
+      message: '请选择开设年级！',
+      type: 'error',
+      offset: 150
+    })
+    return;
+  }
+  if(isNaN(courseNum.value)||courseNum.value==''){
     ElMessage({
       message: '课序号应为数字！',
       type: 'error',
