@@ -185,8 +185,7 @@ const submit = async () => {
             offset: 150
         })
         return;
-    }
-    
+    }    
     const res = ref({})
     if(props.dialogMode === 'view'){
         console.log(props.rowData.studentId)
@@ -224,6 +223,11 @@ const submit = async () => {
     }
     console.log(res.value)
     if(res.value.data.code == 200){
+        ElMessage({
+            message: "修改或新增成功",
+            type:'success',
+            offset: 150
+        })
         emit('update:show', false)
         emit('updateTable')
     }

@@ -33,6 +33,11 @@ const routes = [
         component: () => import('../views/student/Homepage.vue') 
       },
       { 
+        path: ('other-homepage'), 
+        name: 'other-homepage',
+        component: () => import('../views/student/OtherHome.vue') 
+      },
+      { 
         path: ('info-edit'), 
         component: () => import('../views/student/InfoEdit.vue') },
       {
