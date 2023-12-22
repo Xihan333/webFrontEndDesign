@@ -189,7 +189,7 @@ function logout(){
 function logoutConfirm(){
     logoutDialogVisible.value=false;
     store.otherInitTab('个人中心','homepage');
-    localStorage.clear();
+    localStorage.removeItem('KEY_COMMON');
     router.push('/login');
 }
 </script>

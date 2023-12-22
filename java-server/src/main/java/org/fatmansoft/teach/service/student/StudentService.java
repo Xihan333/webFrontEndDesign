@@ -388,6 +388,7 @@ public class StudentService {
             s = new Student();   // 创建实体对象
             s.setStudentId(getNewStudentId());
             s.setPerson(p);
+            s.setClazz(null);
             studentRepository.saveAndFlush(s);  //插入新的Student记录
         }else {
             p = s.getPerson();
@@ -411,7 +412,7 @@ public class StudentService {
         p.setPhone(CommonMethod.getString(form,"phone"));
         p.setAddress(CommonMethod.getString(form,"address"));
         personRepository.save(p);  // 修改保存人员信息
-        s.setClazz(null);
+
 //        String campusName = CommonMethod.getString(form,"campusName");
 //        String gradeName=CommonMethod.getString(form,"gradeName");
 //        String className=CommonMethod.getString(form,"className");

@@ -329,6 +329,7 @@ async function addConfirm(){
   })
   if(res.data!=undefined && res.data.code==200){
     updateTableData();
+    dialogVisible.value = false;
     ElMessage({
       message: '新增成功！',
       type: 'success',
@@ -354,6 +355,7 @@ async function editConfirm(){
   })
   if(res.data!=undefined && res.data.code==200){
     updateTableData();
+    dialogVisible.value = false;
     ElMessage({
       message: '编辑成功！',
       type: 'success',
@@ -369,13 +371,13 @@ async function editConfirm(){
   }
 }
 function confirm(){
+  
   if(dialogTitle.value=='课程新增'){
     addConfirm();
   }
   else{
     editConfirm();
   }
-  dialogVisible.value = false;
 }
 // 删除对话框
 const deleteDialogVisible=ref(false)
@@ -396,9 +398,9 @@ async function deleteConfirm(){
     updateTableData();
     deleteDialogVisible.value=false;
     ElMessage({
-    message: '删除成功！',
-    type: 'success',
-    offset: 150
+      message: '删除成功！',
+      type: 'success',
+      offset: 150
     })
   }
   else{

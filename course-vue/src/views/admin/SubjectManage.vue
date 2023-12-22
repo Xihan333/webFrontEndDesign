@@ -212,6 +212,9 @@
   }
   
   function typeFormat(row) {
+    if(row.type==null){
+      return ""
+    }
     return optionTypes[row.type].label;
   }
   
@@ -291,6 +294,7 @@ async function addConfirm(){
     })
     if(res.data!=undefined && res.data.code==200){
         updateTableData();
+        dialogVisible.value = false;
         ElMessage({
             message: '新增成功！',
             type: 'success',
@@ -316,6 +320,7 @@ async function editConfirm(){
     })
     if(res.data!=undefined && res.data.code==200){
         updateTableData();
+        dialogVisible.value = false;
         ElMessage({
         message: '编辑成功！',
         type: 'success',
@@ -331,13 +336,37 @@ async function editConfirm(){
     }
 }
 function confirm(){
-    if(dialogTitle.value=='学科新增'){
-        addConfirm();
-    }
-    else{
-        editConfirm();
-    }
-    dialogVisible.value = false;
+  // 校验
+  if(isNaN(courseNum.value)){
+    ElMessage({
+      message: '课序号应为数字！',
+      type: 'error',
+      offset: 150
+    })
+    return;
+  }
+  if(isNaN(hour.value)){
+    ElMessage({
+      message: '学时应为数字！',
+      type: 'error',
+      offset: 150
+    })
+    return;
+  }
+  if(isNaN(credit.value)){
+    ElMessage({
+      message: '学分应为数字！',
+      type: 'error',
+      offset: 150
+    })
+    return;
+  }
+  if(dialogTitle.value=='学科新增'){
+      addConfirm();
+  }
+  else{
+      editConfirm();
+  }
 }
 
 // 删除对话框

@@ -223,6 +223,7 @@ export default defineComponent({
       });
     },
     // 上传图片
+    
     async uploadFile() {
       const file = document.querySelector("#file") as any;
       if (file.files == null || file.files.length == 0) {

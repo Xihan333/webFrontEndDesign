@@ -70,6 +70,7 @@
         <el-input
           class="input"
           v-model="commonMark"
+          type="number"
         />
       </div>
       <div class="finalMark">
@@ -77,6 +78,7 @@
         <el-input
           class="input"
           v-model="finalMark"
+          type="number"
         />
       </div>
     </div>
@@ -170,6 +172,14 @@ function edit(row){
   scoreId.value=row.scoreId;
 }
 async function confirm(){
+  if(parseInt(commonMark.value)+parseInt(finalMark.value)>100){
+    ElMessage({
+          message: '总成绩超过满分(100分)！',
+          type: 'error',
+          offset: 150
+      })
+      return;
+  }
   let form=new Map();
   form.set('commonMark',commonMark.value);
   form.set('finalMark',finalMark.value);
