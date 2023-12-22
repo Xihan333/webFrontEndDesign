@@ -299,6 +299,9 @@ public class StudentService {
             gpaTotal += credit * score;
         }
         gpa = (gpaTotal/creditTotal-50)/10;
+        if(gpa < 0){
+            gpa = 0.0;
+        }
         String  str = String.format("%.2f",gpa);
         gpa = Double.parseDouble(str);
         return gpa;

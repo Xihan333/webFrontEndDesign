@@ -1,7 +1,6 @@
 <template>
     <div class="homepage">
         <div class="head">
-            <!-- <el-image style="width: 120px; height: 160px" src="url" fit="cover" class="photo" /> -->
             <input class="photo-upload" type="file" id="file" accept=".jpg" style="display:hidden;"/>
             <input type="button" value="图片上传" @click="uploadFile()" class="photo-upload" />
             <img v-if="imageUrl" :src="imageUrl" class="photo" />
@@ -67,7 +66,7 @@
 <script setup>
 import {ref,onMounted,computed,inject} from 'vue';
 import { useAppStore } from '../../stores/app.ts'
-import { Plus } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts';
 import router from "~/router";       
 import {getPhotoImageStr,uploadPhoto} from "~/services/infoServ";
@@ -168,16 +167,26 @@ const uploadFile = async() => {
         message(this, "请选择文件！");
         return;
       }
-      const res = await uploadPhoto(
-        "photo/" + userInfo.value.studentId + ".jpg",
-        file.files[0]
-      );
-
-      if (res.code === 200) {
-        message(this, "上传成功");
-      } else {
-        message(this, "上传失败");
-      }
+      const formData = new FormData();
+    formData.append("file", file.files[0]);
+    formData.append("uploader", userInfo.studentId);
+    formData.append("remoteFile", "photo/" + userInfo.studentId + ".jpg");
+    formData.append("fileName", file.files[0].name);
+    console.log(formData)
+      const res = await request.post('/base/uploadPhoto',formData)
+        if (res.code === 200) {
+        ElMessage({
+            message: '上传成功',
+            type: 'success',
+            offset: 150
+        })
+        }else{
+        ElMessage({
+            message: '上传失败',
+            type: 'error',
+            offset: 150
+        })
+        }
 }
 
 </script>
