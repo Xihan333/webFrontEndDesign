@@ -95,9 +95,23 @@ const rowData= ref({
     phone: '',
     introduce: ''
 })
-
-
+const emailInvalid = ref(false);
+const phoneInvalid = ref(flase);
   
+function validateEmail() {
+  const regEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 正确的邮箱验证正则表达式
+  if (regEmail.test(register.value.email)) {
+    inputErrorMessage.value = '';
+    isInputInvalid.value = false;
+  } else {
+    console.log("邮箱错了");
+    inputErrorMessage.value = '请输入正确的邮箱！';
+    isInputInvalid.value = true;
+  }
+}
+
+
+
 async function submit(){
   const res = await request.post('/student/studentEdit',{
     data:{

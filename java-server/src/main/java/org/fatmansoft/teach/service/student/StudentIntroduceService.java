@@ -28,7 +28,7 @@ public class StudentIntroduceService {
      * 学生简历信息
      */
     public Map getIntroduceDataMap(Integer personId){
-        Optional<Student> op = studentRepository.findByUserId(personId);
+        Optional<Student> op = studentRepository.findByPersonPersonId(personId);
         Person p = op.get().getPerson();
         String name = "";
         if(op.isPresent()) {
