@@ -1,7 +1,11 @@
 <template>
     <div class="homepage">
         <div class="head">
-            <el-image style="width: 120px; height: 160px" src="url" fit="cover" class="photo" />
+            <div class="uploader">
+                <img v-if="avatar" :src="avatar" @click="select" class="photo-upload" />
+                <el-icon v-else class="avatar-uploader-icon" @click="select" ><Plus /></el-icon>
+                <input @change="upload" id="upload" type="file" accept="image/*" style="display:none" class="photo-upload"/>
+            </div>
             <div class="base-info">
                 <div class="firstLine">
                     <h2 class="name">{{ userInfo.name }}</h2>
@@ -26,13 +30,6 @@
                 </div>
             </div>
         </div>
-        <div class="GPA">
-            这里放绩点的饼状图
-            <div id="gpachart" ref="gpa" class="gpaChart" ></div>
-        </div>
-        <div class="score">
-            这里放最高分的科目分数的树状图（拟五门）
-        </div>
         <div class="paper">
             <p class="title">发表论文</p>
             <el-table border
@@ -56,6 +53,7 @@ import request from '../../request/axios_config.js'
 const store = useAppStore()
 const userInfo = ref({
     studentId:'',
+    personId:'',
     name: '',
     num: '',
     gender:'',

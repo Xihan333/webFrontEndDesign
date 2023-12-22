@@ -1,10 +1,11 @@
 <template>
     <div class="homepage">
         <div class="head">
-            <input class="photo-upload" type="file" id="file" accept=".jpg" style="display:hidden;"/>
-            <input type="button" value="图片上传" @click="uploadFile()" class="photo-upload" />
-            <img v-if="imageUrl" :src="imageUrl" class="photo" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <div class="uploader">
+                <img v-if="avatar" :src="avatar" @click="select" class="photo-upload" />
+                <el-icon v-else class="avatar-uploader-icon" @click="select" ><Plus /></el-icon>
+                <input @change="upload" id="upload" type="file" accept="image/*" style="display:none" class="photo-upload"/>
+            </div>
             <div class="base-info">
                 <div class="firstLine">
                     <h2 class="name">{{ userInfo.name }}</h2>
@@ -75,6 +76,7 @@ import request from '../../request/axios_config.js'
 const store = useAppStore()
 const userInfo = ref({
     studentId:'',
+    personId:'',
     name: '',
     gpa:'',
     num: '',
@@ -161,32 +163,21 @@ const getRenderer = async () => {
     scoreChart.setOption(option2);
 }
 // 上传图片
-const uploadFile = async() => {
-      const file = document.querySelector("#file");
-      if (file.files == null || file.files.length == 0) {
-        message(this, "请选择文件！");
-        return;
-      }
-      const formData = new FormData();
-    formData.append("file", file.files[0]);
-    formData.append("uploader", userInfo.studentId);
-    formData.append("remoteFile", "photo/" + userInfo.studentId + ".jpg");
-    formData.append("fileName", file.files[0].name);
-    console.log(formData)
-      const res = await request.post('/base/uploadPhoto',formData)
-        if (res.code === 200) {
-        ElMessage({
-            message: '上传成功',
-            type: 'success',
-            offset: 150
-        })
-        }else{
-        ElMessage({
-            message: '上传失败',
-            type: 'error',
-            offset: 150
-        })
-        }
+function select(){
+    document.getElementById('upload').click();
+}
+
+const avatar=ref('')
+avatar.value=localStorage.getItem('personId'+userInfo.value.personId)
+
+function upload(e){
+    let file=e.target.files[0];
+    let reader=new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload=(data)=>{
+        avatar.value=data.target.result;
+        localStorage.setItem('personId'+userInfo.value.personId,data.target.result) //键值对,键名为用户唯一标识
+    }
 }
 
 </script>
@@ -288,20 +279,26 @@ const uploadFile = async() => {
         margin-left: 20px;
     }
 }
-.photo-upload,.el-upload {
-  border: 1px dashed #bdbdbd;
-  border-radius: 6px;
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 120px;
-  height: 160px;
-  cursor: pointer;
-  display: inline-block;
-  vertical-align:middle;
-  transition: var(--el-transition-duration-fast);
+.uploader{
+    border: 1px dashed #bdbdbd;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 120px;
+    height: 160px;
+    display: inline-block;
+    vertical-align:middle;
+}
+.uploader .photo-upload {
+    border-radius: 6px;
+
+    width: 120px;
+    height: 160px;
+    cursor: pointer;
+    transition: var(--el-transition-duration-fast);
 }
 
-.photo-upload:hover,.el-upload:hover {
+.uploader .photo-upload:hover {
   border-color: #6FB6C1;
 }
 

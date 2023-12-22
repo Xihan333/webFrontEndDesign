@@ -1,10 +1,10 @@
 <template>
     <div class="homepage">
         <div class="head">
-            <!-- <input class="photo-upload" type="file" id="file" accept=".jpg" style="display:hidden;"/>
-            <input type="button" value="图片上传" @click="uploadFile()" class="photo-upload" /> -->
-            <img v-if="imageUrl" :src="imageUrl" class="photo" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <div class="uploader">
+                <img v-if="avatar" :src="avatar" @click="select" class="photo-upload" />
+                <el-icon v-else class="avatar-uploader-icon" @click="select" ><Plus /></el-icon>
+            </div>
             <div class="base-info">
                 <div class="firstLine">
                     <h2 class="name">{{ userInfo.name }}</h2>
@@ -76,6 +76,7 @@ import request from '../../request/axios_config.js'
 const store = useAppStore()
 const userInfo = ref({
     studentId:'',
+    personId:'',
     name: '',
     gpa:'',
     num: '',
@@ -108,12 +109,13 @@ const updateTableData = async () => {
         }
     })
     userInfo.value = info.data.data.info
+    console.log(userInfo.value.personId)
     store.nameInfo = info.data.data
     userInfo.value.gpa = info.data.data.gpa
     AchievementData.value = info.data.data.achievementList
     SocialData.value = info.data.data.socialList
     mark.value = info.data.data.markList
-    setTimeout("getRender()",500)
+    avatar.value=localStorage.getItem('personId'+userInfo.value.personId)
     getRenderer()
     //forceUpdate()
 }
@@ -165,34 +167,8 @@ const getRenderer =  () => {
     hisChart.setOption(option1);
     hisScoreChart.setOption(option2);
 }
-// 上传图片
-const uploadFile = async() => {
-      const file = document.querySelector("#file");
-      if (file.files == null || file.files.length == 0) {
-        message(this, "请选择文件！");
-        return;
-      }
-      const formData = new FormData();
-    formData.append("file", file.files[0]);
-    formData.append("uploader", userInfo.studentId);
-    formData.append("remoteFile", "photo/" + userInfo.studentId + ".jpg");
-    formData.append("fileName", file.files[0].name);
-    console.log(formData)
-      const res = await request.post('/base/uploadPhoto',formData)
-        if (res.code === 200) {
-        ElMessage({
-            message: '上传成功',
-            type: 'success',
-            offset: 150
-        })
-        }else{
-        ElMessage({
-            message: '上传失败',
-            type: 'error',
-            offset: 150
-        })
-        }
-}
+
+const avatar=ref('')
 
 </script>
 
@@ -293,20 +269,26 @@ const uploadFile = async() => {
         margin-left: 20px;
     }
 }
-.photo-upload,.el-upload {
-  border: 1px dashed #bdbdbd;
-  border-radius: 6px;
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 120px;
-  height: 160px;
-  cursor: pointer;
-  display: inline-block;
-  vertical-align:middle;
-  transition: var(--el-transition-duration-fast);
+.uploader{
+    border: 1px dashed #bdbdbd;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 120px;
+    height: 160px;
+    display: inline-block;
+    vertical-align:middle;
+}
+.uploader .photo-upload {
+    border-radius: 6px;
+
+    width: 120px;
+    height: 160px;
+    cursor: pointer;
+    transition: var(--el-transition-duration-fast);
 }
 
-.photo-upload:hover,.el-upload:hover {
+.uploader .photo-upload:hover {
   border-color: #6FB6C1;
 }
 
