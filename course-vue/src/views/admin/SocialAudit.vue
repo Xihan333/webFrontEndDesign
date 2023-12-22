@@ -4,7 +4,6 @@
       <div>
         <!-- 新增，Dialog是弹窗，需要弹窗的页面都要在components文件夹下新增一个xxDialog.vue -->
         <SocialDialog v-model:show="show" :rowData="currentRowData" :dialogMode="dialogMode" @updateTable="updateTableData" />
-        <el-button @click="handleAdd" color="#6FB6C1" class="add">新 增</el-button>
         <!-- 查询部分 -->
         <div class="query">
           <el-input

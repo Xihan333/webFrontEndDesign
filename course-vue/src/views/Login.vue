@@ -264,12 +264,12 @@ async function registerUser(){
         })
         showLogin.value = true
       }
-    } 
-  } else {
-    ElMessageBox.alert('两次密码输入不一致！',{
-      confirmButtonText: 'OK'
-    })
-  }
+    } else {
+      ElMessageBox.alert('两次密码输入不一致！',{
+        confirmButtonText: 'OK'
+      })
+    }
+  } 
 }
          
 

@@ -80,7 +80,7 @@
 
 <script setup>
 import {defineProps, defineEmits, ref, watchEffect} from 'vue'
-import {ElMessageBox} from 'element-plus'
+import {ElMessageBox,ElMessage} from 'element-plus'
 import request from '../request/axios_config.js'
 
 const nameInvalid = ref(false);

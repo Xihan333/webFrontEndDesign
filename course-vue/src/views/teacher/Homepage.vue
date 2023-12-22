@@ -84,8 +84,25 @@ const updateTableData = async () => {
     console.log(userInfo.value)
     store.nameInfo = info.data.data
     PaperData.value = paper.data.data
+    avatar.value=localStorage.getItem('personId'+userInfo.value.personId)
 }
 
+// 上传图片
+function select(){
+    document.getElementById('upload').click();
+}
+
+const avatar=ref('')
+
+function upload(e){
+    let file=e.target.files[0];
+    let reader=new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload=(data)=>{
+        avatar.value=data.target.result;
+        localStorage.setItem('personId'+userInfo.value.personId,data.target.result) //键值对,键名为用户唯一标识
+    }
+}
 
 </script>
 
@@ -187,7 +204,6 @@ const updateTableData = async () => {
 .uploader .photo-upload:hover {
   border-color: #6FB6C1;
 }
-
 .el-icon.avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
