@@ -63,6 +63,7 @@
     <el-table-column prop="teacherNum" label="教师工号" width="auto" />
     <el-table-column prop="teacherName" label="上课教师" width="auto" />
     <el-table-column prop="courseCapacity" label="课容量" width="auto" />
+    <el-table-column prop="selectedCount" label="选课人数" width="auto" />
     <el-table-column :formatter="timeFormat" label="上课时间" width="auto" />
     <el-table-column prop="place" label="上课地点" width="auto" />  
     <el-table-column label="操作" width="170px" >
@@ -104,6 +105,7 @@
         <el-input
           class="input"
           v-model="courseNum"
+          :disabled="dialogTitle=='课程编辑'"
         />
       </div>
       <div class="item">
@@ -230,6 +232,9 @@ function typeFormat(row, column){
 }
 
 function timeFormat(row, column){
+  if(row.day==null||row.timeOrder==null){
+    return ""
+  }
   return days[row.day]+timeOrders[row.timeOrder];
 }
 
@@ -244,7 +249,7 @@ const handleSizeChange = () => {
 
 //开启选课相关
 const selectDialogVisible=ref(false);
-const selectCourseBtn=ref();
+const selectCourseBtn=ref(true);
 async function selectConfirm(){
   let selectAvailable=!(selectCourseBtn.value);
   const res = await request.post('/course/changeCourseSelectAvailable',{
@@ -313,8 +318,10 @@ function getMap(){
     map.set('courseNum',courseNum.value);
     map.set('teacherNum',teacherNum.value);
     map.set('courseCapacity',courseCapacity.value);
-    map.set('day',day.value);
-    map.set('timeOrder',timeOrder.value);
+    if(day.value!=0)
+      map.set('day',day.value);
+    if(timeOrder.value!=0)
+      map.set('timeOrder',timeOrder.value);
     map.set('place',place.value);
     return map;
 }
@@ -371,7 +378,22 @@ async function editConfirm(){
   }
 }
 function confirm(){
-  
+  if(isNaN(courseNum.value)||courseNum.value==''){
+    ElMessage({
+      message: '课序号应为数字！',
+      type: 'error',
+      offset: 150
+    })
+    return;
+  }
+  if(isNaN(courseCapacity.value)){
+    ElMessage({
+      message: '课容量应为数字！',
+      type: 'error',
+      offset: 150
+    })
+    return
+  }
   if(dialogTitle.value=='课程新增'){
     addConfirm();
   }
