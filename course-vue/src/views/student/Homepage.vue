@@ -111,6 +111,7 @@ const updateTableData = async () => {
     AchievementData.value = info.data.data.achievementList
     SocialData.value = info.data.data.socialList
     mark.value = info.data.data.markList
+    avatar.value=localStorage.getItem('personId'+userInfo.value.personId)
     getRenderer()
 }
 const AchievementTable = computed(() => AchievementData.value.filter(
@@ -168,7 +169,6 @@ function select(){
 }
 
 const avatar=ref('')
-avatar.value=localStorage.getItem('personId'+userInfo.value.personId)
 
 function upload(e){
     let file=e.target.files[0];
