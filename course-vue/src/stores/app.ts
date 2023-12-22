@@ -26,7 +26,8 @@ export const useAppStore = defineStore('app', () => {
       updateTime: null,
       personId: 2,
       BlogTitle: "Sample Title",
-      content: "Sample Content"
+      content: "Sample Content",
+      digest:''
   })
   const classmate = ref({
     clazzId:"",

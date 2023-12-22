@@ -72,6 +72,7 @@ const evals = ref([])
 const blogNum = ref()
 const { nameInfo } = storeToRefs(store);
 const name = nameInfo.value.name
+console.name
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()

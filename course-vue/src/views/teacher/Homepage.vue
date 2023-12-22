@@ -165,4 +165,34 @@ const updateTableData = async () => {
         padding-bottom: 20px;
     }
 }
+.uploader{
+    border: 1px dashed #bdbdbd;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 120px;
+    height: 160px;
+    display: inline-block;
+    vertical-align:middle;
+}
+.uploader .photo-upload {
+    border-radius: 6px;
+
+    width: 120px;
+    height: 160px;
+    cursor: pointer;
+    transition: var(--el-transition-duration-fast);
+}
+
+.uploader .photo-upload:hover {
+  border-color: #6FB6C1;
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 160px;
+  text-align: center;
+}
 </style>

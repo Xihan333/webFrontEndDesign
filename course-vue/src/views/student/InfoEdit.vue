@@ -195,12 +195,14 @@ async function submit(){
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 700px; /* Adjust this height based on your layout */
+  /* height: 700px; */
+   /* Adjust this height based on your layout */
 }
 
 h1 {
   font-size: xx-large;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .el-form {

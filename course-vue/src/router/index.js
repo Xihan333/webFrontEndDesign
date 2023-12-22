@@ -95,6 +95,10 @@ const routes = [
         path: ('blog-info'), 
         component: () => import('../views/student/BlogInfo.vue') 
       },
+      { 
+        path: ('blog-edit'), 
+        component: () => import('../views/student/EditBlog.vue') 
+      },
     ]
   },
   {

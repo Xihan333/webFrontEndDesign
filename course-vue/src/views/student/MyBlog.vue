@@ -18,7 +18,7 @@
                 </div>
                 <el-row class="operation">
                     <template #default="scope">
-                        <el-button type="primary" :icon="Edit" circle @click="toBlogEdit(blog)"/>
+                        <el-button type="primary" :icon="Edit" circle @click="handleEdit(blog)"/>
                         <el-button type="danger" :icon="Delete" circle @click="handleDel(blog)" />
                     </template>
                 </el-row>
@@ -88,12 +88,7 @@ const goNewBlog = () => {
     router.push('new-blog')
 }
 
-//编辑博客
-const toBlogEdit = ({ blog }) => {
-  store.personId = row.personId
-  store.examRecord = true
-  router.push({ path: ch('/管理员/报名信息/报名人信息') })
-}
+
 // 查看博客内容
 const handleClickBlog = (blog) => {
   console.log(blog);
@@ -104,7 +99,10 @@ const handleClickBlog = (blog) => {
 //编辑博客
 const handleEdit = (blog) => {
   console.log(blog)
+  store.blogInfo = blog
+  router.push('blog-edit')
 }
+
 async function handleDel(blog)  {
     console.log(blog)
   const res = await request.post('/blog/blogDelete',{

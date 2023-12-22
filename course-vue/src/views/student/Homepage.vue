@@ -105,7 +105,7 @@ const updateTableData = async () => {
     const info = await request.get('/student/getStudentIntroduceData')
     console.log(info.data.data)
     userInfo.value = info.data.data.info
-    store.nameInfo = info.data.data
+    store.nameInfo = userInfo.value
     console.log(store.nameInfo)
     userInfo.value.gpa = info.data.data.gpa
     AchievementData.value = info.data.data.achievementList
@@ -152,7 +152,7 @@ const getRenderer = async () => {
     };
     const option2 = {
         series: [{
-        color:["#6FB6C1","#e6e6e6"],
+        color:["#6FB6C1","#a094c3","#ccdead","#dbc4a7","#c16f6f"],
         type: 'pie',
         data: markList.value,
         roseType: 'area'

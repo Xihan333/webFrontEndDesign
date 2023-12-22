@@ -44,8 +44,8 @@
               show-word-limit 
             />
             <div class="ope">
-                <el-button class="back">返回文章</el-button>
-                <el-button class="submit" type="primary" @click="submit()">发布博客</el-button>
+                <el-button class="back">取消修改</el-button>
+                <el-button class="submit" type="primary" @click="submit()">重新发布</el-button>
             </div>
             
         </div>
@@ -57,14 +57,20 @@ import { ref,onMounted,nextTick } from "vue";
 import { ElInput,ElMessage } from 'element-plus'
 import router from "~/router";
 import request from '../../request/axios_config.js'
+import { useAppStore } from '../../stores/app.ts'
+import { storeToRefs } from 'pinia'
+
+const store = useAppStore()
+
+const { blogInfo } = storeToRefs(store);
  
 
-const markdown = ref('')
-const title = ref('')
-const digest = ref('')
+const markdown = ref(blogInfo.value.content)
+const title = ref(blogInfo.value.BlogTitle)
+const digest = ref(blogInfo.value.digest)
 // tag相关 Start
 const inputValue = ref('')
-const dynamicTags = ref([])
+const dynamicTags = ref([blogInfo.value.BlogTag])
 const inputVisible = ref(false)
 // const InputRef = ref<InstanceType<typeof ElInput>>()
 
@@ -89,14 +95,14 @@ const handleInputConfirm = () => {
 // tag相关 end
 
 const back = () =>{
-    router.push('all-blog')
+    router.push('my-blog')
 }
 
 async function submit(){
-    console.log(markdown.value)
+    console.log(blogInfo.value.BlogId)
     const res = await request.post('/blog/blogEditSave',{
         data:{
-            blogId: "",
+            blogId: blogInfo.value.BlogId,
             blog: {
                 title: title.value,
                 tag: dynamicTags.value[0],
