@@ -20,6 +20,8 @@
       <el-table border
         :data="paginatedTableData" 
         style="width: 100%">
+          <el-table-column prop="name" label="学生姓名" width="auto" align="center" /> 
+          <el-table-column prop="num" label="学号" width="auto" align="center" /> 
           <!-- 实践主题 -->
           <el-table-column prop="theme" label="实践主题" width="auto" align="center"/>   
           <!-- 团队名称 -->

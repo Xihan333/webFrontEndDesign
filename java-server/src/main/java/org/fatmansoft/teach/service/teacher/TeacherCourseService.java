@@ -398,7 +398,15 @@ public class TeacherCourseService {
         }else{
             teacher = opTeacher.get();
         }
-
+        Integer teacherId = teacher.getTeacherId();
+        Integer day = CommonMethod.getInteger(map,"day");
+        Integer timeOrder = CommonMethod.getInteger(map,"timeOrder");
+        if(day != null && timeOrder != null){
+            Optional<TeacherCourse> optionalTeacherCourse = teacherCourseRepository.findByTeacherIdAmdDayAndTimeOrder(teacherId, day, timeOrder);
+            if(optionalTeacherCourse.isPresent()){
+                return CommonMethod.getReturnMessageError("该教师在该时段已有课程！");
+            }
+        }
         TeacherCourse teacherCourse = new TeacherCourse();
         teacherCourse.setId(teacherCourseService.getNewTeacherCourseId());
         teacherCourse.setCourse(course);
@@ -434,6 +442,14 @@ public class TeacherCourseService {
             teacherCourse = opTeacherCourse.get();
         }else{
             return CommonMethod.getReturnMessageError("无该课程！");
+        }
+        Integer day = CommonMethod.getInteger(map,"day");
+        Integer timeOrder = CommonMethod.getInteger(map,"timeOrder");
+        if(day != null && timeOrder != null){
+            Optional<TeacherCourse> optionalTeacherCourse = teacherCourseRepository.findByTeacherIdAmdDayAndTimeOrder(teacherId, day, timeOrder);
+            if(optionalTeacherCourse.isPresent()){
+                return CommonMethod.getReturnMessageError("该教师在该时段已有课程！");
+            }
         }
         teacherCourse.setDay(CommonMethod.getInteger(map,"day"));
         teacherCourse.setTimeOrder(CommonMethod.getInteger(map,"timeOrder"));

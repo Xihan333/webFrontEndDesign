@@ -65,4 +65,7 @@ public interface TeacherCourseRepository extends JpaRepository<TeacherCourse,Int
 
     @Query(value = "from TeacherCourse where id=?1")
     Optional<TeacherCourse> findByTeacherCourseId(Integer teacherCourseId);
+
+    @Query(value = "from TeacherCourse where teacher.teacherId=?1 and day=?2 and timeOrder=?3 ")
+    Optional<TeacherCourse> findByTeacherIdAmdDayAndTimeOrder(Integer teacherId, Integer day, Integer timeOrder);
 }

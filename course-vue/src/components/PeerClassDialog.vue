@@ -47,7 +47,7 @@
 
 <script setup>
 import {defineProps, defineEmits,ref,watchEffect} from 'vue'
-import {ElMessageBox} from'element-plus'
+import {ElMessageBox,ElMessage} from'element-plus'
 import request from '../request/axios_config.js'
 
 const rowData=ref({
@@ -86,6 +86,11 @@ const submit = async () => {
         
         emit('update:show', false)
         emit('updateTable')
+        ElMessage({
+            message: "提交成功！",
+            type:'success',
+            offset: 150
+        })
     }
     catch(error){
         console.error('请求失败',error)

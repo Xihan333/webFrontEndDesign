@@ -38,7 +38,7 @@
     </div>
     <div class="sidebar">
         <div class="myinfo">
-            <img src="../../../public/avatar.jpg" alt="Avatar" class="avatar">
+            <img :src="avatar" alt="Avatar" class="avatar">
             <h3 class="nickname">{{ name }}</h3>
             <p class="articles-count">文章 {{ blogNum }}</p>
             <el-button type="primary" @click="goMyBlog" color="#6FB6C1" class="btn">查看文章</el-button>
@@ -72,6 +72,8 @@ const evals = ref([])
 const blogNum = ref()
 const { nameInfo } = storeToRefs(store);
 const name = nameInfo.value.name
+const avatar=ref('')
+avatar.value=localStorage.getItem('personId'+nameInfo.value.personId)
 console.name
 onMounted(() => {
      // 发起请求获取当前页面信息
@@ -109,7 +111,7 @@ const searchedBlogs = computed(() => blogs.value.filter(
     !search.value ||
     item.BlogTitle.toLowerCase().includes(search.value.toLowerCase()) ||
     item.name.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.digest.toLowerCase().includes(search.value.toLowerCase())
+    item.content.toLowerCase().includes(search.value.toLowerCase())
 ))
 const searchFn = () => {
   search.value = inputSearch.value

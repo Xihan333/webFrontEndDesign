@@ -2,7 +2,7 @@
 <template>
     <div class="my-blog">
         <div class="myInfo">
-            <img src="../../../public/avatar.jpg" alt="Avatar" class="avatar">
+            <img :src="avatar" alt="Avatar" class="avatar">
             <div class="info">
                 <h3 class="nickname">{{ name }}</h3>
                 <p class="articles-count">文章   {{ blogNum }}</p>
@@ -55,6 +55,8 @@ const blogs = ref([])
 const blogNum = ref()
 const { nameInfo } = storeToRefs(store);
 const name = nameInfo.value.name
+const avatar=ref('')
+avatar.value=localStorage.getItem('personId'+nameInfo.value.personId)
 onMounted(() => {
      // 发起请求获取当前页面信息
         updateTableData()

@@ -69,7 +69,7 @@
   
   <script setup>
   import { defineProps, defineEmits, ref, watchEffect } from 'vue'
-  import { ElMessageBox } from 'element-plus'
+  import { ElMessageBox,ElMessage } from 'element-plus'
   import request from '../request/axios_config.js'
 
   
@@ -145,6 +145,11 @@
     }
     emit('update:show', false) // 关闭对话框
     emit('updateTable') // 通知父组件更新表格
+    ElMessage({
+      message: '编辑或新增成功！',
+      type: 'success',
+      offset: 150
+    })
   } catch (error) {
     console.error('请求失败:', error)
   }

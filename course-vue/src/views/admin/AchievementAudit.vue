@@ -20,7 +20,9 @@
       <el-table border
         :data="paginatedTableData" 
         style="width: 100%">
-  
+
+          <el-table-column prop="name" label="学生姓名" width="auto" align="center" /> 
+          <el-table-column prop="num" label="学号" width="auto" align="center" /> 
           <el-table-column prop="achievementName" label="成就名称" width="auto" align="center" />   
           <el-table-column prop="type" label="成就类别" width="auto" align="center"/> 
           <el-table-column prop="level" label="成就级别" width="auto" align="center"/> 

@@ -185,6 +185,7 @@ const courseNumOrName=ref("");
 const teacherName=ref("");
 const typeSelect=ref();
 const optionTypes=filterOption.optionTypes;
+const filterTypes=filterOption.filterTypes;
 
 let tableData = []
 const filterTableData=ref([]);
@@ -215,7 +216,7 @@ async function updateTableData(){
 function reset(){
   courseNumOrName.value="";
   teacherName.value="";
-  type.value=3;
+  typeSelect.value=3;
 }
 
 function search(){
@@ -223,12 +224,12 @@ function search(){
   filterTableData.value = tableData.filter((item) => {
       return (courseNumOrName.value==""||(item.courseName==courseNumOrName.value||item.courseNum==courseNumOrName.value))
               &&(teacherName.value==""||item.teacherName==teacherName.value)
-              &&(type.value==3||item.type==type.value);
+              &&(typeSelect.value==3||item.type==typeSelect.value);
   });
 }
 
 function typeFormat(row, column){
-  return optionTypes[row.type].label;
+  return filterTypes[row.type].label;
 }
 
 function timeFormat(row, column){
@@ -371,7 +372,7 @@ async function editConfirm(){
   }
   else{
     ElMessage({
-        message: '操作失败，请重试！',
+        message: res.data.msg,
         type: 'error',
         offset: 150
     })

@@ -140,7 +140,7 @@ import router from "~/router";
 
 const store = useAppStore()
 
-
+const campus = ref('')
 const grade = ref('')
 const clazzId=ref();
 

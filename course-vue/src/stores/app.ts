@@ -8,6 +8,7 @@ export const useAppStore = defineStore('app', () => {
   const nameInfo=ref({
     name: '',
     num: '',
+    personId:''
   })
   const tabPaneList = ref([
     {
