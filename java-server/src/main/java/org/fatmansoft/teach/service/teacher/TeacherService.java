@@ -118,6 +118,7 @@ public class TeacherService {
         s.setDirection(CommonMethod.getString(form,"direction"));
         s.setDegree(CommonMethod.getString(form,"degree"));
         s.setTitle(CommonMethod.getString(form,"title"));
+        p.setIntroduce(CommonMethod.getString(form,"introduce"));
         personRepository.save(p);  // 修改保存人员信息
         teacherRepository.save(s);
         return CommonMethod.getReturnData(s.getTeacherId(),"修改成功！");  // 将studentId返回前端

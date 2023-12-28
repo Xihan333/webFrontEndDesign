@@ -40,14 +40,17 @@
                 <el-table-column prop="day" label="发表时间" width="auto" />
             </el-table>
         </div>
+        <div class="introduce">
+            <p class="title">个人简介</p>
+            <v-md-preview :text="text" class="content"></v-md-preview>
+        </div>
     </div>
 </template>
 
 <script setup>
 import {ref,onMounted,computed,inject} from 'vue';
 import { useAppStore } from '../../stores/app.ts'
-import router from "~/router";
-import * as echarts from 'echarts';           
+import router from "~/router";         
 import request from '../../request/axios_config.js'
 
 const store = useAppStore()
@@ -71,6 +74,7 @@ const userInfo = ref({
     
 })
 const PaperData = ref([])
+const text = ref('')
 
 onMounted(() =>{
     updateTableData()
@@ -81,7 +85,9 @@ const updateTableData = async () => {
         data:{}
     })
     userInfo.value = info.data.data
-    console.log(userInfo.value)
+    text.value = userInfo.value.introduce?userInfo.value.introduce:'暂时还没有简介噢'
+    console.log(userInfo.value.introduce)
+    console.log(text.value)
     store.nameInfo = info.data.data
     PaperData.value = paper.data.data
     avatar.value=localStorage.getItem('personId'+userInfo.value.personId)
@@ -164,7 +170,7 @@ function upload(e){
     background-color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-.paper{
+.paper , .introduce{
     width: 90%;
     margin-top: 10px;
     margin-left: 10px;

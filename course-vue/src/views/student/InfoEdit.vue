@@ -50,16 +50,14 @@
             show-word-limit
             />
         </el-form-item>   
-        <el-form-item label="个人介绍">
-            <el-input  class="in" v-model="rowData.introduce"
-            placeholder="请输入个人介绍"
-            show-word-limit
-            type = "textarea"
-            maxlength="200"
-            :autosize="{ minRows: 4}"
-            />
+        <el-form-item label="个人简介">
         </el-form-item>   
       </el-form>
+      <div class="content">
+        <v-md-editor v-model="rowData.introduce" height="500px"
+            placeholder="请输入个人介绍"></v-md-editor>
+      </div>
+            <br/>
     <div class="form-group">
         <el-button @click="cancel">取消</el-button>
         <el-button type="primary" @click="submit">提交</el-button>
@@ -233,4 +231,7 @@ h1 {
   font-size: 16px;
 }
 
+.content{
+  width: 800px;
+}
 </style>

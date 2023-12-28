@@ -270,7 +270,6 @@ public class StudentService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
         Map info = getMapFromStudent(s);  // 查询学生信息Map对象
-        info.put("introduce", studentIntroduceService.getIntroduceDataMap(u.getPerson().getPersonId()));
         List<Score> sList = scoreRepository.findStudentResultScores(s.getStudentId()); //获得学生成绩对象集合
         Map data = new HashMap();
         data.put("info",info);
@@ -490,7 +489,7 @@ public class StudentService {
             return CommonMethod.getReturnMessageError("学生不存在！");
         Student s= sOp.get();
         Map info = getMapFromStudent(s);  // 查询学生信息Map对象
-        info.put("introduce", studentIntroduceService.getIntroduceDataMap(s.getPerson().getPersonId()));
+        //info.put("introduce", studentIntroduceService.getIntroduceDataMap(s.getPerson().getPersonId()));
         List<Score> sList = scoreRepository.findStudentResultScores(s.getStudentId()); //获得学生成绩对象集合
         Map data = new HashMap();
         data.put("info",info);

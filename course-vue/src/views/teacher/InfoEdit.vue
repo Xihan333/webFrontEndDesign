@@ -7,12 +7,12 @@
             disabled
             />
         </el-form-item>
-        <el-form-item label="学号">
+        <el-form-item label="工号">
             <el-input v-model="rowData.num"
             disabled
             />
         </el-form-item>
-        <el-form-item label="性  别">
+        <el-form-item label="性别">
           <el-radio-group v-model="rowData.gender">
             <el-radio label="1" border>男</el-radio>
             <el-radio label="2" border>女</el-radio>
@@ -22,9 +22,7 @@
             <el-date-picker
               v-model="rowData.birthday"
               type="date"
-              :disabled-date="disabledDate"
               palceholder="请选择时间"
-              :size="size"
               format="YYYY/MM/DD"
               value-format="YYYY/MM/DD"
               />
@@ -73,16 +71,14 @@
             :autosize="{ minRows: 2}"
             />
         </el-form-item>    
-        <el-form-item label="个人介绍">
-            <el-input class="in" v-model="rowData.introduce"
-            placeholder="请输入个人介绍"
-            show-word-limit
-            type = "textarea"
-            maxlength="200"
-            :autosize="{ minRows: 2}"
-            />
+        <el-form-item label="个人简介">
         </el-form-item>   
       </el-form>
+      <div class="content">
+        <v-md-editor v-model="rowData.introduce" height="500px"
+            placeholder="请输入个人介绍"></v-md-editor>
+      </div>
+            <br/>
     <div class="form-group">
         <el-button @click="cancel">取消</el-button>
         <el-button type="primary" @click="submit">提交</el-button>
@@ -106,7 +102,7 @@ const updateData = async () => {
 
 const radio2 = ref('1')
 const rowData= ref({
-    studentId:'',
+    teacherId:'',
     name: '',
     num: '',
     gender:'',
@@ -116,7 +112,7 @@ const rowData= ref({
     card: '',
     email: '',
     phone: '',
-    introduce: '',
+    introduce: 'ababasb',
     degree: '',
     title: '',
     direction:''
@@ -186,6 +182,7 @@ async function submit(){
       })
       return;
   }
+  console.log(rowData.value.introduce)
   const res = await request.post('/teacher/teacherEdit',{
     data:{
       form:{
@@ -224,7 +221,6 @@ async function submit(){
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 700px; /* Adjust this height based on your layout */
 }
 
 h1 {
@@ -258,5 +254,8 @@ h1 {
   width: 50%; /* Adjust the width of the input fields */
   height:40px;
   font-size: 16px;
+}
+.content{
+  width: 800px;
 }
 </style>

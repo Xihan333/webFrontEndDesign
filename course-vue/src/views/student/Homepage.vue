@@ -61,6 +61,10 @@
                 <el-table-column prop="harvest" label="实践成果" width="auto" />   
             </el-table>
         </div>
+        <div class="introduce">
+            <p class="title">个人简介</p>
+            <v-md-preview :text="text" class="content"></v-md-preview>
+        </div>
     </div>
 </template>
 
@@ -97,6 +101,7 @@ const userInfo = ref({
 const AchievementData = ref([])
 const SocialData = ref([])
 const mark = ref([])
+const text = computed(() => userInfo.value.introduce)
 
 onMounted(() =>{
     updateTableData()
@@ -106,7 +111,7 @@ const updateTableData = async () => {
     console.log(info.data.data)
     userInfo.value = info.data.data.info
     store.nameInfo = userInfo.value
-    console.log(store.nameInfo)
+    console.log(userInfo.value.introduce)
     userInfo.value.gpa = info.data.data.gpa
     AchievementData.value = info.data.data.achievementList
     SocialData.value = info.data.data.socialList
@@ -240,7 +245,7 @@ function upload(e){
     background-color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-.achievement,.social{
+.achievement,.social,.introduce{
     width: 90%;
     margin-top: 10px;
     margin-left: 10px;
@@ -257,6 +262,13 @@ function upload(e){
         margin-left: 20px;
         padding-bottom: 20px;
     }
+}
+
+.intro{
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    padding-bottom: 20px;
 }
 .GPA{
     .title{
