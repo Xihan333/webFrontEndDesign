@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <object-set>
+    <table path="main.achievement">
+      <table path="main.student" name="student_id" from="" to=""/>
+    </table>
+    <table path="main.activity">
+      <table path="main.student" name="student_id" from="" to=""/>
+    </table>
+    <table path="main.blog">
+      <table path="main.student" name="student_id" from="" to=""/>
+    </table>
+    <table path="main.clazz">
+      <table path="main.campus" name="campus_id" from="" to=""/>
+      <table path="main.grade" name="grade_id" from="" to=""/>
+    </table>
+    <table path="main.course">
+      <table path="main.campus" name="campus_id" from="" to=""/>
+      <table path="main.grade" name="grade_id" from="" to=""/>
+    </table>
+    <table path="main.evaluation">
+      <table path="main.student" name="evaluator_id" from="" to=""/>
+      <table path="main.student" name="student_id" from="" to=""/>
+    </table>
+    <table path="main.scientific_payoffs">
+      <table path="main.teacher" name="teacher_id" from="" to=""/>
+    </table>
+    <table path="main.score">
+      <table path="main.student" name="student_id" from="" to=""/>
+    </table>
+    <table path="main.social">
+      <table path="main.student" name="student_id" from="" to=""/>
+    </table>
+    <table path="main.student">
+      <table path="main.person" name="person_id" from="" to=""/>
+    </table>
+    <table path="main.teacher">
+      <table path="main.person" name="person_id" from="" to=""/>
+    </table>
+    <table path="main.teacher_course">
+      <table path="main.course" name="course_id" from="" to=""/>
+      <table path="main.teacher" name="teacher_id" from="" to=""/>
+    </table>
+  </object-set>
+</data>
